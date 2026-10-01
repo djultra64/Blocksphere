@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "platform": "windows-x86_64",
+  "native": true,
+  "compatibility_layer": false,
+  "release": "v1.0.0",
+  "package_sha256": "983557defe59924228badce1a438f67158ab362eb8c3e22cfdf97e1c63cbc373",
+  "archive_members_verified": true,
+  "runtime_distribution": "Microsoft DXC v1.8.2505.1 (binary version 1.8.2505.32)",
+  "native_help": true,
+  "portable_settings": true,
+  "loaded_library_sha256": {
+    "dxcompiler.dll": "5888d3e590f5bfd8743484e7f31313996734adec5741506271a5c6368cbe8ba9",
+    "dxil.dll": "0cf5fa4b90f74550166108b3870c883f4a85243976b246b1da3ea90ad5b92015",
+    "SDL2.dll": "0dd1ea6a6bf86a01a9ef0cff4247c446760f955e276e874a9db8e51ab8afe99f"
+  },
+  "import": {
+    "rt64_present": true,
+    "normal_close": true,
+    "exit_code": 0
+  },
+  "rom_import": true,
+  "cached": {
+    "rt64_present": true,
+    "normal_close": true,
+    "exit_code": 0
+  },
+  "finished_utc": "2026-10-01T21:40:11.4514213Z"
+}

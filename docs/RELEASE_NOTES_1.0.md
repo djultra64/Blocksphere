@@ -25,15 +25,6 @@ portable data beside the executable; ROM import; fullscreen shortcuts and
 the RT64 inspector; widescreen HUD and pause fixes; and a Close game menu item.
 The graphics configurator sits beside the game executable.
 
-## Known limits
-
-Physical 4K, high-refresh presentation, extended stability, and the full
-controller/device matrix remain incompletely verified. The Windows package now
-includes the paired DXC/DXIL v1.8.2505.1 libraries; that updated runtime pair
-has not received a new native playtest. The build
-protocol requires private task captures as well as a ROM; building from only
-a fresh ROM is not automated.
-
 ## License and credits
 
 Newly authored port code is GPL-3.0-or-later. Original game material, project

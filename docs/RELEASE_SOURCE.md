@@ -47,12 +47,14 @@ The older package's dxil.dll was not redistributable under its bundled terms
 and is excluded. The public package therefore updates these two runtime
 libraries while retaining the original game and configurator executable bytes.
 BUILD.json records their new hashes and runtime distribution version.
-The new runtime pair has not received a native Windows playtest here.
+The exact public Windows package passed a native desktop test on 2026-10-01,
+including module hashes, ROM import, a cached second launch, portable settings,
+RT64 presentation, and normal closure. See qa/release-1.0-public-installation.md.
 
 ## Verification limits
 
 Historical release records report 197 Python tests and 48 Linux CTests passing,
-with native Windows verification. Publication checks are separate archive,
-checksum, licensing, and identity checks. They do not imply another full game
-playtest. Physical 4K, high refresh rates, the complete controller matrix, and
+with native Windows verification. Publication checks include archive, checksum, licensing, and identity checks.
+A separate native Windows test exercised the public package; its scope and
+results are recorded in qa/release-1.0-public-installation.md. Physical 4K, high refresh rates, the complete controller matrix, and
 extended stability remain open areas for bug reports and further testing.
