@@ -44,7 +44,7 @@ Further testing is required on several modes and configurations.
 - Linux or Windows on an x86-64 PC.
 - Your own **Tetrisphere US NTPE revision 0** ROM. Other regions, revisions, and modified ROMs are not supported.
 
-No ROM, extracted original game assets, save files, or captured audio are distributed with this project. The README screenshot is published with the project owner's explicit approval. Do not submit those files in issues or pull requests.
+No ROM, extracted original game assets, save files, or captured audio are distributed with this project. Do not submit those files in issues or pull requests.
 
 ## Getting started
 
