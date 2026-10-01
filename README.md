@@ -10,6 +10,10 @@ A Nintendo 64 Tetrisphere recompilation.
 
 A community PC port of **Tetrisphere** for Linux and Windows x86-64, built through static recompilation with N64Recomp, N64ModernRuntime, RSPRecomp, and RT64.
 
+<p align="center">
+  <img src="assets/screenshots/title-screen.png" alt="Tetrisphere title screen running in Blocksphere" width="820">
+</p>
+
 This is an independent fan project, with no affiliation with or endorsement from the original developers, publisher, or rights holders.
 
 ## Why I built this
@@ -40,7 +44,7 @@ Further testing is required on several modes and configurations.
 - Linux or Windows on an x86-64 PC.
 - Your own **Tetrisphere US NTPE revision 0** ROM. Other regions, revisions, and modified ROMs are not supported.
 
-No ROM, extracted original game assets, save files, screenshots, or captured audio are distributed with this project. Do not submit those files in issues or pull requests.
+No ROM, extracted original game assets, save files, or captured audio are distributed with this project. The README screenshot is published with the project owner's explicit approval. Do not submit those files in issues or pull requests.
 
 ## Getting started
 
