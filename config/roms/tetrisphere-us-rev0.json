@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "tetrisphere-us-rev0",
+  "title": "Tetrisphere",
+  "region": "USA / NTSC-U",
+  "language": "en",
+  "game_code": "NTPE",
+  "header_revision": 0,
+  "size_bytes": 8388608,
+  "normalized_format": "z64",
+  "sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+  "sha1": "32adaa274ceed246aeee9f53592d642a121f3bdb",
+  "md5": "3f88078e2d9dbf6c9372f6373cf9ae09",
+  "header_crc1": "3c1fdabe",
+  "header_crc2": "02a4e0ba",
+  "entry_point": "0x80025c50",
+  "identification": "User-provided local dump; MD5 and header CRC pair match Mupen64Plus Tetrisphere (U) [!]. Header revision byte is zero. Recognition does not establish native-port compatibility.",
+  "catalog_source": "https://github.com/mupen64plus/mupen64plus-core/blob/b20b27ebf9e5b099a978e86dba609111dc98c837/data/mupen64plus.ini"
+}

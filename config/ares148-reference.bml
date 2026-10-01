@@ -1,0 +1,30 @@
+Video
+  Driver: OpenGL 3.2
+  Blocking: false
+  Shader: None
+  Quality: SD
+  Supersampling: false
+  DisableVideoInterfaceProcessing: false
+  InterframeBlending: false
+  PixelAccuracy: true
+  AspectCorrectionMode: Standard
+Audio
+  Driver: SDL
+  Frequency: 48000
+  Latency: 20
+  Blocking: true
+  Dynamic: false
+Input
+  Driver: SDL
+  Defocus: Pause
+Boot
+  Fast: false
+General
+  RunAhead: false
+  Rewind: false
+  ShowStatusBar: true
+  AutoSaveMemory: true
+  HomebrewMode: false
+  ForceInterpreter: false
+Nintendo64
+  ExpansionPak: false

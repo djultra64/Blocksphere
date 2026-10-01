@@ -1,0 +1,19 @@
+{
+  "scene": "hide-seek-idle",
+  "capture_hz": 120,
+  "capture_size": [
+    750,
+    570
+  ],
+  "capture_origin": [
+    122,
+    97
+  ],
+  "samples": 7200,
+  "duration_seconds": 60.0,
+  "adjacent_image_changes": 3588,
+  "distinct_hashes": 3589,
+  "changes_per_second": 59.8,
+  "framehash_sha256": "e3f0bdaed3fb8052c0dd917dbaa0e7917322e604847f6c071cf196c71d80c45b",
+  "limitations": "Host Xvfb image observations; excludes emulator toolbar/status. Not a direct count of guest framebuffer swaps or all presented frames. Capture polling can miss changes or observe partial refreshes."
+}

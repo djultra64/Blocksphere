@@ -1,0 +1,12 @@
+text_offset = 0
+text_size = 0xDF0
+text_address = 0x1080
+rom_file_path = "../../.local/m1/microcode/final-private/audio-ucode.bin"
+output_file_path = "../../.local/m1/microcode/audio-rsp-recompiled.c"
+output_function_name = "tetrisphere_audio_rsp"
+extra_indirect_branch_targets = [
+    0x1118, 0x1470, 0x11DC, 0x1B38,
+    0x1214, 0x187C, 0x1254, 0x12D0,
+    0x12EC, 0x1328, 0x140C, 0x1294,
+    0x1E24, 0x138C, 0x170C, 0x144C,
+]

@@ -1,0 +1,551 @@
+{
+  "schema_version": 1,
+  "rom_revision": "NTPE rev0",
+  "function": "func_80075CD8",
+  "expected_direct_calls": 87,
+  "calls": [
+    {
+      "pc": "0x80075E58",
+      "target": "0x8003396C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80075EB8",
+      "target": "0x8003396C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80075EEC",
+      "target": "0x8003396C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80075F20",
+      "target": "0x8003396C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80075F64",
+      "target": "0x80071DE8",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80075FA8",
+      "target": "0x8003396C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80075FF8",
+      "target": "0x80071DE8",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80076038",
+      "target": "0x80071DE8",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "pc": "0x80076078",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800760A4",
+      "target": "0x8007240C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800760E8",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800763EC",
+      "target": "0x8007240C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076440",
+      "target": "0x8007240C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800764F4",
+      "target": "0x8003396C",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x8007655C",
+      "target": "0x8003396C",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800765D4",
+      "target": "0x8003396C",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076608",
+      "target": "0x8003396C",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076664",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800766B8",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800766FC",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076764",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800767A8",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x8007680C",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x8007684C",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800768D4",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x8007691C",
+      "target": "0x80038478",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x8007695C",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076994",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800769DC",
+      "target": "0x80038478",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076A1C",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076A5C",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076AA4",
+      "target": "0x80038478",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076AF4",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076B34",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80076B7C",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076BB0",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076C10",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076C70",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076CD0",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076D30",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076D90",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076DF0",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80076E90",
+      "target": "0x8003396C",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x80076EC4",
+      "target": "0x8003396C",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x80076F38",
+      "target": "0x8003396C",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x80076FC4",
+      "target": "0x8003396C",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x8007701C",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077050",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077090",
+      "target": "0x80071DE8",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800770F0",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077130",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x80077178",
+      "target": "0x80038478",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800771B8",
+      "target": "0x80071DE8",
+      "anchor": "left"
+    },
+    {
+      "pc": "0x800772E0",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x8007731C",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x80077398",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x800773F0",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x8007756C",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x800775AC",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x80077620",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x80077670",
+      "target": "0x80071DE8",
+      "anchor": "right"
+    },
+    {
+      "pc": "0x800776B8",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077770",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077828",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x8007787C",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800778D0",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077924",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077968",
+      "target": "0x80071DE8",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x800779AC",
+      "target": "0x80071DE8",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077A00",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077A34",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077AD4",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077B34",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077BD0",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077C04",
+      "target": "0x8003396C",
+      "anchor": "center"
+    },
+    {
+      "pc": "0x80077C64",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077C98",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077D38",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077D98",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077DEC",
+      "target": "0x80071DE8",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077E28",
+      "target": "0x80071DE8",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077E7C",
+      "target": "0x80071DE8",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077EB8",
+      "target": "0x80071DE8",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077FB0",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x80077FDC",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x8007809C",
+      "target": "0x8003396C",
+      "anchor": "native"
+    },
+    {
+      "pc": "0x800780C8",
+      "target": "0x8003396C",
+      "anchor": "native"
+    }
+  ],
+  "helper_calls": [
+    {
+      "function": "func_80075CD8",
+      "pc": "0x80076ED8",
+      "target": "0x80078DA0",
+      "anchor": "right",
+      "when": "single_player_not_mode_three"
+    },
+    {
+      "function": "func_80075CD8",
+      "pc": "0x80076F64",
+      "target": "0x80078514",
+      "anchor": "right",
+      "when": "single_player_not_mode_three"
+    },
+    {
+      "function": "func_80075CD8",
+      "pc": "0x80077470",
+      "target": "0x8007570C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "function": "func_80075CD8",
+      "pc": "0x800774E0",
+      "target": "0x8007570C",
+      "anchor": "right",
+      "when": "player_count_one"
+    },
+    {
+      "function": "func_800CD3B8",
+      "pc": "0x800CF8A8",
+      "target": "0x800A5BB4",
+      "anchor": "left",
+      "when": "single_player_not_mode_three"
+    },
+    {
+      "function": "func_800CD3B8",
+      "pc": "0x800D003C",
+      "target": "0x800699B4",
+      "anchor": "right",
+      "when": "single_player_not_mode_three"
+    },
+    {
+      "function": "func_8003FE3C",
+      "pc": "0x800408BC",
+      "target": "0x80038478",
+      "anchor": "pause_text",
+      "when": "always"
+    },
+    {
+      "function": "func_8003FE3C",
+      "pc": "0x80040954",
+      "target": "0x80038478",
+      "anchor": "pause_text",
+      "when": "always"
+    },
+    {
+      "function": "func_8003FE3C",
+      "pc": "0x800409F0",
+      "target": "0x80038478",
+      "anchor": "pause_text",
+      "when": "always"
+    },
+    {
+      "function": "func_8003FE3C",
+      "pc": "0x80040A84",
+      "target": "0x80038478",
+      "anchor": "pause_text",
+      "when": "always"
+    }
+  ],
+  "extra_calls": [
+    {
+      "pc": "0x80078C70",
+      "target": "0x8003396C",
+      "anchor": "left",
+      "when": "single_player_not_mode_three"
+    },
+    {
+      "pc": "0x80078CE8",
+      "target": "0x8003396C",
+      "anchor": "left",
+      "when": "single_player_not_mode_three"
+    },
+    {
+      "pc": "0x80078D48",
+      "target": "0x8003396C",
+      "anchor": "left",
+      "when": "single_player_not_mode_three"
+    }
+  ],
+  "model_calls": [
+    {
+      "pc": "0x800C3DC0",
+      "target": "0x8002D93C",
+      "anchor": "left",
+      "when": "single_player_not_mode_three"
+    }
+  ]
+}

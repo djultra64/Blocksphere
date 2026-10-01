@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-01",
+  "feature": "Close game main-menu option",
+  "branch": "codex/close-game",
+  "build_source_commit": "7fded17db5647843e4a21ff706d0cc14d82f0ec9",
+  "included_main_commit": "cf75263c3e1e8e13874e7aa7706541a6d4858cc1",
+  "behavior": {
+    "label": "CLOSE GAME",
+    "model": "OPTIONS",
+    "separators": "original separator between all six rows",
+    "vertical_offset_guest_pixels": -10,
+    "confirmation": "existing logical Confirm action",
+    "shutdown": "shared host shutdown path, SDL filter removed before controller teardown"
+  },
+  "linux_build": {
+    "build_id": "758a35fc928e66b9339e196d0201f444c38f88874fe7370ce9a60c53fc60c360",
+    "binary_sha256": "f67c9d5f6e63e2887759740e1862d1adf1d31008e080e5bc961dc970a13a221d",
+    "private_binary": ".local/close-game/build-linux/tetrisphere-m1",
+    "launcher": "tools/qa/view_close_game_linux.sh"
+  },
+  "verification": {
+    "python_tests_passed": 194,
+    "ctests_passed": 47,
+    "independent_review": "no actionable findings",
+    "final_native_run": {
+      "aspect": "16:9",
+      "surface": "1280x720",
+      "keyboard_exit_code": 0,
+      "virtual_controller_exit_code": 0,
+      "checks": [
+        "sixth row, original separators and OPTIONS model visible",
+        "down and up wraparound",
+        "original Single submenu entry and return",
+        "close_game_requested event and clean process exit"
+      ],
+      "private_evidence": ".local/close-game/evidence-merged-16x9/summary.json"
+    },
+    "earlier_feature_runs": [
+      ".local/close-game/evidence-centered-linux/summary.json",
+      ".local/close-game/evidence-centered-16x9/summary.json"
+    ],
+    "human_visual_approval": {
+      "aspect": "16:9",
+      "desktop_surface": "1920x1080",
+      "user_statement": "Todo se ve bien. Haz últimas revisiones y haz el merge."
+    },
+    "config_cli_regression": "stale schema/default assertions updated to the existing schema 6, west Magic binding and current filter defaults"
+  },
+  "limits": {
+    "physical_controller_validation": false,
+    "windows_revalidated_for_this_change": false,
+    "new_release_packages_created": false
+  }
+}

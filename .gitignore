@@ -1,0 +1,20 @@
+# Private ROMs, saves, captures and analysis output stay local.
+.local
+.superpowers/
+.worktrees/
+__pycache__/
+*.py[cod]
+*.[zZ]64
+*.[vV]64
+*.[nN]64
+*.rom
+*.zip
+*.eep
+*.sra
+*.fla
+*.pak
+*.state
+core
+core.*
+generated/
+/build/

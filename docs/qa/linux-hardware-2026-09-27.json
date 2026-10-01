@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-27T16:10:21.485185+00:00",
+  "os_release": "NAME=\"Bazzite\"\nVERSION=\"43.20260420.0 (Kinoite)\"\nRELEASE_TYPE=stable\nID=bazzite\nID_LIKE=\"fedora\"\nVERSION_ID=43\nVERSION_CODENAME=\"Kinoite\"\nPRETTY_NAME=\"Bazzite\"\nANSI_COLOR=\"0;38;2;138;43;226\"\nLOGO=bazzite-logo-icon\nCPE_NAME=\"cpe:/o:universal-blue:bazzite:43\"\nDEFAULT_HOSTNAME=\"bazzite\"\nHOME_URL=\"https://bazzite.gg\"\nDOCUMENTATION_URL=\"https://docs.bazzite.gg\"\nSUPPORT_URL=\"https://discord.bazzite.gg\"\nBUG_REPORT_URL=\"https://github.com/ublue-os/bazzite/issues/\"\nSUPPORT_END=2026-12-02\nVARIANT=\"Kinoite\"\nVARIANT_ID=bazzite-deck\nOSTREE_VERSION='43.20260420.0'\nBUILD_ID=\"Stable (F43.20260420)\"\nBOOTLOADER_NAME=\"Bazzite Stable (F43.20260420)\"\nIMAGE_ID=\"bazzite-deck-43.20260420\"",
+  "kernel": "6.17.7-ba29.fc43.x86_64",
+  "machine": "x86_64",
+  "product": "ROG Ally RC71L_RC71L",
+  "cpu": "AMD Ryzen Z1 Extreme",
+  "memory_total_kib": 11922120,
+  "memory_note": "OS-visible memory, not installed physical RAM; UMA reservation not inferred",
+  "platform_profile": "performance",
+  "tdp_watts": null,
+  "session": {
+    "XDG_SESSION_TYPE": "wayland",
+    "XDG_CURRENT_DESKTOP": "KDE"
+  },
+  "controllers": [
+    {
+      "name": "Handheld Daemon Controller",
+      "bus_ids": "Bus=0003 Vendor=045e Product=028f Version=0001",
+      "independence_verified": false
+    },
+    {
+      "name": "Microsoft X-Box 360 pad",
+      "bus_ids": "Bus=0003 Vendor=045e Product=028e Version=0114",
+      "independence_verified": false
+    }
+  ],
+  "power": [
+    {
+      "device": "AC0",
+      "type": "Mains",
+      "online": "1",
+      "status": null,
+      "capacity": null
+    },
+    {
+      "device": "BAT0",
+      "type": "Battery",
+      "online": null,
+      "status": "Not charging",
+      "capacity": "79"
+    }
+  ],
+  "packages": {
+    "exit_code": 0,
+    "stdout": "mesa-vulkan-drivers-26.0.4-2.fc43.x86_64\nmesa-vulkan-drivers-26.0.4-2.fc43.i686\nmesa-dri-drivers-26.0.4-2.fc43.x86_64\nmesa-dri-drivers-26.0.4-2.fc43.i686\nhhd-4.1.5-1.fc43.noarch\ngamescope-ba148-1.bazzite.x86_64",
+    "stderr": ""
+  },
+  "ares": {
+    "exit_code": 0,
+    "stdout": "ares - Multi-system console emulation suite\n\n          ID: dev.ares.ares\n         Ref: app/dev.ares.ares/x86_64/stable\n        Arch: x86_64\n      Branch: stable\n     Version: 148\n     License: ISC\n      Origin: flathub\n  Collection: org.flathub.Stable\nInstallation: user\n   Installed: 105.3\u00a0MB\n     Runtime: org.freedesktop.Platform/x86_64/25.08\n         Sdk: org.freedesktop.Sdk/x86_64/25.08\n\n      Commit: 5b6ccf0aef391c237a34e41cf14da438446aa454371408e3c0d418f818132a77\n      Parent: a9e229f8fa5012c635b22bb04c50641c6e659096cef5355512aeb90bbfc4c787\n     Subject: ares: Update v147 to 148 (1259ea09a76a)\n        Date: 2026-06-08 07:27:45 +0000",
+    "stderr": ""
+  },
+  "displays": [
+    {
+      "connector": "eDP-1",
+      "connected": true,
+      "enabled": false,
+      "current_mode": {
+        "id": "1",
+        "name": "1920x1080@120",
+        "refreshRate": 119.9990005493164,
+        "size": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "modes_4k": [],
+      "scale": 1.85
+    },
+    {
+      "connector": "DP-12",
+      "connected": true,
+      "enabled": true,
+      "current_mode": {
+        "id": "16",
+        "name": "1920x1080@75",
+        "refreshRate": 74.9729995727539,
+        "size": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "modes_4k": [],
+      "scale": 1
+    },
+    {
+      "connector": "DP-11",
+      "connected": true,
+      "enabled": true,
+      "current_mode": {
+        "id": "51",
+        "name": "1920x1080@60",
+        "refreshRate": 60,
+        "size": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "modes_4k": [],
+      "scale": 1
+    }
+  ],
+  "vulkan": {
+    "exit_code": 0,
+    "fields": [
+      "apiVersion         = 1.4.335",
+      "driverVersion      = 26.0.4",
+      "vendorID           = 0x1002",
+      "deviceID           = 0x15bf",
+      "deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU",
+      "deviceName         = AMD Ryzen Z1 Extreme (RADV PHOENIX)",
+      "driverID           = DRIVER_ID_MESA_RADV",
+      "driverName         = radv",
+      "driverInfo         = Mesa 26.0.4",
+      "apiVersion         = 1.4.335",
+      "driverVersion      = 26.0.4",
+      "vendorID           = 0x10005",
+      "deviceID           = 0x0000",
+      "deviceType         = PHYSICAL_DEVICE_TYPE_CPU",
+      "deviceName         = llvmpipe (LLVM 21.1.8, 256 bits)",
+      "driverID           = DRIVER_ID_MESA_LLVMPIPE",
+      "driverName         = llvmpipe",
+      "driverInfo         = Mesa 26.0.4 (LLVM 21.1.8)"
+    ],
+    "warnings": "WARNING: [Loader Message] Code 0 : terminator_CreateInstance: Received return code -9 from call to vkCreateInstance in ICD /usr/lib64/libvulkan_dzn.so. Skipping this driver.\nWARNING: [Loader Message] Code 0 : ICD for selected physical device does not export vkGetPhysicalDeviceDisplayPlanePropertiesKHR!\nWARNING: [Loader Message] Code 0 : ICD for selected physical device does not export vkGetPhysicalDeviceDisplayPropertiesKHR!"
+  }
+}

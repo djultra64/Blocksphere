@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "ares_version": 148,
+  "tracepoints": [
+    {
+      "name": "program_entry",
+      "kind": "breakpoint",
+      "address": "0x80025c50",
+      "max_hits": 1
+    },
+    {
+      "name": "boot_zero_loop",
+      "kind": "breakpoint",
+      "address": "0x80025c60",
+      "max_hits": 1
+    },
+    {
+      "name": "boot_handoff",
+      "kind": "indirect_target",
+      "address": "0x80025c80",
+      "register": 10,
+      "max_hits": 1
+    },
+    {
+      "name": "post_boot_init",
+      "kind": "breakpoint",
+      "address": "0x80029510",
+      "max_hits": 1
+    },
+    {
+      "name": "early_callback",
+      "kind": "indirect_target",
+      "address": "0x80026498",
+      "register": 25,
+      "max_hits": 8
+    },
+    {
+      "name": "input_dispatch",
+      "kind": "breakpoint",
+      "address": "0x8006e418",
+      "max_hits": 2
+    },
+    {
+      "name": "mode_init",
+      "kind": "breakpoint",
+      "address": "0x8006ee6c",
+      "max_hits": 2
+    },
+    {
+      "name": "game_update",
+      "kind": "breakpoint",
+      "address": "0x800b7e3c",
+      "max_hits": 2
+    },
+    {
+      "name": "pi_cart_to_rdram",
+      "kind": "load_range",
+      "address": "0xa4600008",
+      "breakpoint_type": 2,
+      "watch_size": 4,
+      "ram_mmio": 2757754880,
+      "rom_mmio": 2757754884,
+      "length_mmio": 2757754888,
+      "max_hits": 32
+    },
+    {
+      "name": "rsp_dma_to_sp",
+      "kind": "task",
+      "task_kind": "unknown",
+      "address": "0xa4040008",
+      "breakpoint_type": 2,
+      "watch_size": 4,
+      "source_mmio": 2751725572,
+      "source_virtual": true,
+      "source_register": "SP_DRAM_ADDR",
+      "pc_min": 2147483648,
+      "pc_max": 2148686928,
+      "max_hits": 32
+    },
+    {
+      "name": "ai_dma_submit",
+      "kind": "task",
+      "task_kind": "audio",
+      "address": "0xa4500004",
+      "breakpoint_type": 2,
+      "watch_size": 4,
+      "source_mmio": 2756706304,
+      "source_virtual": true,
+      "source_register": "AI_DRAM_ADDR",
+      "pc_min": 2147483648,
+      "pc_max": 2148686928,
+      "max_hits": 12
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "rom_id": "tetrisphere-us-rev0",
+  "counter_clock_hz": 46875000,
+  "counters": {
+    "vi": {
+      "address": "0x80163b5c",
+      "interpretation": "VI-manager retrace counter; event type 13, VI context swap path"
+    },
+    "common_updates": {
+      "address": "0x800dfee8",
+      "interpretation": "Common timer/update calls via scheduler event 0x29a; includes menus and pause UI; not proof that every gameplay subsystem advances at this rate"
+    },
+    "graphics_done": {
+      "address": "0x800df714",
+      "interpretation": "Scheduler graphics-completion message counter type 2; completed graphics tasks, not host presents"
+    },
+    "os_time": {
+      "address": "0x80163b50",
+      "width_bytes": 8,
+      "interpretation": "VI-manager accumulated COP0 Count clock, two big-endian words"
+    },
+    "logic_ticks": {
+      "address": "0x800e4478",
+      "interpretation": "Eligible player logical input/state steps in 0x800acb94; increment store 0x800acfe4 when context field +0x23b2 equals 1. Resets on scene initialization; not a count of completed updates of every subsystem."
+    },
+    "state_updates": {
+      "address": "0x800e4480",
+      "interpretation": "State/update-and-draw dispatch count: increment 0x800ccf24 before call 0x80070118. Resets at scene initialization."
+    },
+    "mode_id": {
+      "address": "0x800e44a8",
+      "width_bytes": 2,
+      "interpretation": "Mode/state identifier used to reject samples spanning a mode change; not a universal scene identifier."
+    }
+  },
+  "code_fingerprints": [
+    {
+      "address": "0x800d0f98",
+      "size_bytes": 32,
+      "sha256": "faee6e7eb792f83d1f489f922cb5dec18de0be1139a48e6962dd178f117d854c"
+    },
+    {
+      "address": "0x8006dd74",
+      "size_bytes": 32,
+      "sha256": "c49a2023b354a245479f0e4fa897270119dbc2aff1c08ea1456bc4641a72a243"
+    },
+    {
+      "address": "0x8002a02c",
+      "size_bytes": 32,
+      "sha256": "eb6dbbd84ce546bd99a545db23a42c8e624960de48d7235b77f76fdff4498b7e"
+    },
+    {
+      "address": "0x800acfc4",
+      "size_bytes": 32,
+      "sha256": "304b0d33f1caa672d5781a0e20805f21d1848400aa8eafae163885bb1f0c829e"
+    },
+    {
+      "address": "0x800ccf08",
+      "size_bytes": 32,
+      "sha256": "1913f1edae6d7ae29550f7b95ba26b6e602f89079acaffa8f678ee5139231bf1"
+    }
+  ]
+}

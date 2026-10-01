@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "rom_id": "tetrisphere-us-rev0",
+  "ruling_basis": "Manual static inspection with pinned Rabbitizer and comparison to the private M0 RAM snapshot; not a new runtime trace.",
+  "sections": [
+    {
+      "name": "initial_image",
+      "rom_start": 4096,
+      "ram_start": 2147638352,
+      "size": 1048576,
+      "status": "confirmed",
+      "confidence": "high",
+      "provenance": "IPL3 ROM 0x4c0..0x514 reads header entry, programs PI source ROM 0x1000, destination entry & 0x1fffffff and transfer length 0x100000. This is a loaded image, not an all-code section."
+    }
+  ],
+  "human_rulings": [
+    {
+      "kind": "boot_dma",
+      "status": "confirmed",
+      "rom_start": 4096,
+      "ram_start": 2147638352,
+      "size": 1048576,
+      "provenance": "Rabbitizer IPL3 listing at ROM 0x4c0..0x514; relocated boot code executes from RAM. Static register/dataflow inspection."
+    },
+    {
+      "kind": "boot_zero_fill",
+      "status": "confirmed",
+      "ram_start": 2148474944,
+      "size": 470560,
+      "provenance": "Entry loop 0x80025c60..0x80025c74; two word stores per iteration and pointer increment in branch delay slot. Overwrites part of initial_image and extends beyond it."
+    },
+    {
+      "kind": "boot_handoff",
+      "status": "confirmed",
+      "source": 2147638400,
+      "target": 2147652880,
+      "stack_pointer": 2148485192,
+      "provenance": "Entry register-indirect jump has a constant target; stack pointer completed in its delay slot."
+    },
+    {
+      "kind": "jump_table",
+      "status": "confirmed",
+      "ram_start": 2148470932,
+      "entry_count": 7,
+      "dispatch_site": 2148191460,
+      "provenance": "Bound check for seven entries, index shift by two, base formation and pointer load at 0x800accdc. All seven destinations lie within 0x800acb94..0x800adbc0. Automatic pointer run merges neighboring tables."
+    },
+    {
+      "kind": "indirect_call",
+      "status": "confirmed",
+      "address": 2147640472,
+      "target": null,
+      "provenance": "Rabbitizer confirms jalr through t9 loaded from a structure at offset 0x30. Target set and callback semantics remain open."
+    },
+    {
+      "kind": "function_start",
+      "status": "rejected",
+      "address": 2147943168,
+      "provenance": "M0 seed is an interior instruction of the candidate beginning at 0x80070118; preceding code falls through, no matching call-target evidence. Rejected as an independent function start."
+    },
+    {
+      "kind": "section_boundary",
+      "status": "rejected",
+      "rom_offset": 764607,
+      "provenance": "First snapshot divergence is mutable scheduler state, not the initial DMA endpoint. IPL3 establishes a larger 1 MiB initial transfer."
+    }
+  ],
+  "open": [
+    "Full code/data classification inside initial_image and ROM after 0x101000.",
+    "Complete function inventory, relocated boot helper boundaries, callback targets and remaining jump tables.",
+    "Function starts 0x80070118, 0x800acb94 and 0x800cd3b8 have supporting static evidence but are not exported until their full control flow is reviewed.",
+    "No validated compression codec or decompression routine. Missing tested signatures does not exclude custom or headerless compression.",
+    "No confirmed executable overlays or later load map; dynamic PI traces still required.",
+    "Semantic labels inherited from M0 remain provisional; exported function names use addresses."
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "assets_committed": false,
+  "purpose": "Metadatos de evidencia privada; no sustituye inspección perceptual ni distribuye activos del juego.",
+  "evidence": [
+    {
+      "private_path": ".local/m0/captures/puzzle-one-complete-settled.png",
+      "bytes": 220912,
+      "sha256": "1429a4d4852117061ec60ad79d7b5a0f380c39ed3f551ab3a7a58770ea59b95d",
+      "meaning": "Puzzle 2 después de resolver Puzzle 1"
+    },
+    {
+      "private_path": ".local/m0/captures/loaded-puzzle-actual.png",
+      "bytes": 216408,
+      "sha256": "b5f483f5c481a71119f2c45a30f29f4f4e45e706850b2d1a29cbaf5d8af1731e",
+      "meaning": "Continuación Puzzle 2 en proceso nuevo desde EEPROM"
+    },
+    {
+      "private_path": ".local/m0/fixture-save-after-puzzle1.eeprom",
+      "bytes": 512,
+      "sha256": "c0f2c63ffc84bbcebfe317cb66a9c584af357c8af39bee6290219966154d3022",
+      "meaning": "Fixture privado del guardado normal después de Puzzle 1"
+    },
+    {
+      "private_path": ".local/m0/captures/advanced-page-sixteen.png",
+      "bytes": 253144,
+      "sha256": "6f26a43986c1e44ccae3e39dba5b96e3e2d8eedcbec1127b8de26924a9a1ce3e",
+      "meaning": "Demo Advanced con núcleo expuesto y X2"
+    },
+    {
+      "private_path": ".local/m0/captures/advanced-page-twenty-four.png",
+      "bytes": 255798,
+      "sha256": "fc2fef5ddd489000cb3793929be637ff6b97a666a649981e6235599f84f1b2ee",
+      "meaning": "Demo Advanced Fuse y contador de poder"
+    },
+    {
+      "private_path": ".local/m0/captures/hide-seek-paused-real.png",
+      "bytes": 232586,
+      "sha256": "f5f53e745ea9fcfa6dfcafea23bf78009fc5ce4db507709bd235be2e1ee4d96f",
+      "meaning": "Pausa real Hide & Seek"
+    },
+    {
+      "private_path": ".local/m0/captures/options-audio.png",
+      "bytes": 247130,
+      "sha256": "34832b4ea15df03a6dfdaf941967ea053a20f49a790905e361273d5fc4d73d71",
+      "meaning": "Menú Audio"
+    },
+    {
+      "private_path": ".local/m0/captures/data-edit-verified.png",
+      "bytes": 246945,
+      "sha256": "59a74c4ae64dfac70bc9a7c43cebab67e6d06c834fd2d8c207c9e61846f28490",
+      "meaning": "Data Edit con seis slots visibles"
+    },
+    {
+      "private_path": ".local/m0/captures/scores-verified.png",
+      "bytes": 248536,
+      "sha256": "0ae909badacd36abfebda55f844b88ca4f92dc0f4081a0912f19bc322135d55e",
+      "meaning": "Tabla de puntuaciones Rescue"
+    },
+    {
+      "private_path": ".local/m0/captures/controls-verified.png",
+      "bytes": 247111,
+      "sha256": "879be0279eaa04d5b8f8d54bd93d6f097902e46fcd71132a58a048fab1b5ca6b",
+      "meaning": "Diagrama de controles"
+    },
+    {
+      "private_path": ".local/m0/captures/lines-code-result.png",
+      "bytes": 249439,
+      "sha256": "2265630566f6e6f527733d48441fcd501903653bf6810b947e9484c24111567b",
+      "meaning": "Nombre LINES aceptado"
+    },
+    {
+      "private_path": ".local/m0/captures/lines-real-pause.png",
+      "bytes": 232941,
+      "sha256": "0f2beebfd56f04a3b64280a7c6698220e272c6d0107482fcfdffd046cf7d1808",
+      "meaning": "Tablero Lines pausado"
+    },
+    {
+      "private_path": ".local/m0/captures/reference-audio-60s.wav",
+      "bytes": 11520074,
+      "sha256": "d38947f199dd74664f94b9411443c56b08b21c159d67064c682b0837dfd60631",
+      "meaning": "Audio de menú con señal"
+    },
+    {
+      "private_path": ".local/m0/captures/vs-audio-30s.wav",
+      "bytes": 5760274,
+      "sha256": "2c8da34d50c6194136cde273b54ba2c5fa8388338bd70ea74a2edaa05897a95a",
+      "meaning": "Audio VS con señal"
+    },
+    {
+      "private_path": ".local/m0/captures/options-audio-recheck-20s.wav",
+      "bytes": 3840510,
+      "sha256": "232a5561a188de3485e0b1ed3c1b5124fab26758f9575a0010dd18a304735ec3",
+      "meaning": "Recaptura Audio con señal; no acredita toda la banda sonora"
+    },
+    {
+      "private_path": ".local/m0/captures/advanced-training-120s.mkv",
+      "bytes": 52999941,
+      "sha256": "3bedb7615767c5823c1e98bbfc09ae891f93a573cb6c68fa8fa28b7b53307a0f",
+      "meaning": "Ventana parcial de Advanced; no cubre todas las páginas"
+    },
+    {
+      "private_path": ".local/m0/captures/advanced-audio-120s.wav",
+      "bytes": 23040530,
+      "sha256": "afe8637650061e8af712d661d27c19f74c5bf7865ed2076f70c714a7f93d5a9e",
+      "meaning": "Captura silenciosa rechazada como evidencia audible"
+    },
+    {
+      "private_path": ".local/m0/ares-controlled.bml",
+      "bytes": 40591,
+      "sha256": "38673f67835a5f33e5754b7a5cfe9ff307c9ed75fed5e8a81a0130a9089ca841",
+      "meaning": "Configuración efectiva al cerrar normalmente la referencia"
+    }
+  ]
+}

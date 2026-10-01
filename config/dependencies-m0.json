@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-09-27",
+  "purpose": "Initial immutable research candidates. Not a validated integrated dependency set.",
+  "dependencies": [
+    {
+      "repository": "https://github.com/N64Recomp/N64Recomp",
+      "commit": "ffb39cdad1da5de07eaaa48bd1db4a89a7986771",
+      "commit_date": "2026-05-27T05:21:25Z",
+      "status": "candidate-not-built",
+      "license_file": "LICENSE",
+      "license_sha256": "d439b523a90a07f87182b0cf8fab9b09e385642f9f573b7ae67306d3fb68af88",
+      "license_api_spdx": "MIT",
+      "license_observation": "root license found; transitive obligations pending",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/N64Recomp/N64ModernRuntime",
+      "commit": "cdf5abbd5026fef5c364c676e4667c45e42b6863",
+      "commit_date": "2026-08-30T22:34:39Z",
+      "status": "candidate-not-built",
+      "license_file": "COPYING",
+      "license_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "license_api_spdx": "GPL-3.0",
+      "license_observation": "root license found; transitive obligations pending",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/N64Recomp/RecompFrontend",
+      "commit": "b1a1477c6556aeb7ed45defbfb5924f721efebc1",
+      "commit_date": "2026-08-15T21:16:19Z",
+      "status": "candidate-not-built",
+      "license_api_spdx": null,
+      "license_observation": "no root license file located by initial audit; reuse/redistribution not approved",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/rt64/rt64",
+      "commit": "43373749dac9bbc1b653e6a02aed40a9e1783bed",
+      "commit_date": "2026-09-02T23:59:07Z",
+      "status": "candidate-not-built",
+      "license_file": "LICENSE",
+      "license_sha256": "03d52856ed09784f7f57694f690ab0093d3cd40db69f9a318d45062f130f7116",
+      "license_api_spdx": "MIT",
+      "license_observation": "root license found; transitive obligations pending",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/ethteck/splat",
+      "commit": "1d09139b886f0bece632bd8f367ccc1d3318ca2a",
+      "commit_date": "2026-07-27T17:46:55Z",
+      "status": "candidate-not-built",
+      "license_file": "LICENSE",
+      "license_sha256": "f7b54c5738c6f3242fb1ff0d1b633d20549b87b47c7227c99dce902b5719aa3f",
+      "license_api_spdx": "MIT",
+      "license_observation": "root license found; transitive obligations pending",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/Decompollaborate/spimdisasm",
+      "commit": "4b5d4c68eeb9f9eae14b3bb713971433ae2c3c43",
+      "commit_date": "2026-08-06T12:10:18Z",
+      "status": "candidate-not-built",
+      "license_file": "LICENSE",
+      "license_sha256": "153ee8c5370552dcf673979821878f7f38f6503de1bf1b4b4dadc55b3fe726e3",
+      "license_api_spdx": "MIT",
+      "license_observation": "root license found; transitive obligations pending",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/chris-gilmore/n64tetristools",
+      "commit": "60dfe8a7e7145047b7043c00b46715a1789756bb",
+      "commit_date": "2026-07-22T01:48:42Z",
+      "status": "candidate-not-built",
+      "license_api_spdx": null,
+      "license_observation": "no root license file located by initial audit; reuse/redistribution not approved",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/chris-gilmore/dcm2xm",
+      "commit": "db035a6f119243877375d0028158adc0cb42d06c",
+      "commit_date": "2026-07-11T21:55:43Z",
+      "status": "candidate-not-built",
+      "license_api_spdx": null,
+      "license_observation": "no root license file located by initial audit; reuse/redistribution not approved",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/ares-emulator/ares",
+      "commit": "4cb8d92b441557cb6bcaf133c4cbc7f6819b1122",
+      "commit_date": "2026-09-23T09:42:53Z",
+      "status": "candidate-not-built",
+      "license_file": "LICENSE",
+      "license_sha256": "a1053dec5f15ee7c851abf7716634344b9d5740b414bf5893802f9910fdc7a97",
+      "license_api_spdx": "NOASSERTION",
+      "license_observation": "root license found; transitive obligations pending",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    },
+    {
+      "repository": "https://github.com/mupen64plus/mupen64plus-core",
+      "commit": "b20b27ebf9e5b099a978e86dba609111dc98c837",
+      "commit_date": "2026-09-15T03:01:55Z",
+      "status": "candidate-not-built",
+      "license_api_spdx": null,
+      "license_observation": "no root license file located by initial audit; reuse/redistribution not approved",
+      "source_read": "metadata/root license only; no build or compatibility test"
+    }
+  ],
+  "local_reference": {
+    "app_id": "dev.ares.ares",
+    "version": "148",
+    "flatpak_commit": "5b6ccf0aef391c237a34e41cf14da438446aa454371408e3c0d418f818132a77",
+    "runtime": "org.freedesktop.Platform/x86_64/25.08",
+    "runtime_mesa_seen": "26.2.2 (git-3281a69a8b)",
+    "source_release": "https://github.com/ares-emulator/ares/releases/tag/v148"
+  }
+}

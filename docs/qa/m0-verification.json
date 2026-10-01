@@ -1,0 +1,99 @@
+{
+  "delivery_id": "M0-baseline-2026-09-27",
+  "milestone_status": "technical_complete",
+  "unit_tests": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "passed": 31,
+    "failed": 0,
+    "fixture": "synthetic nonuniform payload; no ROM needed"
+  },
+  "local_rom_checks": {
+    "canonical_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+    "formats_verified": [
+      "z64",
+      "v64",
+      "n64"
+    ],
+    "payload_modified_same_header": "rejected",
+    "zip_original": "recognized"
+  },
+  "boot_probe": {
+    "emulator": "ares 148 Flatpak",
+    "virtual_display": "Xvfb 1024x768x24",
+    "capture_elapsed_after_launch_seconds": 18,
+    "observed": "introduction; NTSC label; instantaneous 59 VPS",
+    "capture_sha256": "9289a2594b5fe852068636ad62f25a5c82802bdc3f41b2789599e23e66bb7ff2",
+    "effective_settings_sha256": "9bacced75e09520277b77a728f397dfb5d3c056e3062e4374b3f37480a853d2e",
+    "log_sha256": "4c8986ae4647d60a1f83396e346cd2ab929610eca2e038ea8f3fe9f0975e05e2",
+    "assets_private": true,
+    "profile_differs_from_public_session_template": true
+  },
+  "review": {
+    "independent": true,
+    "critical": 0,
+    "important": 0,
+    "coverage_improved": "partial normalization mutation caught by strengthened synthetic fixture",
+    "metrics_critical": 0,
+    "metrics_important": 0
+  },
+  "not_verified": [
+    "all levels/unlocks/music/effects played exhaustively (M3 regression)",
+    "gameplay/control and audiovisual perceptual fidelity (HITL-2)",
+    "physical P1/P2 controller independence/reconnection (M3/M6)",
+    "connected 4K display/presentation (M5)",
+    "native Linux/Windows port compatibility (M1+)"
+  ],
+  "windows_inventory": "docs/qa/windows-hardware-2026-09-27.json; executed via authorized SSH",
+  "reference_session": "docs/research/m0-reference-session.md",
+  "timing_samples": "docs/qa/m0-timing-2026-09-27.json",
+  "controlled_profile_sha256": "38673f67835a5f33e5754b7a5cfe9ff307c9ed75fed5e8a81a0130a9089ca841",
+  "save_created": {
+    "bytes": 512,
+    "sha256": "35775ae19b4b54a1098fe448e44920006bfdfa5de01d289c867057ae0527264d",
+    "restart_verified": true,
+    "normal_close_verified": true,
+    "load_slots_after_restart": "slot1 F after completing Puzzle1, normal close, fresh process",
+    "name_persistence_verified": true,
+    "sha256_after_puzzle1": "faeabea4aea99c178ed69d52966321750b33d1c4e106c8c4647cacc4ac9a24dd",
+    "progress_persistence_verified": "Fresh process -> slot1 F -> LOAD GAME -> continuing previous game -> Puzzle level2",
+    "initial_snapshot_note": "Hash inicial de creación del nombre; distinto del fixture posterior a Puzzle1 y del guardado final."
+  },
+  "observed_gameplay": [
+    "Rescue start/rotation/pause/score300/core exposure",
+    "Training Basics/Advanced/Puzzle; Gravity/Fuse demos and X2/power count",
+    "HideSeek Multi1:1/Drill1:2/goal/pause",
+    "TimeTrial idle countdown/automatic drops/results (not complete5min round)",
+    "Puzzle1 solved and Puzzle2 continued after clean restart",
+    "VS2P selection/two boards/two input channels/drops/WIN",
+    "VsCPU opponent/board/pause",
+    "Practice configuration/board/bad drops (not combo evidence)",
+    "Audio/DataEdit/Scores/Controls menus",
+    "Lines unlocked by NEW NAME LINES, rules and board1:1"
+  ],
+  "counter_map": "config/roms/tetrisphere-us-rev0-counters.json",
+  "counter_code_fingerprints_verified_live": 5,
+  "logic_evidence": {
+    "counter": "0x800e4478",
+    "eligible_context": "0x80110220, +0x23b2=1; second context0x80113488,+0x23b2=2",
+    "store": "0x800acfe4",
+    "scope": "admitted player input/state steps; not all completed subsystem updates",
+    "active_scenes": [
+      "HideSeek",
+      "Lines"
+    ],
+    "pause_logical_delta": 0,
+    "scene_reset_handling": "decrease or changed mode makes game rates null; scene log remains necessary to detect reset-and-recovery between reads"
+  },
+  "image_observations": "docs/qa/m0-image-observations-2026-09-27.json",
+  "scope_authorization": "User explicitly requested execute/finish M0; confirmed RC71L/no N64/available Windows,4K and second controller. Does not claim user perceptual approval.",
+  "final_review": {
+    "critical": 0,
+    "important": 0,
+    "minor": 3,
+    "minor_resolved": 3,
+    "tests_passed": 31,
+    "timing_samples_recomputed": 17,
+    "limitations": "No evaluación perceptual ni inspección de activos privados; no ejecución del port, N64 real, mandos físicos o 4K."
+  },
+  "evidence_index": "docs/qa/m0-evidence-index.json"
+}

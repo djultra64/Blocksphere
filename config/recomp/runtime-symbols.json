@@ -1,0 +1,113 @@
+{
+  "bindings": [
+    {
+      "address": "0x800D1DC0",
+      "category": "boot",
+      "detail": "pinned host implementation",
+      "host_binding": "tetrisphere_osInitialize",
+      "name": "osInitialize",
+      "provenance": "observed call 0x8002952C; inspected NTPE rev0 body and pinned wrapper",
+      "status": "implemented"
+    },
+    {
+      "address": "0x800D2050",
+      "category": "pi_dma",
+      "detail": "bounded aligned cartridge PIO with 8 MiB NTPE mirror",
+      "host_binding": "tetrisphere_osPiRawReadIo",
+      "name": "osPiRawReadIo",
+      "provenance": "observed calls 0x80029554 in a 16-word boot loop; PI status/read body inspected",
+      "status": "implemented"
+    },
+    {
+      "address": "0x800D1250",
+      "category": "thread",
+      "detail": "pinned scheduler implementation",
+      "host_binding": "osCreateThread",
+      "name": "osCreateThread",
+      "provenance": "observed call 0x800295A8; six-argument OSThread initialization body inspected",
+      "status": "delegated"
+    },
+    {
+      "address": "0x800D13A0",
+      "category": "thread",
+      "detail": "pinned scheduler implementation",
+      "host_binding": "osStartThread",
+      "name": "osStartThread",
+      "provenance": "observed call 0x800295B4; OSThread state/queue body inspected",
+      "status": "delegated"
+    },
+    {
+      "address": "0x800D0D00",
+      "category": "message_queue",
+      "detail": "pinned scheduler message-queue implementation",
+      "host_binding": "osCreateMesgQueue_recomp",
+      "name": "osCreateMesgQueue",
+      "provenance": "cold-boot trace and three-argument queue constructor body",
+      "status": "delegated"
+    },
+    {
+      "address": "0x800D9ED0",
+      "category": "timer",
+      "detail": "pinned host timer implementation",
+      "host_binding": "osSetTimer_recomp",
+      "name": "osSetTimer",
+      "provenance": "mapped NTPE timer body and generated runtime boundary",
+      "status": "delegated"
+    },
+    {
+      "address": "0x800D2E90",
+      "category": "pi_dma",
+      "detail": "bounded ROM-to-RDRAM copy with PI completion message",
+      "host_binding": "osPiStartDma_recomp",
+      "name": "osPiStartDma",
+      "provenance": "cold-boot trace before first OSTask; six-argument DMA body",
+      "status": "implemented"
+    },
+    {
+      "address": "0x800D31E0",
+      "category": "controller",
+      "detail": "pinned input backend connected to SDL callbacks",
+      "host_binding": "osContInit_recomp",
+      "name": "osContInit",
+      "provenance": "cold-boot trace and controller initialization body",
+      "status": "delegated"
+    },
+    {
+      "address": "0x800D0D30",
+      "category": "vi",
+      "detail": "host VI/event threads are created by ultramodern preinit",
+      "host_binding": "osCreateViManager_recomp",
+      "name": "osCreateViManager",
+      "provenance": "cold-boot trace before scheduler construction",
+      "status": "delegated"
+    },
+    {
+      "address": "0x800D1C4C",
+      "category": "rsp",
+      "detail": "submits verified tasks to RT64 or RSPRecomp",
+      "host_binding": "osSpTaskStartGo_recomp",
+      "name": "osSpTaskStartGo",
+      "provenance": "cold-boot trace reaches launcher and observed audio/GFX descriptors",
+      "status": "implemented"
+    },
+    {
+      "address": "0x800D1D40",
+      "category": "rsp",
+      "detail": "yield ignored because host tasks complete before yield; no SP/DP event fabricated",
+      "host_binding": "osSpTaskYield_recomp",
+      "name": "osSpTaskYield",
+      "provenance": "resize-triggered task scheduler call and inspected NTPE rev0 body",
+      "status": "implemented"
+    },
+    {
+      "address": "0x800D5930",
+      "category": "audio",
+      "detail": "validated two-entry AI DMA FIFO feeding SDL output",
+      "host_binding": "osAiSetNextBuffer_recomp",
+      "name": "osAiSetNextBuffer",
+      "provenance": "mapped NTPE AI body and native playable-run audio submissions",
+      "status": "implemented"
+    }
+  ],
+  "schema_version": 1
+}

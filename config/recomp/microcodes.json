@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "graphics": {
+    "status": "parser_and_cpu_submission_accepted_by_pinned_rt64",
+    "capture_sha256": "d5808e1150617c1f74366e1e6635f5ca8d055027952cff864e3adde842f5b38a",
+    "snapshot_sha256": "fe27c3c6a1dea8eb230a3d3abacef520d47bc88728731af8afa6c94e1c78a261",
+    "descriptor_offset": "0x000facd0",
+    "task_type": 1,
+    "rt64_commit": "43373749dac9bbc1b653e6a02aed40a9e1783bed",
+    "rt64_identity": "F3D_SM64_FINAL",
+    "rt64_ucode": "F3D",
+    "text": {
+      "size": 5112,
+      "sha256": "86b56c3c25b247d2a9b075d09ad48161c0997a9191f689e8b1b688d8fa9e7d3c",
+      "xxh3_64": "0x7d8eb8bdcae7df81"
+    },
+    "data": {
+      "size": 2048,
+      "sha256": "0de652ca08506caf0f11a35cc6189cdfc1890977b397ea6ecdd39ef945f51151",
+      "xxh3_64": "0x880fce853ce3e422"
+    },
+    "display_list": {
+      "sha256": "f013959b00abbafb69e11f18610986ed8d31087fd37b71764a6845247a58b297",
+      "bytes": 60376,
+      "commands": 7547,
+      "unique_opcodes": 34,
+      "unsupported_opcodes": []
+    }
+  },
+  "audio": {
+    "status": "pcm_proven",
+    "capture_sha256": "22793b64ea85e0da93095471b4896e96ac5c1b6378de50e63fc12730c9cc9a5f",
+    "snapshot_sha256": "5fcadba07efe5f024c50222f1847d1b540682bd02b3da3f42b6f6376b24cd6fe",
+    "descriptor_offset": "0x002c16e8",
+    "task_type": 2,
+    "command_sha256": "7d5b47446b0d926d62a7d1069d7c07ad2bb2eff05e769606f3776b665bd0f008",
+    "command_bytes": 7160,
+    "commands": 895,
+    "rsp_recomp": {
+      "required": true,
+      "text_address": "0x1080",
+      "text_size": 3568,
+      "ucode_sha256": "30f68cb1f957fa85c2c19706bb32d59cf3354548a2fbb66ac9acc7a66a639470",
+      "output_ranges": 5,
+      "output_bytes": 2688,
+      "stereo_frames": 672,
+      "changed_output_bytes": 2649,
+      "nonzero_samples": 1343,
+      "changed_bytes_total": 2978,
+      "exit_reason": "Broke"
+    }
+  },
+  "compatibility_backlog": [
+    {
+      "path": "graphics_nested_display_lists",
+      "status": "captured_graph_executed",
+      "diagnostic": "Pinned RT64 Interpreter executed the captured task graph including nested calls; additional scenes remain a coverage item."
+    },
+    {
+      "path": "audio_ucode_variants",
+      "status": "fail_closed",
+      "diagnostic": "Only the captured task-2 microcode hash selects the RSPRecomp function."
+    }
+  ]
+}

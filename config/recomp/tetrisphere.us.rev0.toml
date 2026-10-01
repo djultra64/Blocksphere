@@ -1,0 +1,200 @@
+# N64Recomp template for the confirmed NTPE rev0 initial image.
+# tools/recomp/generate.py replaces the two REQUIRED sentinels in a private
+# runtime copy after validating the exact ROM and output paths.
+[input]
+entrypoint = 0x80025C50
+symbols_file_path = "symbols.toml"
+rom_file_path = "ROM_PATH_REQUIRED"
+output_func_path = "OUTPUT_PATH_REQUIRED"
+single_file_output = false
+functions_per_output_file = 50
+uses_mips3_float_mode = false
+recomp_include = "#include \"tetrisphere/recomp_support.h\""
+
+[patches]
+stubs = []
+ignored = [
+    "tetrisphere_osInitialize",
+    "tetrisphere_osPiRawReadIo",
+    "tetrisphere_osCreateThread",
+    "tetrisphere_osStartThread",
+    "tetrisphere_wait_retraces",
+    "tetrisphere_osSetWatchLo",
+    "tetrisphere_osClearWatch",
+    "tetrisphere_osProbeTLB",
+    "tetrisphere_osExceptionDispatch",
+    "tetrisphere_osExceptionResume",
+    "tetrisphere_osSetCompare",
+]
+renamed = []
+
+[[patches.hook]]
+func = "func_8006F894"
+before_vram = 0x8006F914
+text = "tetrisphere_rescue_pause_snapshot_hook(rdram, ctx);"
+
+[[patches.hook]]
+func = "func_8003396C"
+text = "tetrisphere_probe_prompt_atlas(rdram, ctx, 0x8003396Cu);"
+
+[[patches.hook]]
+func = "func_800353F4"
+text = "tetrisphere_probe_prompt_atlas(rdram, ctx, 0x800353F4u);"
+
+[[patches.hook]]
+func = "func_80036FE4"
+text = "tetrisphere_probe_prompt_atlas(rdram, ctx, 0x80036FE4u);"
+
+[[patches.hook]]
+func = "func_800743BC"
+text = "tetrisphere_training_reset();"
+
+[[patches.hook]]
+func = "func_800743BC"
+before_vram = 0x80074A9C
+text = "tetrisphere_training_reset();"
+
+[[patches.hook]]
+func = "recomp_entrypoint"
+text = "tetrisphere_training_clear_cache();"
+
+[[patches.hook]]
+func = "func_800743BC"
+before_vram = 0x80074684
+text = "tetrisphere_training_replace(rdram, ctx, 25u);"
+
+[[patches.hook]]
+func = "func_800743BC"
+before_vram = 0x8007468C
+text = "tetrisphere_training_record(rdram, ctx, static_cast<std::uint32_t>(ctx->r14));"
+
+[[patches.hook]]
+func = "func_800743BC"
+before_vram = 0x8007469C
+text = "tetrisphere_training_replace(rdram, ctx, 15u);"
+
+[[patches.hook]]
+func = "func_800743BC"
+before_vram = 0x800746A0
+text = "tetrisphere_training_record(rdram, ctx, static_cast<std::uint32_t>(ctx->r24));"
+
+[[patches.hook]]
+func = "func_800382B4"
+before_vram = 0x800383E4
+text = "tetrisphere_training_render(rdram, ctx);"
+
+# M3 opt-in raw state trace. These are observed guest values, not inferred axes.
+[[patches.hook]]
+func = "func_8006E98C"
+text = "tetrisphere_trace_input_drain_begin(rdram, ctx);"
+
+[[patches.hook]]
+func = "func_8006E418"
+text = "tetrisphere_trace_input_consumed(rdram, ctx);"
+
+[[patches.hook]]
+func = "func_8006E98C"
+before_vram = 0x8006EA9C
+text = "tetrisphere_trace_input_drain_end(rdram, ctx);"
+
+[[patches.hook]]
+func = "func_80081E90"
+before_vram = 0x80081FF4
+text = "tetrisphere_trace_rng_write(rdram, ctx);"
+
+# PC main menu: sixth row and orderly application shutdown.
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E0BC
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004E0BCu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F030
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004F030u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F0CC
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004F0CCu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F110
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004F110u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DC04
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DC04u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DC98
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DC98u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DD60
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DD60u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DE28
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DE28u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DEF0
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DEF0u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DF80
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DF80u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DC74
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DC74u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DD44
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DD44u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DE0C
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DE0Cu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DEB8
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DEB8u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004DF5C
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004DF5Cu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E00C
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004E00Cu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004D538
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004D538u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E020
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004E020u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E0A4
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004E0A4u);"

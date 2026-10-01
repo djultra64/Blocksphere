@@ -1,0 +1,667 @@
+{
+  "samples": [
+    {
+      "schema_version": 1,
+      "scene": "main-menu",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "vi": 43587,
+        "os_ticks": 34176067377,
+        "common_updates": 43345,
+        "graphics_done": 28134
+      },
+      "after": {
+        "vi": 47176,
+        "os_ticks": 36988122381,
+        "common_updates": 46932,
+        "graphics_done": 29854
+      },
+      "sample_overhead_seconds": [
+        0.0617798839812167,
+        0.04206133499974385
+      ],
+      "wall_seconds": 60.05201087356545,
+      "deltas": {
+        "vi": 3589,
+        "common_updates": 3587,
+        "graphics_done": 1720
+      },
+      "rates_per_wall_second": {
+        "vi": 59.76485962404062,
+        "common_updates": 59.73155516061123,
+        "graphics_done": 28.641838549275526
+      },
+      "emulated_seconds": 59.990506752,
+      "emulated_to_wall_ratio": 0.9989758191162834
+    },
+    {
+      "schema_version": 1,
+      "scene": "main-menu",
+      "repeat": 2,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "vi": 47181,
+        "os_ticks": 36992040538,
+        "common_updates": 46937,
+        "graphics_done": 29856
+      },
+      "after": {
+        "vi": 50773,
+        "os_ticks": 39806440560,
+        "common_updates": 50503,
+        "graphics_done": 31868
+      },
+      "sample_overhead_seconds": [
+        0.08246725198114291,
+        0.04286504496121779
+      ],
+      "wall_seconds": 60.06275124149397,
+      "deltas": {
+        "vi": 3592,
+        "common_updates": 3566,
+        "graphics_done": 2012
+      },
+      "rates_per_wall_second": {
+        "vi": 59.804120286759186,
+        "common_updates": 59.371239683347234,
+        "graphics_done": 33.498299002494285
+      },
+      "emulated_seconds": 60.040533802666666,
+      "emulated_to_wall_ratio": 0.9996300962182373
+    },
+    {
+      "schema_version": 1,
+      "scene": "main-menu",
+      "repeat": 3,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "vi": 50778,
+        "os_ticks": 39810358189,
+        "common_updates": 50508,
+        "graphics_done": 31870
+      },
+      "after": {
+        "vi": 54370,
+        "os_ticks": 42624764728,
+        "common_updates": 54075,
+        "graphics_done": 33900
+      },
+      "sample_overhead_seconds": [
+        0.08263591601280496,
+        0.041237126977648586
+      ],
+      "wall_seconds": 60.06201902846806,
+      "deltas": {
+        "vi": 3592,
+        "common_updates": 3567,
+        "graphics_done": 2030
+      },
+      "rates_per_wall_second": {
+        "vi": 59.80484935575463,
+        "common_updates": 59.388612932064795,
+        "graphics_done": 33.79839760361411
+      },
+      "emulated_seconds": 60.040672832,
+      "emulated_to_wall_ratio": 0.9996445974209102
+    },
+    {
+      "schema_version": 1,
+      "scene": "rescue-paused",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "vi": 37681,
+        "os_ticks": 29548599070,
+        "common_updates": 37504,
+        "graphics_done": 25192
+      },
+      "after": {
+        "vi": 38282,
+        "os_ticks": 30019493380,
+        "common_updates": 38105,
+        "graphics_done": 25493
+      },
+      "sample_overhead_seconds": [
+        0.047823941975366324,
+        0.04239215300185606
+      ],
+      "wall_seconds": 10.045211750431918,
+      "deltas": {
+        "vi": 601,
+        "common_updates": 601,
+        "graphics_done": 301
+      },
+      "rates_per_wall_second": {
+        "vi": 59.82950035614317,
+        "common_updates": 59.82950035614317,
+        "graphics_done": 29.96452513677054
+      },
+      "emulated_seconds": 10.04574528,
+      "emulated_to_wall_ratio": 1.0000531128244319
+    },
+    {
+      "schema_version": 1,
+      "scene": "time-trial-idle-and-game-over",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 39999,
+        "common_updates": 65540,
+        "vi": 65984,
+        "os_ticks": 51724564521
+      },
+      "after": {
+        "graphics_done": 41962,
+        "common_updates": 69131,
+        "vi": 69575,
+        "os_ticks": 54538183722
+      },
+      "sample_overhead_seconds": [
+        0.08528769999975339,
+        0.04255743301473558
+      ],
+      "wall_seconds": 60.064004240499344,
+      "deltas": {
+        "vi": 3591,
+        "common_updates": 3591,
+        "graphics_done": 1963
+      },
+      "rates_per_wall_second": {
+        "vi": 59.78622380255323,
+        "common_updates": 59.78622380255323,
+        "graphics_done": 32.6818037661966
+      },
+      "emulated_seconds": 60.023876288,
+      "emulated_to_wall_ratio": 0.9993319134645324,
+      "notes": "Idle loses lives through automatic drops; includes results transition. Not a completed five-minute round."
+    },
+    {
+      "schema_version": 1,
+      "scene": "time-trial-idle-and-game-over",
+      "repeat": 2,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 41964,
+        "common_updates": 69136,
+        "vi": 69580,
+        "os_ticks": 54542101232
+      },
+      "after": {
+        "graphics_done": 44028,
+        "common_updates": 72723,
+        "vi": 73169,
+        "os_ticks": 57354151614
+      },
+      "sample_overhead_seconds": [
+        0.08528384298551828,
+        0.04243411199422553
+      ],
+      "wall_seconds": 60.06396333355224,
+      "deltas": {
+        "vi": 3589,
+        "common_updates": 3587,
+        "graphics_done": 2064
+      },
+      "rates_per_wall_second": {
+        "vi": 59.75296668435388,
+        "common_updates": 59.71966884836372,
+        "graphics_done": 34.363366741851884
+      },
+      "emulated_seconds": 59.990408149333334,
+      "emulated_to_wall_ratio": 0.9987753857698263,
+      "notes": "Idle loses lives through automatic drops; includes results transition. Not a completed five-minute round."
+    },
+    {
+      "schema_version": 1,
+      "scene": "time-trial-idle-and-game-over",
+      "repeat": 3,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 44033,
+        "common_updates": 72728,
+        "vi": 73174,
+        "os_ticks": 57358069172
+      },
+      "after": {
+        "graphics_done": 47353,
+        "common_updates": 76258,
+        "vi": 76766,
+        "os_ticks": 60172473735
+      },
+      "sample_overhead_seconds": [
+        0.08527463499922305,
+        0.042488374980166554
+      ],
+      "wall_seconds": 60.06395874195732,
+      "deltas": {
+        "vi": 3592,
+        "common_updates": 3530,
+        "graphics_done": 3320
+      },
+      "rates_per_wall_second": {
+        "vi": 59.80291800997841,
+        "common_updates": 58.77068501537411,
+        "graphics_done": 55.27441196913372
+      },
+      "emulated_seconds": 60.04063067733333,
+      "emulated_to_wall_ratio": 0.9996116129354009,
+      "notes": "Idle loses lives through automatic drops; includes results transition. Not a completed five-minute round."
+    },
+    {
+      "schema_version": 1,
+      "scene": "mode-selection",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 38883,
+        "common_updates": 63478,
+        "vi": 63827,
+        "os_ticks": 50034509608
+      },
+      "after": {
+        "graphics_done": 39106,
+        "common_updates": 63982,
+        "vi": 64426,
+        "os_ticks": 50503839546
+      },
+      "sample_overhead_seconds": [
+        0.08523377898382023,
+        0.04263797402381897
+      ],
+      "wall_seconds": 10.064017192460597,
+      "deltas": {
+        "vi": 599,
+        "common_updates": 504,
+        "graphics_done": 223
+      },
+      "rates_per_wall_second": {
+        "vi": 59.5189762243985,
+        "common_updates": 50.07940570466919,
+        "graphics_done": 22.158149746311963
+      },
+      "emulated_seconds": 10.012372010666667,
+      "emulated_to_wall_ratio": 0.9948683333100207
+    },
+    {
+      "schema_version": 1,
+      "scene": "training-basics",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 50643,
+        "common_updates": 81984,
+        "vi": 82550,
+        "os_ticks": 64704352174
+      },
+      "after": {
+        "graphics_done": 52092,
+        "common_updates": 85572,
+        "vi": 86142,
+        "os_ticks": 67518754483
+      },
+      "sample_overhead_seconds": [
+        0.08279063098598272,
+        0.04091071098810062
+      ],
+      "wall_seconds": 60.06192714604549,
+      "deltas": {
+        "vi": 3592,
+        "common_updates": 3588,
+        "graphics_done": 1449
+      },
+      "rates_per_wall_second": {
+        "vi": 59.80494084490093,
+        "common_updates": 59.73834291522955,
+        "graphics_done": 24.12510002345809
+      },
+      "emulated_seconds": 60.040582592,
+      "emulated_to_wall_ratio": 0.9996446242227028,
+      "notes": "Training Basics pages then pause UI during final portion; mixed window, not isolated baseline"
+    },
+    {
+      "schema_version": 1,
+      "scene": "vs-two-players-introduction",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 60192,
+        "common_updates": 97820,
+        "vi": 98537,
+        "os_ticks": 77230484163
+      },
+      "after": {
+        "graphics_done": 61215,
+        "common_updates": 101309,
+        "vi": 102129,
+        "os_ticks": 80044887356
+      },
+      "sample_overhead_seconds": [
+        0.08529398596147075,
+        0.04302034602733329
+      ],
+      "wall_seconds": 60.064252180978656,
+      "deltas": {
+        "vi": 3592,
+        "common_updates": 3489,
+        "graphics_done": 1023
+      },
+      "rates_per_wall_second": {
+        "vi": 59.80262584768393,
+        "common_updates": 58.08779554080435,
+        "graphics_done": 17.031761203279693
+      },
+      "emulated_seconds": 60.040601450666664,
+      "emulated_to_wall_ratio": 0.9996062428240889,
+      "notes": "Animated robots before board; includes input attempts. Does not establish 2P board cadence."
+    },
+    {
+      "schema_version": 1,
+      "scene": "vs-two-players-board",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 62539,
+        "common_updates": 105025,
+        "vi": 105849,
+        "os_ticks": 82959583258
+      },
+      "after": {
+        "graphics_done": 63816,
+        "common_updates": 108615,
+        "vi": 109439,
+        "os_ticks": 85772419582
+      },
+      "sample_overhead_seconds": [
+        0.08402291499078274,
+        0.043992910999804735
+      ],
+      "wall_seconds": 60.06410965498071,
+      "deltas": {
+        "vi": 3590,
+        "common_updates": 3590,
+        "graphics_done": 1277
+      },
+      "rates_per_wall_second": {
+        "vi": 59.76946999833378,
+        "common_updates": 59.76946999833378,
+        "graphics_done": 21.26061648687249
+      },
+      "emulated_seconds": 60.007174912,
+      "emulated_to_wall_ratio": 0.9990521004422149,
+      "notes": "Two-player boards, includes sequential rotation input; idle automatic drops reduce lives"
+    },
+    {
+      "schema_version": 1,
+      "scene": "puzzle-one",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 14524,
+        "common_updates": 23727,
+        "vi": 24047,
+        "os_ticks": 18866087888
+      },
+      "after": {
+        "graphics_done": 16525,
+        "common_updates": 27319,
+        "vi": 27639,
+        "os_ticks": 21680492807
+      },
+      "sample_overhead_seconds": [
+        0.08394328504800797,
+        0.04283446603221819
+      ],
+      "wall_seconds": 60.063476954528596,
+      "deltas": {
+        "vi": 3592,
+        "common_updates": 3592,
+        "graphics_done": 2001
+      },
+      "rates_per_wall_second": {
+        "vi": 59.80339770738455,
+        "common_updates": 59.80339770738455,
+        "graphics_done": 33.31475468053354
+      },
+      "emulated_seconds": 60.040638272,
+      "emulated_to_wall_ratio": 0.9996197575683825,
+      "notes": "Puzzle1 idle sampling; a slide was performed near end; no completion during window"
+    },
+    {
+      "schema_version": 2,
+      "scene": "hide-seek-idle",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 72654,
+        "common_updates": 127891,
+        "vi": 128678,
+        "os_ticks": 100846559251,
+        "logic_ticks": 2632,
+        "state_updates": 1544,
+        "mode_id": 5
+      },
+      "after": {
+        "graphics_done": 74669,
+        "common_updates": 131485,
+        "vi": 132272,
+        "os_ticks": 103662529409,
+        "logic_ticks": 6227,
+        "state_updates": 3559,
+        "mode_id": 5
+      },
+      "sample_overhead_seconds": [
+        0.12938200501957908,
+        0.08540534297935665
+      ],
+      "wall_seconds": 60.10748759802664,
+      "deltas": {
+        "vi": 3594,
+        "common_updates": 3594,
+        "graphics_done": 2015,
+        "logic_ticks": 3595,
+        "state_updates": 2015
+      },
+      "rates_per_wall_second": {
+        "vi": 59.79288344299376,
+        "common_updates": 59.79288344299376,
+        "graphics_done": 33.52327772332566,
+        "logic_ticks": 59.80952030538747,
+        "state_updates": 33.52327772332566
+      },
+      "valid_game_window": true,
+      "emulated_seconds": 60.07403003733333,
+      "emulated_to_wall_ratio": 0.9994433711667162,
+      "notes": "Hide & Seek: entrada a MULTI, giro inicial, inactividad y transición a DRILL/objetivo; tercera ventana incluye Start para pasar objetivo. No se presenta como una escena inmóvil ni victoria manual."
+    },
+    {
+      "schema_version": 2,
+      "scene": "hide-seek-idle",
+      "repeat": 2,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 74673,
+        "common_updates": 131493,
+        "vi": 132280,
+        "os_ticks": 103668797845,
+        "logic_ticks": 6234,
+        "state_updates": 3563,
+        "mode_id": 5
+      },
+      "after": {
+        "graphics_done": 76598,
+        "common_updates": 135088,
+        "vi": 135874,
+        "os_ticks": 106484768175,
+        "logic_ticks": 9830,
+        "state_updates": 5489,
+        "mode_id": 5
+      },
+      "sample_overhead_seconds": [
+        0.12766253802692518,
+        0.08522987394826487
+      ],
+      "wall_seconds": 60.10654753493145,
+      "deltas": {
+        "vi": 3594,
+        "common_updates": 3595,
+        "graphics_done": 1925,
+        "logic_ticks": 3596,
+        "state_updates": 1926
+      },
+      "rates_per_wall_second": {
+        "vi": 59.79381860039982,
+        "common_updates": 59.81045572299314,
+        "graphics_done": 32.02646099214515,
+        "logic_ticks": 59.82709284558646,
+        "state_updates": 32.04309811473847
+      },
+      "valid_game_window": true,
+      "emulated_seconds": 60.07403370666667,
+      "emulated_to_wall_ratio": 0.9994590634531806,
+      "notes": "Hide & Seek: entrada a MULTI, giro inicial, inactividad y transición a DRILL/objetivo; tercera ventana incluye Start para pasar objetivo. No se presenta como una escena inmóvil ni victoria manual."
+    },
+    {
+      "schema_version": 2,
+      "scene": "hide-seek-idle",
+      "repeat": 3,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 76602,
+        "common_updates": 135095,
+        "vi": 135882,
+        "os_ticks": 106491036007,
+        "logic_ticks": 9838,
+        "state_updates": 5493,
+        "mode_id": 5
+      },
+      "after": {
+        "graphics_done": 78577,
+        "common_updates": 138690,
+        "vi": 139476,
+        "os_ticks": 109307006586,
+        "logic_ticks": 13431,
+        "state_updates": 7467,
+        "mode_id": 5
+      },
+      "sample_overhead_seconds": [
+        0.12764865497592837,
+        0.08375420398078859
+      ],
+      "wall_seconds": 60.10577586450381,
+      "deltas": {
+        "vi": 3594,
+        "common_updates": 3595,
+        "graphics_done": 1975,
+        "logic_ticks": 3593,
+        "state_updates": 1974
+      },
+      "rates_per_wall_second": {
+        "vi": 59.79458626575154,
+        "common_updates": 59.81122360194123,
+        "graphics_done": 32.85873897464087,
+        "logic_ticks": 59.777948929561845,
+        "state_updates": 32.842101638451176
+      },
+      "valid_game_window": true,
+      "emulated_seconds": 60.07403901866667,
+      "emulated_to_wall_ratio": 0.999471983426207,
+      "notes": "Hide & Seek: entrada a MULTI, giro inicial, inactividad y transición a DRILL/objetivo; tercera ventana incluye Start para pasar objetivo. No se presenta como una escena inmóvil ni victoria manual."
+    },
+    {
+      "schema_version": 2,
+      "scene": "hide-seek-paused",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 79588,
+        "common_updates": 140601,
+        "vi": 141391,
+        "os_ticks": 110807445091,
+        "logic_ticks": 14613,
+        "state_updates": 8479,
+        "mode_id": 5
+      },
+      "after": {
+        "graphics_done": 79890,
+        "common_updates": 141205,
+        "vi": 141994,
+        "os_ticks": 111279906499,
+        "logic_ticks": 14613,
+        "state_updates": 8780,
+        "mode_id": 5
+      },
+      "sample_overhead_seconds": [
+        0.1279988900059834,
+        0.08515114698093385
+      ],
+      "wall_seconds": 10.106663571496028,
+      "deltas": {
+        "vi": 603,
+        "common_updates": 604,
+        "graphics_done": 302,
+        "logic_ticks": 0,
+        "state_updates": 301
+      },
+      "rates_per_wall_second": {
+        "vi": 59.66360666250431,
+        "common_updates": 59.76255128383516,
+        "graphics_done": 29.88127564191758,
+        "logic_ticks": 0.0,
+        "state_updates": 29.782331020586724
+      },
+      "valid_game_window": true,
+      "emulated_seconds": 10.079176704,
+      "emulated_to_wall_ratio": 0.9972803223040342,
+      "notes": "Pausa real Hide & Seek con CONTINUE/GOAL/AUDIO/EXIT visible durante toda la ventana. No hubo entrada."
+    },
+    {
+      "schema_version": 2,
+      "scene": "lines-idle",
+      "repeat": 1,
+      "rom_sha256": "f7cbc93ac273488bfb89955ab6ae9b60c730907872107a67a56b945e8579ef87",
+      "before": {
+        "graphics_done": 111178,
+        "common_updates": 185642,
+        "vi": 186837,
+        "os_ticks": 146415289149,
+        "logic_ticks": 3035,
+        "state_updates": 1598,
+        "mode_id": 9
+      },
+      "after": {
+        "graphics_done": 113013,
+        "common_updates": 189236,
+        "vi": 190432,
+        "os_ticks": 149232045886,
+        "logic_ticks": 6629,
+        "state_updates": 3433,
+        "mode_id": 9
+      },
+      "sample_overhead_seconds": [
+        0.12365068501094356,
+        0.08378459402592853
+      ],
+      "wall_seconds": 60.10380509647075,
+      "deltas": {
+        "vi": 3595,
+        "common_updates": 3594,
+        "graphics_done": 1835,
+        "logic_ticks": 3594,
+        "state_updates": 1835
+      },
+      "rates_per_wall_second": {
+        "vi": 59.813184776401044,
+        "common_updates": 59.796546894683,
+        "graphics_done": 30.530512952627518,
+        "logic_ticks": 59.796546894683,
+        "state_updates": 30.530512952627518
+      },
+      "valid_game_window": true,
+      "emulated_seconds": 60.090810389333335,
+      "emulated_to_wall_ratio": 0.9997837955996869,
+      "notes": "Lines desbloqueado con NEW NAME LINES; Start pasó instrucciones; tablero1:1 antes de ventana. Inactividad sin entradas durante60s. Captura posterior identifica estado final; no se acredita ronda completa."
+    }
+  ],
+  "interpretation": "Schema1: VI/common timers/graphics completions only. Schema2 additionally measures eligible-player logical input/state steps and outer state/update-and-draw dispatches; resets or changed mode reject game rates. Counts do not imply completed updates of every subsystem. Host image-change observations are separate."
+}

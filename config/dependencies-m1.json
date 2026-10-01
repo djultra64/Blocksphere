@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-09-28",
+  "purpose": "M1 source pins inherited from the M0 audit. All listed commits were checked out; N64Recomp and RSPRecomp CLI targets built and printed their documented usage. Runtime and renderer integration remain untested.",
+  "dependencies": [
+    {
+      "name": "N64Recomp",
+      "repository": "https://github.com/N64Recomp/N64Recomp",
+      "commit": "ffb39cdad1da5de07eaaa48bd1db4a89a7986771",
+      "status": "analysis-tools-build-verified"
+    },
+    {
+      "name": "N64ModernRuntime",
+      "repository": "https://github.com/N64Recomp/N64ModernRuntime",
+      "commit": "cdf5abbd5026fef5c364c676e4667c45e42b6863",
+      "status": "checkout-verified"
+    },
+    {
+      "name": "RecompFrontend",
+      "repository": "https://github.com/N64Recomp/RecompFrontend",
+      "commit": "b1a1477c6556aeb7ed45defbfb5924f721efebc1",
+      "status": "checkout-verified"
+    },
+    {
+      "name": "rt64",
+      "repository": "https://github.com/rt64/rt64",
+      "commit": "43373749dac9bbc1b653e6a02aed40a9e1783bed",
+      "status": "checkout-verified"
+    },
+    {
+      "name": "splat",
+      "repository": "https://github.com/ethteck/splat",
+      "commit": "1d09139b886f0bece632bd8f367ccc1d3318ca2a",
+      "status": "checkout-verified"
+    },
+    {
+      "name": "spimdisasm",
+      "repository": "https://github.com/Decompollaborate/spimdisasm",
+      "commit": "4b5d4c68eeb9f9eae14b3bb713971433ae2c3c43",
+      "status": "checkout-verified"
+    }
+  ]
+}

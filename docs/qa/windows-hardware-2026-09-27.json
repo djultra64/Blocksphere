@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-27T16:47:39.4503657Z",
+  "os": {
+    "caption": "Microsoft Windows 11 Pro",
+    "architecture": "64-bit",
+    "build": "26200",
+    "version": "10.0.26200"
+  },
+  "hardware": {
+    "physical_ram_bytes": 34259095552,
+    "manufacturer": "System manufacturer",
+    "model": "System Product Name"
+  },
+  "cpu": [
+    {
+      "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+      "NumberOfCores": 6,
+      "NumberOfLogicalProcessors": 12
+    }
+  ],
+  "gpu": [
+    {
+      "Name": "NVIDIA GeForce RTX 2060",
+      "DriverVersion": "32.0.16.1088",
+      "DriverDate": "/Date(1784678400000)/",
+      "CurrentHorizontalResolution": 1920,
+      "CurrentVerticalResolution": 1080,
+      "CurrentRefreshRate": 60
+    }
+  ],
+  "installed_ram_bytes": 34359738368,
+  "monitors": [
+    {
+      "active": true,
+      "manufacturer": "SAM",
+      "model": "LS32B30"
+    }
+  ],
+  "game_controllers": [
+    {
+      "Name": "HID-compliant game controller",
+      "Status": "OK"
+    },
+    {
+      "Name": "HID-compliant game controller",
+      "Status": "OK"
+    },
+    {
+      "Name": "HID-compliant game controller",
+      "Status": "OK"
+    },
+    {
+      "Name": "HID-compliant game controller",
+      "Status": "OK"
+    },
+    {
+      "Name": "Steam Xbox Controller Enhanced Features Driver",
+      "Status": "OK"
+    },
+    {
+      "Name": "Xbox 360 Controller for Windows",
+      "Status": "OK"
+    }
+  ],
+  "power_profile": "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)",
+  "notes": "Display values can be null or stale; verify active resolution and refresh in Settings. PnP records do not establish physical controller count or P1/P2 independence."
+}
