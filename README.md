@@ -10,7 +10,7 @@ A Nintendo 64 Tetrisphere recompilation.
 
 A community PC port of **Tetrisphere** for Linux and Windows x86-64, built through static recompilation with N64Recomp, N64ModernRuntime, RSPRecomp, and RT64.
 
-Created and directed by [djultra64](https://github.com/djultra64). This is an independent fan project, with no affiliation with or endorsement from the original developers, publisher, or rights holders.
+This is an independent fan project, with no affiliation with or endorsement from the original developers, publisher, or rights holders.
 
 ## Why I built this
 
@@ -20,7 +20,9 @@ I set the project's direction, define its requirements, choose priorities, and m
 
 AI is one of the tools I use throughout this process. The goal is to learn through investigation, experimentation, and iteration, and to build something I can understand and keep improving.
 
-**Status: source publication.** This repository contains the current port source and development records. Native Linux and Windows builds exist locally, with hands-on review of representative game modes, audio, widescreen fixes, and local two-player play. Physical 4K output, high-refresh presentation, extended stability, and the full controller/device matrix are not fully verified. No downloadable binary release is included in this initial publication.
+**Blocksphere 1.0 has been released.** Download it from [GitHub Releases](https://github.com/djultra64/Blocksphere/releases/latest). I will keep working on Blocksphere, improving compatibility, fixing bugs, and refining the experience. Bug reports are welcome through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
+
+Native Linux and Windows builds exist, with hands-on review of representative game modes, audio, widescreen fixes, and local two-player play. Physical 4K output, high-refresh presentation, extended stability, and the full controller/device matrix are not fully verified.
 
 ## Features
 
@@ -83,7 +85,7 @@ python3 tools/build/check_environment.py --json
 python3 tools/rom/validate.py /path/to/Tetrisphere.zip
 ```
 
-Original ROM data and generated game code remain private. A public release needs a current build guide and a verified plan for supplying the corresponding source required by its distributed dependencies.
+Original ROM data and generated game code remain private. See [release source and build prerequisites](docs/RELEASE_SOURCE.md) for the source bundle, pinned dependencies, and required private inputs.
 
 ## Faced challenges
 
@@ -146,9 +148,9 @@ Thanks to the broader N64 recompilation, emulation, and preservation communities
 
 ## Licensing and distribution
 
-Each upstream component retains its own license and copyright notices. A credit in this README does not replace the full license text or any corresponding-source obligations. No project-wide license is granted for newly authored code at this time. Upstream code remains subject to its existing licenses. The original game material is outside any license granted for the port's original work.
+Each upstream component retains its own license and copyright notices. A credit in this README does not replace the full license text or any corresponding-source obligations. Newly authored Blocksphere code is licensed under **GPL-3.0-or-later**; see [LICENSE](LICENSE). Upstream code remains subject to its existing licenses. The code license does not cover original game material or branding images. The original game material is outside any license granted for the port's original work.
 
-Release packages must carry the notices applicable to their exact binaries, including SDL2 and Microsoft's shader compiler/validator components. The notice inventory records items requiring verification before binary distribution.
+Release packages include the applicable upstream notices and the port license. Source and pinned dependency materials accompany the release. The Windows package includes the DXC compiler and DXIL signing libraries with their release-specific license terms.
 
 ## Reporting issues
 

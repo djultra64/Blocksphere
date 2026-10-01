@@ -14,8 +14,8 @@ tools, tests, and dependency locks are retained from the development snapshot.
 ROM data, generated game code, extracted assets, saves, captured media,
 credentials, private dependencies, and local build artifacts are excluded.
 The images under assets/branding are owner-supplied project branding.
-No binary release is included. Binary distribution still requires matching
-notices and the applicable corresponding-source materials to the exact binaries.
+The initial source publication did not include binaries. The first binary
+release and its source materials are described in RELEASE_SOURCE.md.
 
 The complete test suite assumes locally prepared pinned dependencies and,
 for integration scenarios, a private ROM and recompiler. Running it on a

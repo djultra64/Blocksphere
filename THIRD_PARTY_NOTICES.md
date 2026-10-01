@@ -1,29 +1,17 @@
 # Third-party notice inventory
 
-This inventory preserves all readable LICENSE* and COPYING* files collected
-from the project's six dependency checkouts, including transitive, sample,
-platform-specific, and reference-only components. Paths are component-relative.
-RecompFrontend is a research candidate; its collected notices do not establish
-permission to redistribute frontend code without a confirmed applicable license.
+This inventory preserves readable LICENSE* and COPYING* files collected from
+the pinned dependency checkouts, including transitive, sample, platform-specific,
+and reference-only components. A listing does not mean the component is shipped.
 
-This is not a certification of release-license completeness. Before distributing binaries:
+Release-specific notices for SDL2, nlohmann/json, and the Windows DXC compiler
+are in licenses/. Newly authored port code is GPL-3.0-or-later; see LICENSE
+and licenses/README.md. Upstream licenses and copyrights remain unchanged.
+The Windows package includes the paired DXC/DXIL binaries from Microsoft
+DXC v1.8.2505.1, under the release-specific terms in licenses/.
 
-- Match notices to the exact shipped SDL2, dxcompiler.dll, and dxil.dll versions.
-  The RT64 checkout includes DXC binaries without adjacent license files, so
-  their release-specific license texts and third-party notices are not collected
-  below. Obtain them from the matching Microsoft distribution, including any
-  validator-specific terms. Upstream reference:
-  https://github.com/microsoft/DirectXShaderCompiler/blob/main/LICENSE.TXT
-- Confirm nlohmann/json's exact provenance and include its MIT notice if used;
-  the historical M1 notice document names it, but a name is not a binary audit.
-- Review any additional bundled system/runtime libraries against the final
-  Linux and Windows artifact manifests.
-- Establish the original port code's license and the corresponding-source
-  distribution plan for applicable GPL components. Keep game material private.
-
-Research credits for the original game, ares, Ghidra, Chris Gilmore's tools,
-QEMU research, the original manual, and M. Stoler's guide are in README.md;
-those credits do not imply that their programs or game material are distributed.
+Original-game and research attribution is in README.md. No original game
+material is distributed.
 
 ## N64ModernRuntime/COPYING
 
