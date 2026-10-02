@@ -1,0 +1,32 @@
+{
+  "$schema": "https://recomp.fyi/schema/v1.json",
+  "game": "Tetrisphere",
+  "system": "N64",
+  "type": "recomp",
+  "original": {
+    "region": "USA"
+  },
+  "project": "Blocksphere",
+  "status": "released",
+  "targets": ["Windows", "Linux"],
+  "toolchain": "N64recomp",
+  "approach": "Static recompilation with N64Recomp, N64ModernRuntime, RSPRecomp, and RT64.",
+  "maintainers": [
+    {
+      "name": "djultra64",
+      "link": "https://github.com/djultra64"
+    }
+  ],
+  "links": [
+    {
+      "label": "Releases",
+      "url": "https://github.com/djultra64/Blocksphere/releases/latest"
+    },
+    {
+      "label": "Bug reports",
+      "url": "https://github.com/djultra64/Blocksphere/issues"
+    }
+  ],
+  "help": ["Bug reports"],
+  "notes": "Windows and Linux PC port with widescreen, local multiplayer, remappable controls, and device-specific button prompts. Developed with extensive OpenAI Codex assistance. Development continues; bug reports are welcome."
+}
