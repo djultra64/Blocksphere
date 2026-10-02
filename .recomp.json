@@ -19,10 +19,6 @@
   ],
   "links": [
     {
-      "label": "Releases",
-      "url": "https://github.com/djultra64/Blocksphere/releases/latest"
-    },
-    {
       "label": "Bug reports",
       "url": "https://github.com/djultra64/Blocksphere/issues"
     }
