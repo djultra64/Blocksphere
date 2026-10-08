@@ -1,6 +1,7 @@
 #include "tetrisphere/controller_ports.h"
 
 #include <cstdlib>
+#include <cstdio>
 
 namespace tetrisphere {
 namespace {
@@ -46,7 +47,15 @@ int ControllerPorts::port_for_id_locked(SDL_JoystickID id) const {
 }
 
 bool ControllerPorts::open_index_locked(int index) {
-    if (index < 0 || !SDL_IsGameController(index)) return false;
+    if (index < 0) return false;
+    if (!SDL_IsGameController(index)) {
+        char guid[33]{};
+        SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(index), guid, sizeof guid);
+        const char* name = SDL_JoystickNameForIndex(index);
+        std::fprintf(stderr, "Unmapped SDL joystick: %s, GUID=%s\n",
+                     name == nullptr ? "unknown" : name, guid);
+        return false;
+    }
     const auto id = SDL_JoystickGetDeviceInstanceID(index);
     if (id < 0 || port_for_id_locked(id) >= 0) return false;
     int free_port = -1;

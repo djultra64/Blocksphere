@@ -2,6 +2,7 @@
 #include "tetrisphere/data_directory.h"
 #include "tetrisphere/audio_length_pacer.h"
 #include "tetrisphere/controller_ports.h"
+#include "tetrisphere/controller_mappings.h"
 #include "tetrisphere/keyboard_state.h"
 #include "tetrisphere/port_input.h"
 #include "tetrisphere/qa_virtual_controllers.h"
@@ -387,6 +388,7 @@ unsigned linux_audio_drain_wait_budget_ms() {
 
 void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
                                const RunOptions& run_options) {
+    initialize_controller_mappings();
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) {
         show_error(SDL_GetError());
         std::exit(70);

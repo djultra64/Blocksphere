@@ -24,7 +24,7 @@ I set the project's direction, define its requirements, choose priorities, and m
 
 AI is one of the tools I use throughout this process. The goal is to learn through investigation, experimentation, and iteration, and to build something I can understand and keep improving.
 
-**Blocksphere 1.0 has been released.** Download it from [GitHub Releases](https://github.com/djultra64/Blocksphere/releases/latest). I will keep working on Blocksphere, improving compatibility, fixing bugs, and refining the experience. Bug reports are welcome through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
+**Blocksphere 1.0 is available; the 1.0.1 controller update is being prepared.** Download it from [GitHub Releases](https://github.com/djultra64/Blocksphere/releases/latest). I will keep working on Blocksphere, improving compatibility, fixing bugs, and refining the experience. Bug reports are welcome through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
 
 Native Linux and Windows builds exist, with hands-on review of representative game modes, audio, widescreen fixes, and local two-player play. Physical 4K output, high-refresh presentation, extended stability, and the full controller/device matrix are not fully verified.
 
@@ -91,6 +91,8 @@ python3 tools/rom/validate.py /path/to/Tetrisphere.zip
 
 Original ROM data and generated game code remain private. See [release source and build prerequisites](docs/RELEASE_SOURCE.md) for the source bundle, pinned dependencies, and required private inputs.
 
+See [the 1.0.1 controller update notes](docs/RELEASE_NOTES_1.0.1.md) for mapping changes and verification limits.
+
 ## Faced challenges
 
 The areas that required the most investigation and repeated validation were:
@@ -122,6 +124,7 @@ All original game material and associated names and trademarks remain with their
 | [N64Recomp / RSPRecomp](https://github.com/N64Recomp/N64Recomp) | Wiseguy and contributors; static CPU and RSP recompilation. MIT. |
 | [N64ModernRuntime](https://github.com/N64Recomp/N64ModernRuntime) | N64Recomp runtime authors and contributors; host services for recompiled games. Includes GPLv3-licensed code. |
 | [RT64](https://github.com/rt64/rt64) | RT64 contributors; graphics rendering and inspection. MIT. |
+| [SDL_GameControllerDB](https://github.com/mdqinc/SDL_GameControllerDB) | Community contributors; pinned controller mappings under the Zlib license. See licenses/controller-db/. |
 | [splat](https://github.com/ethteck/splat) | Ethan Roseman and contributors; binary analysis tooling. MIT. |
 | [spimdisasm](https://github.com/Decompollaborate/spimdisasm) | Decompollaborate and contributors; MIPS disassembly tooling. MIT. |
 | [Microsoft DirectX Shader Compiler](https://github.com/microsoft/DirectXShaderCompiler) | Microsoft, LLVM/Clang authors, and contributors; shader tooling, including Windows `dxcompiler.dll` and `dxil.dll`. See its [license and component notices](https://github.com/microsoft/DirectXShaderCompiler/blob/main/LICENSE.TXT). |

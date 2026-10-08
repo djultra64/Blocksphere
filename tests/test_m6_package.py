@@ -23,7 +23,7 @@ class PackageM6Tests(unittest.TestCase):
         self.commit = "a" * 40
         self.build_id = "b" * 64
 
-    def make(self, platform, output):
+    def make(self, platform, output, **kwargs):
         return create_package(
             platform=platform, binary=self.files["game"],
             configurator=self.files["config"],
@@ -33,7 +33,7 @@ class PackageM6Tests(unittest.TestCase):
             documents={name: self.files[name] for name in
                        ("readme", "controls", "troubleshooting", "release_notes")},
             notices=self.files["notices"], source_commit=self.commit,
-            build_id=self.build_id, output=output,
+            build_id=self.build_id, output=output, **kwargs,
         )
 
     def test_linux_tar_is_deterministic_and_auditable(self):
@@ -56,6 +56,8 @@ class PackageM6Tests(unittest.TestCase):
         self.assertIn("docs/CONTROLS.md", names)
         self.assertIn("licenses/THIRD_PARTY_NOTICES.md", names)
         self.assertIn("assets/README.md", names)
+        self.assertIn("gamecontrollerdb.txt", names)
+        self.assertIn("licenses/controller-db/LICENSE", names)
         self.assertNotIn("run.sh", names)
         self.assertNotIn("config.sh", names)
 
@@ -81,6 +83,24 @@ class PackageM6Tests(unittest.TestCase):
         self.assertIn("docs/CONTROLS.md", names)
         self.assertIn("licenses/THIRD_PARTY_NOTICES.md", names)
         self.assertIn("assets/README.md", names)
+        self.assertIn("gamecontrollerdb.txt", names)
+        self.assertIn("licenses/controller-db/LICENSE", names)
+
+    def test_patch_release_version_matches_root_and_manifest(self):
+        import json
+        archive = self.root / "patch.tar.gz"
+        self.make("linux-x86_64", archive, version="1.0.1")
+        with tarfile.open(archive) as package:
+            names = package.getnames()
+            self.assertTrue(all(n.startswith("tetrisphere-1.0.1-linux-x86_64/") for n in names))
+            metadata = json.load(package.extractfile("tetrisphere-1.0.1-linux-x86_64/docs/BUILD.json"))
+        self.assertEqual(metadata["version"], "1.0.1")
+        self.assertEqual(audit_package(archive)["version"], "1.0.1")
+
+    def test_malformed_release_version_cannot_create_an_archive(self):
+        for version in ("../1.0.1", "1.0", "v1.0.1", "1.0.1/evil"):
+            with self.subTest(version=version), self.assertRaisesRegex(ValueError, "version"):
+                self.make("linux-x86_64", self.root / "bad.tar.gz", version=version)
 
     def test_private_payload_is_rejected(self):
         self.files["readme"].write_text("/home/someone/private/rom.z64\n")

@@ -1,19 +1,33 @@
-# Tetrisphere 1.0 release notes — Windows x86-64
+# Blocksphere 1.0.1 — SDL controller mappings
 
-Runtime DLLs now live in `lib/` beside the game and configuration executables. Both applications can be opened directly from any working directory.
+This update loads a pinned SDL community controller database before controller
+initialization. Previously unmapped devices can be recognized when the database
+contains a matching entry for the operating system. An optional
+`data/gamecontrollerdb.txt` supplies local mappings. Explicit SDL mapping settings
+keep their initialization precedence. Mapping files are never downloaded or rewritten.
 
-The configuration executable is beside the game in the package root. New installations default to widescreen (16:9), while saved preferences remain unchanged. Pause-menu text stays inside the white frame in widescreen.
+Saved action remaps, independent player ports and prompts for the last active
+keyboard, Xbox, PlayStation or Nintendo Switch remain in the existing input layer.
+Nintendo south/east and west/north names remain B/A and Y/X respectively.
+Unknown devices are reported by name and GUID; their layouts are not guessed.
+Keep your complete `data/` folder when updating.
 
-This release keeps imported ROMs, progress, settings and diagnostics in `data/` beside the game executable. Separate game folders have separate data. Incompatible ROM selections show an error and reopen the selector; cancelling exits cleanly.
+The database is SDL_GameControllerDB revision
+`c1d5289a1f713b30a2c121e9fe6529d39360be0f`, credited to its community contributors.
+Its Zlib license and pinned provenance accompany the packages.
 
-The combo count and its surrounding star animation now stay together over the blue wave indicator in widescreen. The original 4:3 placement is preserved.
+## Verification scope
 
-Opening `tetrisphere-config.exe` without arguments shows desktop dialogs for saved resolution, aspect ratio, refresh request, window mode, MSAA, presentation filtering, and texture filtering. Each choice saves immediately. Command-line options for graphics and controller mappings remain available.
+The original source checks passed 197 Python tests and six CTests with virtual
+SDL devices. Those checks did not rebuild the full game. This release's build,
+package and execution evidence is recorded separately. Software mapping tests
+are not physical controller acceptance. Physical arcade panels, the complete
+controller/family/prompt matrix, physical 4K and high refresh rates remain pending.
 
-When no valid ROM cache exists, this release checks for a similarly named ROM beside the executable before opening the selector. It validates the ROM revision and skips invalid matches. The README includes default controller mappings for each supported family.
+## Downloads and installation
 
-Magic defaults to the west face button (Xbox X, PlayStation Square, Switch Y) and A on the keyboard. The keyboard N64 L input uses J. The left stick and D-pad now feed identical game directions, with a dead zone for stick drift.
-
-This release adds F11 and Alt+Enter fullscreen controls during play, an RT64 inspector opened with F1 and limited to safe live filter changes, command-line options for window mode, MSAA, and filters, one-time ROM import into the game folder’s `data/` directory, and a portable package with source and checksum manifests. Inspector changes and command-line options last for one session. Use `tetrisphere-config.exe` for persistent settings.
-
-The game retains the M5 16:9 viewport, HUD, and framebuffer fixes and the mode and two-player support demonstrated in earlier builds. Physical 4K output and 120 FPS have not been validated. This release does not add 120 FPS, enlarge the sphere, or change culling.
+Extract the complete package, keep `lib/` beside the executables, and launch
+`tetrisphere.exe`. Supply your own supported Tetrisphere US NTPE revision 0 ROM.
+Packages contain no original game content or personal data. The separate settings
+utility is still included in this stable update. In-game configuration is a
+separate beta investigation and is not part of 1.0.1.

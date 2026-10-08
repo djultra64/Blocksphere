@@ -81,7 +81,9 @@ def _tar_info(name: str, payload: bytes, executable: bool) -> tarfile.TarInfo:
 def create_package(*, platform: str, binary: Path, configurator: Path,
                    runtime_files: Sequence[Path], documents: Mapping[str, Path],
                    notices: Path, source_commit: str, build_id: str,
-                   output: Path) -> dict[str, Any]:
+                   output: Path, version: str = "1.0.0") -> dict[str, Any]:
+    if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-beta\.[0-9]+)?", version):
+        raise ValueError("package version has an invalid format")
     if platform not in PLATFORMS:
         raise ValueError("unsupported package platform")
     if not re.fullmatch(r"[0-9a-f]{40}", source_commit) or \
@@ -101,6 +103,18 @@ def create_package(*, platform: str, binary: Path, configurator: Path,
         "licenses/THIRD_PARTY_NOTICES.md": Path(notices).read_bytes(),
         "assets/README.md": ASSETS_README,
     }
+    controller_root = Path(__file__).resolve().parents[2]
+    controller_provenance = json.loads((controller_root / "licenses/controller-db/provenance.json").read_text())
+    for name, source in {
+        "gamecontrollerdb.txt": controller_root / "assets/controllers/gamecontrollerdb.txt",
+        "licenses/controller-db/LICENSE": controller_root / "licenses/controller-db/LICENSE",
+        "licenses/controller-db/provenance.json": controller_root / "licenses/controller-db/provenance.json",
+    }.items():
+        payload = source.read_bytes()
+        files[name] = payload
+    if _hash(files["gamecontrollerdb.txt"]) != controller_provenance["files"]["gamecontrollerdb.txt"]["sha256"] or \
+            _hash(files["licenses/controller-db/LICENSE"]) != controller_provenance["files"]["LICENSE"]["sha256"]:
+        raise ValueError("controller database provenance mismatch")
     for key, name in DOCUMENT_NAMES.items():
         files[name] = Path(documents[key]).read_bytes()
         _validate_platform_document(platform, name, files[name])
@@ -121,7 +135,7 @@ def create_package(*, platform: str, binary: Path, configurator: Path,
         raise ValueError("package lacks required runtime libraries")
     metadata = {
         "schema_version": 1,
-        "version": "1.0.0",
+        "version": version,
         "platform": platform,
         "source_commit": source_commit,
         "build_id": build_id,
@@ -132,7 +146,7 @@ def create_package(*, platform: str, binary: Path, configurator: Path,
     files["docs/SHA256SUMS"] = "".join(
         f"{_hash(payload)}  {name}\n" for name, payload in sorted(files.items())
     ).encode()
-    root = f"tetrisphere-1.0-{platform}"
+    root = f"tetrisphere-{'1.0' if version == '1.0.0' else version}-{platform}"
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     executable_names = {executable, config_name}
@@ -167,7 +181,7 @@ def audit_package(path: Path) -> dict[str, Any]:
     def add(name: str, payload: bytes) -> None:
         _validate_name(name)
         parts = name.split("/")
-        if len(parts) < 2 or not parts[0].startswith("tetrisphere-1.0-"):
+        if len(parts) < 2 or not re.fullmatch(r"tetrisphere-[0-9]+\.[0-9]+(?:\.[0-9]+(?:-beta\.[0-9]+)?)?-(?:linux|windows)-x86_64", parts[0]):
             raise ValueError("archive member is outside its package root")
         roots.add(parts[0])
         relative = "/".join(parts[1:])
@@ -196,7 +210,11 @@ def audit_package(path: Path) -> dict[str, Any]:
         raise ValueError("archive lacks a single root or manifests")
     metadata = json.loads(files["docs/BUILD.json"])
     platform = metadata.get("platform")
-    if platform not in PLATFORMS or roots != {f"tetrisphere-1.0-{platform}"}:
+    version = metadata.get("version", "")
+    if not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-beta\.[0-9]+)?", version):
+        raise ValueError("package version has an invalid format")
+    root_version = "1.0" if version == "1.0.0" else version
+    if platform not in PLATFORMS or roots != {f"tetrisphere-{root_version}-{platform}"}:
         raise ValueError("package root differs from build metadata")
     for name in DOCUMENT_NAMES.values():
         if name in files:
@@ -214,6 +232,8 @@ def audit_package(path: Path) -> dict[str, Any]:
     if files["docs/SHA256SUMS"] != expected_sums:
         raise ValueError("internal SHA256SUMS differs from archive content")
     required = {"licenses/THIRD_PARTY_NOTICES.md", "assets/README.md",
+                "gamecontrollerdb.txt", "licenses/controller-db/LICENSE",
+                "licenses/controller-db/provenance.json",
                 "docs/BUILD.json", "docs/SHA256SUMS", *DOCUMENT_NAMES.values()}
     required.update({"tetrisphere.exe", "tetrisphere-config.exe",
                      "lib/SDL2.dll", "lib/dxcompiler.dll", "lib/dxil.dll"}
@@ -223,7 +243,7 @@ def audit_package(path: Path) -> dict[str, Any]:
         raise ValueError("archive lacks required beta files")
     if metadata.get("requires_user_supplied_rom") is not True:
         raise ValueError("archive claims bundled or unnecessary ROM")
-    return {"platform": platform, "source_commit": metadata.get("source_commit"),
+    return {"platform": platform, "version": version, "source_commit": metadata.get("source_commit"),
             "build_id": metadata.get("build_id"), "member_count": len(files),
             "sha256": _hash(path.read_bytes())}
 
@@ -231,7 +251,7 @@ def audit_package(path: Path) -> dict[str, Any]:
 def audit_pair(packages: Sequence[dict[str, Any]]) -> dict[str, Any]:
     if len(packages) != 2 or {package["platform"] for package in packages} != PLATFORMS:
         raise ValueError("package pair requires Linux and Windows")
-    for key in ("source_commit", "build_id"):
+    for key in ("source_commit", "build_id", "version"):
         if packages[0][key] != packages[1][key]:
             raise ValueError(f"package pair has mismatched {key}")
     return {"valid": True, "source_commit": packages[0]["source_commit"],
@@ -252,6 +272,7 @@ def main() -> int:
     create.add_argument("--source-commit", required=True)
     create.add_argument("--build-id", required=True)
     create.add_argument("--output", type=Path, required=True)
+    create.add_argument("--version", default="1.0.0")
     audit = sub.add_parser("audit")
     audit.add_argument("packages", type=Path, nargs="+")
     args = parser.parse_args()
@@ -262,7 +283,7 @@ def main() -> int:
                 configurator=args.configurator, runtime_files=args.runtime,
                 documents={key: getattr(args, key) for key in DOCUMENT_NAMES},
                 notices=args.notices, source_commit=args.source_commit,
-                build_id=args.build_id, output=args.output,
+                build_id=args.build_id, output=args.output, version=args.version,
             )
         else:
             packages = [audit_package(package) for package in args.packages]

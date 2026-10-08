@@ -1,4 +1,4 @@
-# Tetrisphere 1.0 — Windows x86-64
+# Blocksphere 1.0.1 — Windows x86-64
 
 This build requires your own **Tetrisphere US NTPE rev0** ROM. It does not contain a ROM, original game assets, saves, or captured media. You need a working Vulkan driver. Exact minimum GPU, driver, and Windows versions still need physical testing.
 
@@ -40,3 +40,7 @@ Run `tetrisphere.exe --help` for all options. For example, use `tetrisphere.exe 
 The order of precedence is defaults, saved settings, then options for this run. F11 and Alt+Enter toggle fullscreen without saving the preference. F1 opens or closes the RT64 inspector. Its presentation and texture filter changes last only for the current session. Resolution, aspect, HUD, framebuffer, and MSAA settings are chosen before launch and may require a restart. Inspector controls that could invalidate the 16:9 and HUD fixes are disabled.
 
 See [controls](docs/CONTROLS.md), [troubleshooting](docs/TROUBLESHOOTING.md), [release notes](docs/RELEASE_NOTES.md), and [third-party notices](licenses/THIRD_PARTY_NOTICES.md). [Build information](docs/BUILD.json) identifies this package's source revision; [checksums](docs/SHA256SUMS) cover every distributed file. Do not delete `data/` when replacing the package. The game folder must be writable. After importing a ROM, keep your personal folder private; share the original clean archive instead.
+
+## SDL controller mappings
+
+This package loads the bundled community mapping database before SDL initialization. Optional `data/gamecontrollerdb.txt` entries override bundled entries; explicit SDL settings keep initialization priority. Unknown layouts are reported, never guessed. Saved remaps and family prompts are preserved. Physical acceptance for the new mapping database remains pending. See `licenses/controller-db/` for the pinned Zlib notice and provenance.

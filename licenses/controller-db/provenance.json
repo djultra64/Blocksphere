@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/mdqinc/SDL_GameControllerDB",
+  "commit": "c1d5289a1f713b30a2c121e9fe6529d39360be0f",
+  "commit_date": "2026-10-02T17:06:31Z",
+  "files": {
+    "gamecontrollerdb.txt": {
+      "url": "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/c1d5289a1f713b30a2c121e9fe6529d39360be0f/gamecontrollerdb.txt",
+      "bytes": 609830,
+      "sha256": "e606134678e6b3fdbdec9081289a1f0ba3e25d53b59b2aa3cdfe69bf491ad18f"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/c1d5289a1f713b30a2c121e9fe6529d39360be0f/LICENSE",
+      "bytes": 884,
+      "sha256": "97f35b302b361680ec1e891e95d2d52097bb95abff361434916d99dc1305f127"
+    },
+    "README.md": {
+      "url": "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/c1d5289a1f713b30a2c121e9fe6529d39360be0f/README.md",
+      "bytes": 3487,
+      "sha256": "f9afb3a920cec920b1f6e1183dab21808ea5b8933af600878391f7c7cc7612c2"
+    }
+  }
+}

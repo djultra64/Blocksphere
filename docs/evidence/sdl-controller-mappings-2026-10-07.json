@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-07",
+  "request": "Extend Blitz SDL controller mapping fix to Tetrisphere",
+  "baseline": "7933c57",
+  "target_checkout": ".worktrees/main",
+  "status": "source correction, not published or packaged",
+  "database": {
+    "repository": "https://github.com/mdqinc/SDL_GameControllerDB",
+    "commit": "c1d5289a1f713b30a2c121e9fe6529d39360be0f",
+    "commit_date": "2026-10-02T17:06:31Z",
+    "files": {
+      "gamecontrollerdb.txt": {
+        "url": "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/c1d5289a1f713b30a2c121e9fe6529d39360be0f/gamecontrollerdb.txt",
+        "bytes": 609830,
+        "sha256": "e606134678e6b3fdbdec9081289a1f0ba3e25d53b59b2aa3cdfe69bf491ad18f"
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/c1d5289a1f713b30a2c121e9fe6529d39360be0f/LICENSE",
+        "bytes": 884,
+        "sha256": "97f35b302b361680ec1e891e95d2d52097bb95abff361434916d99dc1305f127"
+      },
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/c1d5289a1f713b30a2c121e9fe6529d39360be0f/README.md",
+        "bytes": 3487,
+        "sha256": "f9afb3a920cec920b1f6e1183dab21808ea5b8933af600878391f7c7cc7612c2"
+      }
+    }
+  },
+  "changed_source_sha256": {
+    "CMakeLists.txt": "931bfce5e405c3c6de9fb7bcc90bc927da0d8a496b3f114c5147a1d7ab8b71b1",
+    "src/platform/linux_main.cpp": "799c51efeea31264d613a8d1388c79a838ffc881ad98be9c88c9c1d0f54a39ea",
+    "src/platform/controller_ports.cpp": "ac24a90866f557e2580c8860c60c4f066999334db87d505d1d724ed493f2c925",
+    "tools/qa/package_m6.py": "887a97e2583e4389ccc5d2baf6f92ccae6947f4b77642f08c7c04f7891fa26be",
+    "tests/test_m6_package.py": "b574a05f043c7c6bed432b5344897ace71e880b135931aabe5952803e04dcfac",
+    "assets/controllers/gamecontrollerdb.txt": "e606134678e6b3fdbdec9081289a1f0ba3e25d53b59b2aa3cdfe69bf491ad18f",
+    "licenses/controller-db/LICENSE": "97f35b302b361680ec1e891e95d2d52097bb95abff361434916d99dc1305f127",
+    "licenses/controller-db/provenance.json": "80e8ebb0fcbc879d4745c193cd9d0a94a2c217e1b56770ed57b9be18712e6ee7",
+    "include/tetrisphere/controller_mappings.h": "5a5ca1d1e11b3a15b9af6e8e7db0e476359217916b6c06c57c0bb7634a39d496",
+    "src/platform/controller_mappings.cpp": "c33b89f4e98bd1fa91e677062984d494bf4f546aca621f68ad59c46c010568fd",
+    "tests/controller_mappings_test.cpp": "a1ec288146caf54d55f136ca710f898da8bb806d3bdfdd977d4c37c66925e296"
+  },
+  "verification": {
+    "python_full_suite": {
+      "tests": 197,
+      "passed": 197,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 21.584
+    },
+    "affected_ctest": {
+      "tests": 6,
+      "passed": 6,
+      "scope": "SDL dummy video/audio; unknown virtual joystick fixtures; community/local/explicit mappings, reconnect, separate ports, actions and keyboard focus"
+    },
+    "game_platform_unit": "changed linux_main.cpp compiled; no full executable claimed",
+    "package_checks": "fixture executables; deterministic Linux and Windows packages include DB/notices and audit correctly",
+    "unicode_path": "standalone C++ loader/input regression returned exit 0 from a Unicode directory"
+  },
+  "logs": {
+    "python-suite-host-final.log": "de99cc29492e6d15a61992a269d8b2665ce0a4c7ea72beeee39a06f9a1e9fb1d",
+    "input-ctest-final.log": "c7a2843b6f60aba4f9bada9b6e326f674f464d2e3e390d1921c5baf8751d054a",
+    "game-platform-build.log": "f601732afc72b70d0b795613998cee5d978317a54a36c6c07ffd0d51175118e4",
+    "configure.log": "b40ca3d108c3f84052fbdbbc020993c63603bcd86ba95ac257e8701e4bedce6c"
+  },
+  "evidence_location": ".local/controller-mappings-20261007/evidence",
+  "initial_attempts": [
+    "archive copy lacked Git and private reference inputs",
+    "private toolchain receipt/cache absent until independent copy completed",
+    "/tmp root parents generated unsupported Flatpak filesystem=/ argument",
+    "Flatpak namespace setup prohibited in sandbox; authorized host verification passed"
+  ],
+  "preservation": {
+    "personal_data": "unchanged",
+    "previous_binaries_packages": "unchanged",
+    "M1_readme_branding_work": "untouched",
+    "generated_game_code": "not hand edited",
+    "published": false,
+    "commit_created": false
+  },
+  "review": "single implementing agent self-review",
+  "pending": [
+    "full game executable rebuild from corrected source",
+    "native Windows execution and physical controller/family/prompt acceptance"
+  ]
+}

@@ -259,6 +259,8 @@ set(TETRISPHERE_BUILD_INPUTS
     include/tetrisphere/run_options.h
     include/tetrisphere/window_mode_controller.h
     include/tetrisphere/controller_slot.h
+    include/tetrisphere/controller_mappings.h
+    assets/controllers/gamecontrollerdb.txt
     include/tetrisphere/controller_ports.h
     include/tetrisphere/qa_virtual_controllers.h
     include/tetrisphere/port_input.h
@@ -293,6 +295,7 @@ set(TETRISPHERE_BUILD_INPUTS
     src/platform/config_cli.cpp
     src/platform/windows_delay_libraries.cpp
     src/platform/controller_slot.cpp
+    src/platform/controller_mappings.cpp
     src/platform/controller_ports.cpp
     src/platform/qa_virtual_controllers.cpp
     src/platform/port_input.cpp
@@ -732,6 +735,7 @@ if(MICROCODE_LIVE_ENABLED)
         src/graphics/prompt_atlas_probe.cpp
         src/graphics/training_prompt_hooks.cpp
         src/graphics/training_prompts.cpp
+        src/platform/controller_mappings.cpp
         src/platform/linux_main.cpp
         src/platform/close_game_menu.cpp
         src/platform/linux_ai.cpp
@@ -851,6 +855,12 @@ if(MICROCODE_LIVE_ENABLED)
                 $<TARGET_FILE:tetrisphere-config> "${CMAKE_CURRENT_BINARY_DIR}")
     add_executable(controller_slot_test tests/controller_slot_test.cpp
         src/platform/controller_slot.cpp)
+    add_custom_command(TARGET tetrisphere-m1 POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/assets/controllers/gamecontrollerdb.txt"
+            "$<TARGET_FILE_DIR:tetrisphere-m1>/gamecontrollerdb.txt")
+    add_executable(controller_mappings_test tests/controller_mappings_test.cpp
+        src/platform/controller_mappings.cpp src/platform/controller_ports.cpp)
     add_executable(controller_ports_test tests/controller_ports_test.cpp
         src/platform/controller_ports.cpp)
     add_executable(qa_virtual_controllers_test tests/qa_virtual_controllers_test.cpp
@@ -864,7 +874,7 @@ if(MICROCODE_LIVE_ENABLED)
     add_executable(rt64_graphics_config_test tests/rt64_graphics_config_test.cpp)
     add_executable(keyboard_state_test tests/keyboard_state_test.cpp
         src/platform/keyboard_state.cpp src/platform/input_mapping.cpp)
-    foreach(INPUT_TARGET controller_slot_test controller_ports_test
+    foreach(INPUT_TARGET controller_mappings_test controller_slot_test controller_ports_test
             qa_virtual_controllers_test
             port_input_test keyboard_state_test)
         target_include_directories(${INPUT_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/include"
@@ -881,6 +891,11 @@ if(MICROCODE_LIVE_ENABLED)
         "${N64MODERN_RUNTIME}/librecomp/include"
         "${N64MODERN_RUNTIME}/thirdparty")
     target_compile_definitions(guest_trace_hooks_test PRIVATE TETRISPHERE_LINUX_DEMO)
+    target_link_libraries(controller_mappings_test PRIVATE ${TETRISPHERE_SDL_LIBRARIES} ${TETRISPHERE_CONFIG_SDL_LIBRARY})
+    if(WIN32)
+        target_link_directories(controller_mappings_test PRIVATE
+            "${RT64_ROOT}/src/contrib/mupen64plus-win32-deps/SDL2-2.26.3/lib/x64")
+    endif()
     target_link_libraries(controller_slot_test PRIVATE ${TETRISPHERE_SDL_LIBRARIES})
     target_link_libraries(controller_ports_test PRIVATE ${TETRISPHERE_SDL_LIBRARIES})
     target_link_libraries(qa_virtual_controllers_test PRIVATE ${TETRISPHERE_SDL_LIBRARIES})
@@ -901,6 +916,8 @@ if(MICROCODE_LIVE_ENABLED)
     endif()
     add_test(NAME controller_reconnect COMMAND controller_slot_test)
     add_test(NAME controller_two_ports COMMAND controller_ports_test)
+    add_test(NAME controller_community_mappings COMMAND controller_mappings_test "${CMAKE_CURRENT_BINARY_DIR}/mapping-test")
+    add_test(NAME controller_explicit_mapping COMMAND controller_mappings_test "${CMAKE_CURRENT_BINARY_DIR}/mapping-override-test" --inline)
     add_test(NAME qa_virtual_two_ports COMMAND qa_virtual_controllers_test)
     add_test(NAME controller_port_mapping COMMAND port_input_test)
     add_test(NAME canonical_trace COMMAND canonical_trace_test)
