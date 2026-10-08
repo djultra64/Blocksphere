@@ -31,3 +31,10 @@ Extract the complete package, keep `lib/` beside the executables, and launch
 Packages contain no original game content or personal data. The separate settings
 utility is still included in this stable update. In-game configuration is a
 separate beta investigation and is not part of 1.0.1.
+
+## Current release verification
+
+The full Linux build passed 50 CTests. The extracted package loaded the mapping
+database, rendered through software Vulkan, accepted keyboard input and closed
+from the game menu. Package audit and byte-for-byte reproduction passed.
+Physical controller acceptance remains pending.

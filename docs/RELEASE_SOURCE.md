@@ -1,5 +1,18 @@
 # Release source and build prerequisites
 
+## 1.0.1 controller correction
+
+The newly built Linux executable uses public source commit
+`69d75ede2426c16a9412473888cdc14069f784e3`, build ID
+`6a5cb823664efe5195e2f205131ad9b344380db14ebb8599c62be54a5706d24f`.
+It was compiled with GCC 15.2.0 in the freedesktop SDK 25.08 and bundles
+SDL 2.32.70. Its 50 CTests and an extracted-package keyboard smoke test with
+software Vulkan passed. Private absolute build paths are stripped.
+The Windows 1.0.1 executable has not yet been built or validated.
+The separate in-game Options experiment is outside this stable release.
+
+## Retained 1.0 provenance
+
 The release executable source is local development commit
 7933c575b1b650bff7efb5f471877fb77ac5d6d8. The initial public commit
 8a974115e00f9d5c6866f7b728578944459e3cef contains the same runtime source,

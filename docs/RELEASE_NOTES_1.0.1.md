@@ -19,8 +19,11 @@ Its Zlib license and pinned provenance accompany the packages.
 ## Verification scope
 
 The original source checks passed 197 Python tests and six CTests with virtual
-SDL devices. Those checks did not rebuild the full game. This release's build,
-package and execution evidence is recorded separately. Software mapping tests
+SDL devices. Those checks did not rebuild the full game. The updated source passed 200 Python
+tests. The full Linux build passed 50 CTests; its extracted package loaded
+mappings, rendered through software Vulkan, accepted keyboard input, and closed
+from the game menu. Deterministic archive reproduction and the package audit
+passed. A fresh native Windows build and package test remain pending. Software mapping tests
 are not physical controller acceptance. Physical arcade panels, the complete
 controller/family/prompt matrix, physical 4K and high refresh rates remain pending.
 
