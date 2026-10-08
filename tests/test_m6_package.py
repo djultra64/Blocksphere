@@ -102,6 +102,30 @@ class PackageM6Tests(unittest.TestCase):
             with self.subTest(version=version), self.assertRaisesRegex(ValueError, "version"):
                 self.make("linux-x86_64", self.root / "bad.tar.gz", version=version)
 
+    def test_retained_legacy_archive_is_auditable_without_new_mapping_files(self):
+        import io
+        import json
+        archive = self.root / "legacy.tar.gz"
+        self.make("linux-x86_64", archive)
+        with tarfile.open(archive) as package:
+            files = {m.name: package.extractfile(m).read() for m in package.getmembers()}
+        root = "tetrisphere-1.0-linux-x86_64/"
+        additions = ("gamecontrollerdb.txt", "licenses/controller-db/LICENSE", "licenses/controller-db/provenance.json")
+        metadata = json.loads(files[root + "docs/BUILD.json"])
+        for name in additions:
+            del files[root + name]
+            del metadata["files"][name]
+        files[root + "docs/BUILD.json"] = (json.dumps(metadata, sort_keys=True, indent=2) + "\n").encode()
+        files[root + "docs/SHA256SUMS"] = "".join(
+            f"{hashlib.sha256(payload).hexdigest()}  {name[len(root):]}\n"
+            for name, payload in sorted(files.items()) if name != root + "docs/SHA256SUMS").encode()
+        with tarfile.open(archive, "w:gz") as package:
+            for name, payload in files.items():
+                member = tarfile.TarInfo(name)
+                member.size = len(payload)
+                package.addfile(member, io.BytesIO(payload))
+        self.assertEqual(audit_package(archive)["version"], "1.0.0")
+
     def test_private_payload_is_rejected(self):
         self.files["readme"].write_text("/home/someone/private/rom.z64\n")
         with self.assertRaisesRegex(ValueError, "private"):

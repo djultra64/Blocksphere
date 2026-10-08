@@ -232,9 +232,10 @@ def audit_package(path: Path) -> dict[str, Any]:
     if files["docs/SHA256SUMS"] != expected_sums:
         raise ValueError("internal SHA256SUMS differs from archive content")
     required = {"licenses/THIRD_PARTY_NOTICES.md", "assets/README.md",
-                "gamecontrollerdb.txt", "licenses/controller-db/LICENSE",
-                "licenses/controller-db/provenance.json",
                 "docs/BUILD.json", "docs/SHA256SUMS", *DOCUMENT_NAMES.values()}
+    if version != "1.0.0":
+        required.update({"gamecontrollerdb.txt", "licenses/controller-db/LICENSE",
+                         "licenses/controller-db/provenance.json"})
     required.update({"tetrisphere.exe", "tetrisphere-config.exe",
                      "lib/SDL2.dll", "lib/dxcompiler.dll", "lib/dxil.dll"}
                     if platform.startswith("windows") else
