@@ -21,3 +21,10 @@ of relevant focus, navigation and edit states in 4:3 and widescreen. Resolve
 material findings and review corrected captures again. Tests do not substitute
 for visual acceptance. Record the outcome in English and keep captured game
 assets, ROMs, saves and other personal evidence private.
+
+## Release presentation
+
+Publish normal releases with plain version numbers. Public release notes and
+installation READMEs focus on features, setup, controls, updates and bug reports.
+Keep detailed validation and acceptance records in technical QA documentation.
+Preserve accurate claims, AI disclosure and complete creator/dependency credits.

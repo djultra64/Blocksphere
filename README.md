@@ -24,15 +24,13 @@ I set the project's direction, define its requirements, choose priorities, and m
 
 AI is one of the tools I use throughout this process. The goal is to learn through investigation, experimentation, and iteration, and to build something I can understand and keep improving.
 
-**Blocksphere 1.1.0-beta.7 is available as a Linux prerelease.** [Download the Options beta](https://github.com/djultra64/Blocksphere/releases/tag/v1.1.0-beta.7). The stable 1.0 release remains available; 1.0.1 is a separate draft awaiting native Windows validation. Download it from [GitHub Releases](https://github.com/djultra64/Blocksphere/releases/latest). I will keep working on Blocksphere, improving compatibility, fixing bugs, and refining the experience. Bug reports are welcome through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
+**Blocksphere 1.1.0 is available for Linux.** [Download Blocksphere](https://github.com/djultra64/Blocksphere/releases/latest). Windows downloads are also available on [GitHub Releases](https://github.com/djultra64/Blocksphere/releases). Share bug reports and suggestions through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
 
-Native Linux and Windows builds exist, with hands-on review of representative game modes, audio, widescreen fixes, and local two-player play. Physical 4K output, high-refresh presentation, extended stability, and the full controller/device matrix are not fully verified.
+## What's new in 1.1.0
 
-## Options beta
+Configure Controls and Graphics directly from Options. All seven graphics settings appear together, and the control editor uses the original game's pixel typography with aligned action rows and device-aware button names.
 
-The Linux 1.1.0-beta.7 package configures Controls and Graphics inside Options. Graphics presents seven fields together; Controls uses the original low-resolution menu font, aligned action rows and device-aware names. The main menu order is Single, VS, Practice, Training, Options, Close Game. Options animates all five entries together. Framebuffer transitions preserve the background proportions.
-
-This prerelease does not include the standalone configurator or a new Windows binary. Copy your existing private `data/` directory into the extracted game folder to preserve progress and settings. Keep that personal folder private. Physical controller acceptance and exhaustive late-game transitions remain pending. See [beta details](docs/OPTIONS_BETA.md).
+The main menu now follows this order: Single, VS, Practice, Training, Options, Close Game. Options opens with all five entries together, and transitions preserve the background proportions.
 
 ## Features
 
@@ -43,8 +41,6 @@ This prerelease does not include the standalone configurator or a new Windows bi
 - Keyboard and controller input, persistent remapping by action, and prompts that follow the last active input device.
 - One-time import of a supported ROM, with settings and progress stored locally.
 
-Further testing is required on several modes and configurations.
-
 ## Requirements
 
 - Linux or Windows on an x86-64 PC.
@@ -54,21 +50,19 @@ No ROM, extracted original game assets, save files, or captured audio are distri
 
 ## Getting started
 
-The following general instructions describe the stable package. The Linux Options prerelease uses the in-game editors described above and has no standalone configurator.
-
 1. Extract the entire package and keep its folders and runtime libraries together.
 2. Run `./tetrisphere` on Linux or `tetrisphere.exe` on Windows.
-3. Select your supported ROM when prompted. The beta can also discover a matching ROM beside the executable or accept its path as the last command-line argument. Supported input formats are `.z64`, `.v64`, `.n64`, and `.zip`.
-4. Keep the `data/` folder beside the game executable when updating; it contains the imported ROM, settings, progress, and diagnostics. Move or copy the whole game folder to carry your data with you. Older betas stored data in your user profile; to keep that progress, copy the old data directory's contents into the new game's `data/` folder before launching.
+3. Select your supported ROM when prompted. The game can also discover a matching ROM beside the executable or accept its path as the last command-line argument. Supported input formats are `.z64`, `.v64`, `.n64`, and `.zip`.
+4. Keep the `data/` folder beside the game executable when updating; it contains the imported ROM, settings, progress, and diagnostics. Move or copy the whole game folder to carry your data with you. Older versions stored data in your user profile; to keep that progress, copy the old data directory's contents into the new game's `data/` folder before launching.
 
-Open `./tetrisphere-config` on Linux or `tetrisphere-config.exe` on Windows, beside the game executable, to change persistent graphics settings. Each selection saves immediately; restart the game to apply settings that cannot change during play. Run the game's `--help` for options that apply to one launch.
+On Linux 1.1.0, open **Options → Graphics** for graphics settings and **Options → Controls** for controller remapping. Use Apply to save control changes. Restart the game when a setting requests it. Windows packages provide `tetrisphere-config.exe` beside the game executable. Run the game's `--help` for options that apply to one launch.
 
 | Shortcut | Action |
 | --- | --- |
 | F11 or Alt+Enter | Toggle fullscreen |
 | F1 | Open or close the RT64 inspector |
 
-The inspector exposes safe live filtering controls. Its changes apply to the current session; use the settings utility for persistent preferences.
+The inspector exposes safe live filtering controls. Its changes apply to the current session; use Options for persistent preferences.
 
 ## Controls
 
@@ -83,11 +77,11 @@ Actions are mapped to **physical button positions**, and displayed labels follow
 | Original C-up input | Y (north) | Triangle (north) | X (north) | I |
 | Start / pause | Menu / Start | Options | + | Enter |
 
-Saved remapping overrides these defaults. If automatic detection is ambiguous, the settings utility offers a manual family selection: `family xbox`, `family playstation`, `family nintendo-switch`, or `family keyboard`; `family auto` restores detection. Two-player play requires independent input devices. Prompt correctness and physical actions must be checked together on each supported controller family; the full hands-on matrix remains pending.
+Saved remapping overrides these defaults. In Options → Controls, choose Auto, Keyboard, Xbox, PlayStation or Nintendo Switch under Layout. Auto follows the active device. Two-player play uses independent input devices.
 
 ## Development
 
-Dependency revisions are recorded in [the dependency lock](config/dependencies-m1.json). The [Linux](docs/qa/m1-linux-protocol.md) and [Windows](docs/qa/m1-windows-protocol.md) protocols document the initial reproducible toolchain and prototype; they are historical M1 instructions, not a complete build guide for the latest beta.
+Dependency revisions are recorded in [the dependency lock](config/dependencies-m1.json). The [Linux](docs/qa/m1-linux-protocol.md) and [Windows](docs/qa/m1-windows-protocol.md) protocols document the initial reproducible toolchain and prototype; they describe the initial toolchain setup.
 
 These initial checks do not build the game:
 
@@ -99,7 +93,7 @@ python3 tools/rom/validate.py /path/to/Tetrisphere.zip
 
 Original ROM data and generated game code remain private. See [release source and build prerequisites](docs/RELEASE_SOURCE.md) for the source bundle, pinned dependencies, and required private inputs.
 
-See [the 1.0.1 controller update notes](docs/RELEASE_NOTES_1.0.1.md) for mapping changes and verification limits.
+See [the 1.1.0 release notes](docs/RELEASE_NOTES_1.1.0.md) for the latest changes.
 
 ## Faced challenges
 
@@ -113,7 +107,7 @@ The areas that required the most investigation and repeated validation were:
 
 ## AI Disclosure
 
-I use **OpenAI Codex** to assist with research, reverse-engineering analysis, code implementation, debugging, tests, builds, packaging, and documentation. I direct that work, contribute code reviews and ideas for implementation, evaluate the game's behavior through hands-on testing, and decide which changes and releases to accept. Validation claims remain limited to the recorded builds and scenarios.
+I use **OpenAI Codex** to assist with research, reverse-engineering analysis, code implementation, debugging, tests, builds, packaging, and documentation. I direct that work, contribute code reviews and ideas for implementation, evaluate the game's behavior through hands-on testing, and decide which changes and releases to accept.
 
 The original game and the upstream tools remain the work of their respective creators, credited below.
 

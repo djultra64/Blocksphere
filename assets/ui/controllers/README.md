@@ -1,6 +1,6 @@
 # Generic controls illustration
 
-`generic-pixel-v2.png` is the sole controller illustration used by the beta.
+`generic-pixel-v2.png` is the sole controller illustration used by the game.
 It is an original AI-generated static transparent bitmap, created with the
 built-in imagegen tool on 2026-10-08. It is not extracted from the original ROM,
 a commercial controller image, a vector drawing, a mesh or an animation.

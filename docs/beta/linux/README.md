@@ -1,18 +1,16 @@
-# Blocksphere 1.0.1 — Linux x86-64
+# Blocksphere 1.1.0 — Linux x86-64
 
-This build requires your own **Tetrisphere US NTPE rev0** ROM. It does not contain a ROM, original game assets, saves, or captured media. You need a working Vulkan driver and the system libraries required by the executable. Exact minimum GPU, driver, and distribution versions still need physical testing.
+This build requires your own **Tetrisphere US NTPE rev0** ROM. It does not contain a ROM, original game assets, saves, or captured media. You need a working Vulkan driver and the system libraries required by the executable.
 
 ## Install and launch
 
-Extract the complete archive to a folder of your choice, then run `./tetrisphere` from that folder. Without a valid cached ROM, the game first checks the folder containing the executable for a `.z64`, `.v64`, `.n64`, or `.zip` file whose name contains “Tetrisphere” (case-insensitive; spaces and punctuation are ignored, so “Tetri Sphere” also matches). It validates candidates and loads the first supported US NTPE rev0 dump immediately. The scan does not enter subfolders and is limited to 512 directory entries and 16 matching files. Invalid candidates are skipped; if no valid ROM is found, a file selector opens. You can also pass its path as the last command-line argument. The game validates the revision and copies it to the `data/` folder beside the game executable. Later launches use that cache, so the original file need not remain in place. Keep `data/` when updating the package; it also contains settings, progress and diagnostics. Each extracted copy is independent. Move or copy the whole game folder to carry your data with you. Older betas stored data in your user profile; this beta does not import it automatically. To keep old progress, copy the old data directory’s contents into this game’s `data/` folder before launching.
+Extract the complete archive to a folder of your choice, then run `./tetrisphere` from that folder. Without a valid cached ROM, the game first checks the folder containing the executable for a `.z64`, `.v64`, `.n64`, or `.zip` file whose name contains “Tetrisphere” (case-insensitive; spaces and punctuation are ignored, so “Tetri Sphere” also matches). It validates candidates and loads the first supported US NTPE rev0 dump immediately. The scan does not enter subfolders and is limited to 512 directory entries and 16 matching files. Invalid candidates are skipped; if no valid ROM is found, a file selector opens. You can also pass its path as the last command-line argument. The game validates the revision and copies it to the `data/` folder beside the game executable. Later launches use that cache, so the original file need not remain in place. Keep `data/` when updating the package; it also contains settings, progress and diagnostics. Each extracted copy is independent. Move or copy the whole game folder to carry your data with you. Older versions stored data in your user profile; this version does not import it automatically. To keep old progress, copy the old data directory’s contents into this game’s `data/` folder before launching.
 
 The package root contains the game and this README. `lib/` holds the bundled SDL2 library, `docs/` instructions and checksums, and `licenses/` third-party notices. `assets/` explains why no original game assets are included. Keep the folders together when moving the package.
 
-New installations start in widescreen (16:9); previously saved aspect settings are preserved. The game and configuration utility are beside each other in the package root.
+New installations start in widescreen (16:9); previously saved aspect settings are preserved. Run the game from the package root.
 
-Open `tetrisphere-config` to change saved graphics settings in desktop dialogs. The dialogs show resolution, aspect ratio, refresh request, window mode, MSAA, presentation filter, and texture filter; each selection saves immediately. Restart the game to apply settings that cannot change during play. Controller mappings remain available through the command line. To inspect all saved values from a terminal, run `./tetrisphere-config show`. The configurator also accepts `--data-dir PATH show` for another game data directory.
-
-Saved image quality choices are MSAA `off`, `2x`, `4x`, or `8x`; presentation `nearest`, `linear`, or `pixel`; and texture `linear` or `three-point`. Presentation filtering affects the final image; texture filtering affects N64 textures. Defaults are MSAA off, pixel presentation, and three-point textures. For example, `./tetrisphere-config graphics msaa 4x` saves 4x MSAA; `graphics presentation-filter linear` and `graphics texture-filter three-point` save the other filters. Unsupported MSAA counts fall back to a supported count and are reported in diagnostics.
+Open **Options → Graphics** to configure resolution, aspect ratio, refresh, window mode, MSAA and filtering. Open **Options → Controls** to remap actions and select the controller family. Use Apply to save control edits. Restart the game when a setting requests it.
 
 ## Default controller mappings
 
@@ -31,7 +29,7 @@ Defaults use physical button positions. Prompts follow the most recently active 
 | Magic / N64 C-down | X (west) | Square (west) | Y (west) | A |
 | N64 C-right | RT | R2 | ZR | L |
 
-Magic now defaults to the west face button on controllers and A on the keyboard, beside Z and X. The keyboard N64 L input uses J. On update, the former left-trigger default moves to this button; other saved Magic assignments remain intact. The west button sends Magic only, without a second C-left input. An explicit `bind magic trigger-left` restores the former assignment, and `bind magic west` selects the new one. These commands are available in the settings utility.
+Magic defaults to the west face button on controllers and A on the keyboard, beside Z and X. Zoom uses the shoulder buttons, with J and S on the keyboard. Use Options → Controls to customize action bindings.
 
 ## Options for one run
 
@@ -43,4 +41,4 @@ See [controls](docs/CONTROLS.md), [troubleshooting](docs/TROUBLESHOOTING.md), [r
 
 ## SDL controller mappings
 
-This package loads the bundled community mapping database before SDL initialization. Optional `data/gamecontrollerdb.txt` entries override bundled entries; explicit SDL settings keep initialization priority. Unknown layouts are reported, never guessed. Saved remaps and family prompts are preserved. Physical acceptance for the new mapping database remains pending. See `licenses/controller-db/` for the pinned Zlib notice and provenance.
+This package loads the bundled community mapping database before SDL initialization. Optional `data/gamecontrollerdb.txt` entries override bundled entries; explicit SDL settings keep initialization priority. Unknown layouts are reported, never guessed. Saved remaps and family prompts are preserved. See `licenses/controller-db/` for the pinned Zlib notice and provenance.
