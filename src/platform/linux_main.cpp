@@ -17,6 +17,8 @@
 #include "tetrisphere/settings_store.h"
 #include "tetrisphere/wav_capture.h"
 #include "tetrisphere/window_mode_controller.h"
+#include "tetrisphere/pc_settings_hook.h"
+#include "tetrisphere/controls_sdl.h"
 
 #include "librecomp/rsp.hpp"
 #include "ultramodern/input.hpp"
@@ -73,6 +75,7 @@ std::atomic<std::uint64_t> audio_rsp_max_us{0};
 std::atomic<ControllerFamily> active_family{ControllerFamily::Keyboard};
 std::atomic<ControllerFamily> active_p2_family{ControllerFamily::Keyboard};
 Settings active_settings{};
+Settings persisted_settings{};
 SDL_Rect windowed_bounds{};
 std::unique_ptr<WindowModeController> window_mode_controller;
 
@@ -209,6 +212,7 @@ void count_vi() {
 
 bool get_input(int port, std::uint16_t* buttons, float* x, float* y) {
     if (port < 0 || port >= 2) return false;
+    if (controls_editor_blocks_game() || pc_settings_blocks_game()) {*buttons=0;*x=0;*y=0;return true;}
     // The runtime asks for ports in order. Freeze both readings together so
     // an SDL event between get_input(0) and get_input(1) cannot mix cycles.
     struct ReadCycle {
@@ -417,6 +421,8 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
         show_error(settings_error.c_str());
         std::exit(74);
     }
+    persisted_settings=active_settings;
+    initialize_pc_settings(persisted_settings);
     if (run_options.fullscreen) {
         active_settings.graphics.window_mode = *run_options.fullscreen
             ? GraphicsWindowMode::Fullscreen : GraphicsWindowMode::Windowed;
@@ -580,6 +586,49 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
     const char* audio_metrics = std::getenv("TETRISPHERE_AUDIO_METRICS");
     const bool report_audio = audio_metrics != nullptr && std::strcmp(audio_metrics, "1") == 0;
     for (;;) {
+        for (;;) {
+            auto request=take_pc_settings_change();
+            if(!request) {
+                if(auto controls=take_controls_apply())request=PCSettingsRequest{*controls,13};
+            }
+            if(!request)break;
+            const auto merged=merge_pc_settings_change(persisted_settings,request->settings,request->field);
+            const auto* requested=&merged;
+            std::string error;
+            SettingsStore store(application_data_directory() / "settings.dat");
+            if (!store.save(*requested, error)) {
+                std::fprintf(stderr, "Could not save PC options: %s\n", error.c_str());
+                acknowledge_controls_settings(persisted_settings);
+                if(request->field==13)complete_controls_apply(false);
+                continue;
+            }
+            persisted_settings=merged;
+            acknowledge_controls_settings(persisted_settings);
+            bool window_applied = true;
+            if (request->field==3) window_applied=window_mode_controller->set_fullscreen(
+                requested->graphics.window_mode == GraphicsWindowMode::Fullscreen);
+            active_settings.family_override=requested->family_override;
+            active_settings.bindings=requested->bindings;
+            active_settings.magic=requested->magic;
+            if(request->field==5)active_settings.graphics.presentation_filter=requested->graphics.presentation_filter;
+            if(request->field==6)active_settings.graphics.three_point_filter=requested->graphics.three_point_filter;
+            set_controller_bindings(requested->bindings);
+            set_magic_control(requested->magic);
+            const auto ports = controller_ports.snapshot();
+            if (active_family.load() != ControllerFamily::Keyboard && ports[0].connected)
+                active_family.store(select_controller_family(ports[0].name.c_str(), family_override()));
+            if (active_p2_family.load() != ControllerFamily::Keyboard && ports[1].connected)
+                active_p2_family.store(select_controller_family(ports[1].name.c_str(), family_override()));
+            set_rt64_live_filters(request->field==5
+                ? std::optional{requested->graphics.presentation_filter} : std::nullopt,
+                request->field==6 ? std::optional{requested->graphics.three_point_filter} : std::nullopt);
+            if(request->field==13) {
+                complete_controls_apply(true);
+            }
+            std::fprintf(stdout, "{\"event\":\"pc_options_saved\",\"window_applied\":%s}\n",
+                         window_applied ? "true" : "false");
+            std::fflush(stdout);
+        }
         if (take_close_game_request()) {
             std::fprintf(stdout, "{\"event\":\"close_game_requested\"}\n");
             std::fflush(stdout);
@@ -613,17 +662,6 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
                 event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
                 window_mode_controller->focus_lost();
             }
-            if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-                FullscreenKey key = FullscreenKey::Other;
-                if (event.key.keysym.scancode == SDL_SCANCODE_F11)
-                    key = FullscreenKey::F11;
-                else if (event.key.keysym.scancode == SDL_SCANCODE_RETURN ||
-                         event.key.keysym.scancode == SDL_SCANCODE_KP_ENTER)
-                    key = FullscreenKey::Enter;
-                if (window_mode_controller->handle_key(
-                        key, event.type == SDL_KEYDOWN, event.key.repeat != 0,
-                        (event.key.keysym.mod & KMOD_ALT) != 0)) continue;
-            }
             const auto before_removal = event.type == SDL_CONTROLLERDEVICEREMOVED
                 ? controller_ports.snapshot()
                 : std::array<ControllerPortSnapshot, 2>{};
@@ -652,7 +690,37 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
             if (keyboard_state.handle_event(event)) {
                 active_family.store(ControllerFamily::Keyboard);
             }
+            const bool removed_assigned=event.type==SDL_CONTROLLERDEVICEREMOVED &&
+                (before_removal[0].instance_id==event.cdevice.which || before_removal[1].instance_id==event.cdevice.which);
+            int event_port=active_port;
+            if(event.type==SDL_CONTROLLERAXISMOTION || event.type==SDL_CONTROLLERBUTTONDOWN || event.type==SDL_CONTROLLERBUTTONUP) {
+                const auto ports=controller_ports.snapshot();
+                const auto id=event.type==SDL_CONTROLLERAXISMOTION ? event.caxis.which:event.cbutton.which;
+                for(int i=0;i<2;++i)if(ports[i].connected && ports[i].instance_id==id)event_port=i;
+            }
+            const auto detected=event_port>=0
+                ? detect_controller_family(controller_ports.snapshot()[event_port].name.c_str())
+                : ControllerFamily::Keyboard;
+            handle_controls_event(event,event_port>=0 || removed_assigned,detected);
         }
+        bool held=keyboard_state.buttons()!=0;
+        for(const auto& port:controller_ports.snapshot()) {
+            if(!port.connected)continue;
+            const auto& s=port.sample;
+            held=held || s.south || s.east || s.west || s.north || s.back || s.start ||
+                s.dpad_up || s.dpad_down || s.dpad_left || s.dpad_right ||
+                s.left_shoulder || s.right_shoulder || s.trigger_left>8000 || s.trigger_right>8000 ||
+                std::abs(s.left_x)>8000 || std::abs(s.left_y)>8000;
+        }
+        if((controls_editor_blocks_game() || pc_settings_blocks_game()) && !controls_editor_active() && !pc_settings_active() && !held) {
+            // Refresh the guest snapshot before releasing the input quarantine.
+            // Otherwise the last polled held Apply button could enter the guest again.
+            const auto current=controller_ports.snapshot();
+            std::lock_guard lock(input_snapshot_mutex);
+            input_snapshot=current;keyboard_snapshot=keyboard_state.buttons();
+        }
+        controls_editor_release_guard(held);
+        pc_settings_release_guard(held);
         const auto now = std::chrono::steady_clock::now();
         if (report_audio && now >= next_audio_report) {
             const auto pacing = audio_output.pacing_snapshot();

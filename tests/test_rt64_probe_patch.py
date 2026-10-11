@@ -262,7 +262,7 @@ int main(){return RT64::run();}
         patched = patch_source(path.name, raw, SOURCES[path.name])
         self.assertIn(b'rt64_probe_workload', patched)
         self.assertIn(b'framesRendered', patched)
-        self.assertIn(b'tetrisphere_rescue_pause_grid', patched)
+        self.assertIn(b'tetrisphere_transition_tiles', patched)
         self.assertLess(patched.index(b'tetrisphere_apply_pause_snapshot(workload'),
                         patched.index(b'framebufferRenderer->addFramebuffer(drawParams)'),
                         'pause tiles must change before RT64 chooses rectangle geometry')

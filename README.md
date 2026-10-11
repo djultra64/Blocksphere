@@ -10,11 +10,11 @@ A Nintendo 64 Tetrisphere recompilation.
 
 A community PC port of **Tetrisphere** for Linux and Windows x86-64, built through static recompilation with N64Recomp, N64ModernRuntime, RSPRecomp, and RT64.
 
-<p align="center">
-  <img src="assets/screenshots/title-screen.png" alt="Tetrisphere title screen running in Blocksphere" width="820">
-</p>
+
 
 This is an independent fan project, with no affiliation with or endorsement from the original developers, publisher, or rights holders.
+
+Project direction, original port work and playtesting: **djultra64**.
 
 ## Why I built this
 
@@ -24,9 +24,15 @@ I set the project's direction, define its requirements, choose priorities, and m
 
 AI is one of the tools I use throughout this process. The goal is to learn through investigation, experimentation, and iteration, and to build something I can understand and keep improving.
 
-**Blocksphere 1.0 is available; the 1.0.1 controller update is being prepared.** Download it from [GitHub Releases](https://github.com/djultra64/Blocksphere/releases/latest). I will keep working on Blocksphere, improving compatibility, fixing bugs, and refining the experience. Bug reports are welcome through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
+**Blocksphere 1.1.0-beta.7 is available as a Linux prerelease.** [Download the Options beta](https://github.com/djultra64/Blocksphere/releases/tag/v1.1.0-beta.7). The stable 1.0 release remains available; 1.0.1 is a separate draft awaiting native Windows validation. Download it from [GitHub Releases](https://github.com/djultra64/Blocksphere/releases/latest). I will keep working on Blocksphere, improving compatibility, fixing bugs, and refining the experience. Bug reports are welcome through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
 
 Native Linux and Windows builds exist, with hands-on review of representative game modes, audio, widescreen fixes, and local two-player play. Physical 4K output, high-refresh presentation, extended stability, and the full controller/device matrix are not fully verified.
+
+## Options beta
+
+The Linux 1.1.0-beta.7 package configures Controls and Graphics inside Options. Graphics presents seven fields together; Controls uses the original low-resolution menu font, aligned action rows and device-aware names. The main menu order is Single, VS, Practice, Training, Options, Close Game. Options animates all five entries together. Framebuffer transitions preserve the background proportions.
+
+This prerelease does not include the standalone configurator or a new Windows binary. Copy your existing private `data/` directory into the extracted game folder to preserve progress and settings. Keep that personal folder private. Physical controller acceptance and exhaustive late-game transitions remain pending. See [beta details](docs/OPTIONS_BETA.md).
 
 ## Features
 
@@ -47,6 +53,8 @@ Further testing is required on several modes and configurations.
 No ROM, extracted original game assets, save files, or captured audio are distributed with this project. Do not submit those files in issues or pull requests.
 
 ## Getting started
+
+The following general instructions describe the stable package. The Linux Options prerelease uses the in-game editors described above and has no standalone configurator.
 
 1. Extract the entire package and keep its folders and runtime libraries together.
 2. Run `./tetrisphere` on Linux or `tetrisphere.exe` on Windows.

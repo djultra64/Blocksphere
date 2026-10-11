@@ -118,7 +118,7 @@ int main(){return RT64::run();}
         raw = path.read_bytes()
         for probe in (False, True):
             source = patch_source(path.name, raw, SOURCES[path.name], probe=probe).decode()
-            self.assertIn("tetrisphere_rescue_pause_grid", source)
+            self.assertIn("tetrisphere_transition_tiles", source)
             self.assertIn("tetrisphere_rt64_pause_snapshot_peek", source)
             self.assertIn("tetrisphere_capture_rescue_pause", source)
             self.assertIn("sourceLastWriter", source)
@@ -132,7 +132,7 @@ int main(){return RT64::run();}
         compiler = shutil.which("c++")
         if compiler is None:
             self.skipTest("C++ compiler unavailable")
-        grid = PAUSE_SNAPSHOT_HELPER.split("    // The guest draws", 1)[1].split(
+        grid = PAUSE_SNAPSHOT_HELPER.split("    // A verified", 1)[1].split(
             "    // This runs on the wide render thread", 1)[0]
         source = r'''#include <array>
 #include <cstdint>
@@ -157,7 +157,19 @@ struct Data { std::array<DrawCallTile,40> callTiles;
     std::array<LoadOperation,40> loadOperations; };
 struct Workload { uint32_t fbPairCount=2; std::array<Pair,2> fbPairs; Data drawData; };
 namespace RT64 {
-''' + "    // The guest draws" + grid + r'''
+''' + "    // A verified" + grid + r'''
+    // A compact region index is useful to diagnostics and the original grid
+    // regression. The actual renderer consumes every (tile, region) mapping.
+    static bool tetrisphere_rescue_pause_grid(const Workload &workload,
+                                              uint32_t destination,
+                                              std::array<uint32_t, 40> &indices) {
+        indices.fill(UINT32_MAX);
+        std::vector<std::pair<uint32_t, uint32_t>> mappings;
+        if (!tetrisphere_transition_tiles(workload, destination, mappings)) return false;
+        for (const auto &entry : mappings) indices[entry.second] = entry.first;
+        return true;
+    }
+
 int run() {
     Workload w;
     for (uint32_t i=0;i<40;i++) {
@@ -174,16 +186,16 @@ int run() {
     std::array<uint32_t,40> indices{};
     const bool valid=tetrisphere_rescue_pause_grid(w,0x166f20,indices);
     w.drawData.loadOperations[17].texture.address=0x18c720;
-    const bool wrongAsset=tetrisphere_rescue_pause_grid(w,0x166f20,indices);
+    const bool wrongAsset=tetrisphere_rescue_pause_grid(w,0x166f20,indices) && indices[17]==UINT32_MAX;
     w.drawData.loadOperations[17].texture.address=0x166f20;
     w.fbPairs[1].projections[0].gameCalls[39].callDesc.rect.lrx=1279;
     const bool wrongGrid=tetrisphere_rescue_pause_grid(w,0x166f20,indices);
     w.fbPairs[1].projections[0].gameCalls[39].callDesc.rect.lrx=1280;
     w.fbPairs[1].projections[0].gameCalls[7].callDesc.tileCount=2;
-    const bool wrongTile=tetrisphere_rescue_pause_grid(w,0x166f20,indices);
+    const bool wrongTile=tetrisphere_rescue_pause_grid(w,0x166f20,indices) && indices[7]==UINT32_MAX;
     w.fbPairs[1].projections[0].gameCalls[7].callDesc.tileCount=1;
     w.drawData.loadOperations[17].operationTile.uls++;
-    const bool wrongSourceOffset=tetrisphere_rescue_pause_grid(w,0x166f20,indices);
+    const bool wrongSourceOffset=tetrisphere_rescue_pause_grid(w,0x166f20,indices) && indices[17]==UINT32_MAX;
     w.drawData.loadOperations[17].operationTile.uls--;
     w.drawData.callTiles[17].maxTexcoord.x++;
     const bool wrongTexcoord=tetrisphere_rescue_pause_grid(w,0x166f20,indices);
@@ -205,7 +217,7 @@ int main(){return RT64::run();}
                                       capture_output=True, text=True)
             self.assertEqual(compiled.returncode, 0, compiled.stderr)
             result = subprocess.run([str(exe)], check=True, capture_output=True, text=True)
-        self.assertEqual(result.stdout, "1 0 0 0 0 0 0 0 39")
+        self.assertEqual(result.stdout, "1 1 1 1 1 1 0 4294967295 4294967295")
 
     def test_pause_snapshot_fractional_tiles_share_all_edges(self):
         path = (Path(__file__).resolve().parents[1] /

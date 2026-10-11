@@ -22,7 +22,7 @@ int main() {
     tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004E0BCu);
     assert(ctx.r1 == 0);
 
-    // Extend the guest separator loop through Training, but not after Close.
+    // Extend the separator loop through the fifth visible row, not after Close.
     ctx.r8 = 4;
     ctx.r1 = 0;
     tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004E020u);
@@ -43,18 +43,24 @@ int main() {
         assert(ctx.r9 == static_cast<gpr>(selection));
     }
 
-    // Down from Training reaches Close game, then wraps to Single.
-    ctx.r8 = 4;
-    ctx.r1 = 0;
-    tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004F030u);
-    assert(ctx.r1 == 1);
-    ctx.r8 = 5;
-    tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004F030u);
-    assert(ctx.r1 == 0);
-    // Up from Single wraps to Close game.
-    ctx.r8 = 4;
-    tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004F0CCu);
-    assert(ctx.r8 == 5);
+    // Guest IDs stay original: Options=3, Training=4. Walk the real visible order.
+    const std::array<int,6> order{0,1,2,4,3,5};
+    for (int index=0; index<6; ++index) {
+        const int selected=order[index], next=order[(index+1)%6], previous=order[(index+5)%6];
+        MEM_H(0, 0xFFFFFFFF800E121Cull)=selected;
+        ctx.r8=selected;
+        tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004F030u);
+        // Execute the guest branch's load, increment and store following the hook.
+        const int down=ctx.r1 ? MEM_H(0, 0xFFFFFFFF800E121Cull)+1 : 0;
+        assert(down==next);
+        MEM_H(0, 0xFFFFFFFF800E121Cull)=selected;
+        ctx.r25=selected;
+        tetrisphere_close_game_menu_hook(rdram, &ctx, 0x8004F0A8u);
+        // The original positive branch decrements and stores this seeded value.
+        assert(ctx.r25>0);
+        const int up=MEM_H(0, 0xFFFFFFFF800E121Cull)-1;
+        assert(up==previous);
+    }
 
     const std::array<std::uint32_t, 6> measure_sites{
         0x8004DC04u, 0x8004DC98u, 0x8004DD60u,
@@ -82,9 +88,12 @@ int main() {
         // Shift every main-menu row together, including transition draw paths.
         for (int row = 0; row < 6; ++row) {
             MEM_W(0x6C, ctx.r29) = row;
+            ctx.r5 = 264 - 7 * row;
             ctx.r6 = 60 + 19 * row;
             tetrisphere_close_game_menu_hook(rdram, &ctx, site);
-            assert(ctx.r6 == static_cast<gpr>(50 + 19 * row));
+            const int visible=row==3 ? 4:row==4 ? 3:row;
+            assert(ctx.r6 == static_cast<gpr>(50 + 19 * visible));
+            assert(ctx.r5 == static_cast<gpr>(264 - 7 * visible));
         }
         MEM_W(0x6C, ctx.r29) = 5;
         ctx.r7 = static_cast<std::int32_t>(0x800EC9A0u);

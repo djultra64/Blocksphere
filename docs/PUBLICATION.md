@@ -23,3 +23,17 @@ fresh source checkout without those inputs produces missing-input errors.
 Publication checks cover file provenance, identity, private-data exclusions,
 README links, banner integrity, and tests that do not need private inputs.
 These checks do not establish a newly compiled or playtested game build.
+
+## Options beta integration, 2026-10-11
+
+The 1.1.0-beta.7 source snapshot transfers the reviewed Options changes from
+the locally merged development source. The existing public history remains
+authored and committed exclusively by djultra64; development history is not
+pushed or rewritten. Previously included game screenshots and the original
+game icon are removed from the current source tree. No new captured media,
+ROM, generated game code or personal data is published. The generic controller
+illustration is a project-created asset, not an extracted game image.
+
+Linux is the validated platform for this prerelease. Native Windows and
+physical controller acceptance remain pending. The stable release and the
+separate 1.0.1 draft are preserved.

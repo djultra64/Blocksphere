@@ -4,6 +4,8 @@
 
 namespace {
 std::atomic_bool close_requested{false};
+// Preserve guest identities (Options=3, Training=4) while changing their order.
+constexpr int display_row(int row) { return row == 3 ? 4 : row == 4 ? 3 : row; }
 
 // NTPE rev0 func_8004C7E8 owns a 0x70-byte frame. 0x48..0x52 is
 // unused; saved registers end at 0x47, a submenu buffer starts at 0x54.
@@ -38,10 +40,19 @@ extern "C" void tetrisphere_close_game_menu_hook(std::uint8_t* rdram,
             ctx->r1 = static_cast<std::int64_t>(ctx->r11) < 6;
             return;
         case 0x8004F030u: // Down: include the sixth row before wrapping.
-            ctx->r1 = static_cast<std::int64_t>(ctx->r8) < 5;
+            {
+                const int next = display_row((display_row(int(ctx->r8)) + 1) % 6);
+                ctx->r1 = next != 0;
+                // The positive guest branch reloads this field and adds one.
+                if (next != 0) MEM_H(0, 0xFFFFFFFF800E121Cull) = next - 1;
+            }
             return;
-        case 0x8004F0CCu: // Up from the first row: wrap to the sixth.
-            ctx->r8 = 5;
+        case 0x8004F0A8u: // Up: preserve the guest decrement/store path.
+            {
+                const int previous = display_row((display_row(int(ctx->r25)) + 5) % 6);
+                MEM_H(0, 0xFFFFFFFF800E121Cull) = previous + 1;
+                ctx->r25 = 1; // Always use the positive branch, including wrap.
+            }
             return;
         case 0x8004F110u:
             // Only reached after the guest's confirm/Start/Z input check.
@@ -67,7 +78,12 @@ extern "C" void tetrisphere_close_game_menu_hook(std::uint8_t* rdram,
         case 0x8004DF5Cu:
         case 0x8004E00Cu:
             // All six rows and animation paths share the same vertical shift.
-            ctx->r6 = ADD32(ctx->r6, -10);
+            {
+                const int row = MEM_W(0x6C, ctx->r29);
+                const int delta = display_row(row) - row;
+                ctx->r5 = ADD32(ctx->r5, -7 * delta);
+                ctx->r6 = ADD32(ctx->r6, -10 + 19 * delta);
+            }
             if (MEM_W(0x6C, ctx->r29) == 5)
                 ctx->r7 = label_address(rdram, ctx);
             return;

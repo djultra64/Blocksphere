@@ -116,8 +116,8 @@ text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004F030u);"
 
 [[patches.hook]]
 func = "func_8004C7E8"
-before_vram = 0x8004F0CC
-text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004F0CCu);"
+before_vram = 0x8004F0A8
+text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004F0A8u);"
 
 [[patches.hook]]
 func = "func_8004C7E8"
@@ -198,3 +198,86 @@ text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004E020u);"
 func = "func_8004C7E8"
 before_vram = 0x8004E0A4
 text = "tetrisphere_close_game_menu_hook(rdram, ctx, 0x8004E0A4u);"
+
+# PC options nested inside the original Options submenu. No main-menu row.
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004CC0C
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004CC0Cu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F38C
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004F38Cu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F224
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004F224u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F408
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004F408u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004F680
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004F680u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E7D0
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004E7D0u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E8E4
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004E8E4u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004EAFC
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004EAFCu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004EC18
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004EC18u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E8BC
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004E8BCu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004E9CC
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004E9CCu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004EABC
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004EABCu);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004EBF0
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004EBF0u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004ED08
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004ED08u);"
+
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004EE00
+text = "tetrisphere_pc_settings_hook(rdram, ctx, 0x8004EE00u);"
+
+# Dedicated controls view: saved registers precede this site; verified epilogue follows.
+[[patches.hook]]
+func = "func_8004C7E8"
+before_vram = 0x8004CF6C
+text = "if (tetrisphere_controls_view_hook(rdram, ctx)) goto L_8004FBE0;"

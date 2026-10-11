@@ -251,6 +251,12 @@ set(TETRISPHERE_BUILD_INPUTS
     include/tetrisphere/microcode.h
     include/tetrisphere/linux_platform.h
     include/tetrisphere/close_game_menu.h
+    include/tetrisphere/pc_settings_menu.h
+    include/tetrisphere/pc_settings_hook.h
+    include/tetrisphere/controls_editor.h
+    include/tetrisphere/controls_bridge.h
+    include/tetrisphere/controls_view.h
+    include/tetrisphere/controls_sdl.h
     include/tetrisphere/eeprom_store.h
     include/tetrisphere/rom_input.h
     include/tetrisphere/rom_cache.h
@@ -282,10 +288,20 @@ set(TETRISPHERE_BUILD_INPUTS
     src/diagnostic/main.cpp
     src/diagnostic/indirect_dispatch.cpp
     src/diagnostic/rescue_pause_snapshot_stub.cpp
+    src/platform/input_mapping.cpp
     src/runtime/runtime.cpp
     src/runtime/unsupported.cpp
     src/platform/input_mapping.cpp
     src/platform/close_game_menu.cpp
+    src/platform/pc_settings_menu.cpp
+    src/platform/pc_settings_hook.cpp
+    src/platform/controls_sdl.cpp
+    src/platform/controls_editor.cpp
+    src/platform/controls_bridge.cpp
+    src/graphics/controls_view.cpp
+    src/graphics/controls_view_guest.cpp
+    tools/build/controls_sprite_compile.cpp
+    assets/ui/controllers/generic-pixel-v2.png
     src/platform/eeprom_store.cpp
     src/platform/rom_input.cpp
     src/platform/rom_cache.cpp
@@ -365,7 +381,14 @@ add_executable(tetrisphere_diag
     src/platform/run_options.cpp
     src/diagnostic/indirect_dispatch.cpp
     src/diagnostic/rescue_pause_snapshot_stub.cpp
+    src/platform/input_mapping.cpp
     src/platform/close_game_menu.cpp
+    src/platform/pc_settings_menu.cpp
+    src/platform/pc_settings_hook.cpp
+    src/platform/controls_editor.cpp
+    src/platform/controls_bridge.cpp
+    src/graphics/controls_view.cpp
+    src/graphics/controls_view_guest.cpp
     src/graphics/prompt_atlas_probe.cpp
     src/graphics/training_prompt_hooks.cpp
     src/runtime/runtime.cpp
@@ -408,6 +431,46 @@ else()
     target_compile_options(close_game_menu_test PRIVATE -UNDEBUG)
 endif()
 add_test(NAME close_game_menu COMMAND close_game_menu_test)
+
+add_executable(controls_view_test tests/controls_view_test.cpp
+    src/graphics/controls_view.cpp src/platform/controls_editor.cpp src/platform/pc_settings_menu.cpp src/platform/input_mapping.cpp)
+target_include_directories(controls_view_test PRIVATE "${CMAKE_SOURCE_DIR}/include")
+if(MSVC)
+    target_compile_options(controls_view_test PRIVATE /UNDEBUG)
+else()
+    target_compile_options(controls_view_test PRIVATE -UNDEBUG)
+endif()
+add_test(NAME controls_view COMMAND controls_view_test)
+add_executable(controls_editor_test tests/controls_editor_test.cpp
+    src/platform/controls_editor.cpp src/platform/input_mapping.cpp)
+add_executable(controls_bridge_test tests/controls_bridge_test.cpp
+    src/platform/controls_editor.cpp src/platform/controls_bridge.cpp src/platform/input_mapping.cpp)
+foreach(CONTROLS_TARGET controls_editor_test controls_bridge_test)
+    target_include_directories(${CONTROLS_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/include")
+    if(MSVC)
+        target_compile_options(${CONTROLS_TARGET} PRIVATE /UNDEBUG)
+    else()
+        target_compile_options(${CONTROLS_TARGET} PRIVATE -UNDEBUG)
+    endif()
+endforeach()
+add_test(NAME controls_editor COMMAND controls_editor_test)
+add_test(NAME controls_bridge COMMAND controls_bridge_test)
+add_executable(pc_settings_menu_test tests/pc_settings_menu_test.cpp
+    src/platform/pc_settings_menu.cpp src/platform/input_mapping.cpp)
+add_executable(pc_settings_hook_test tests/pc_settings_hook_test.cpp
+    src/platform/pc_settings_hook.cpp src/platform/pc_settings_menu.cpp src/platform/input_mapping.cpp
+    src/platform/controls_editor.cpp src/platform/controls_bridge.cpp)
+foreach(PC_TARGET pc_settings_menu_test pc_settings_hook_test)
+    target_include_directories(${PC_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/include" "${N64RECOMP_INCLUDE}")
+    if(MSVC)
+        target_compile_options(${PC_TARGET} PRIVATE /UNDEBUG)
+    else()
+        target_compile_options(${PC_TARGET} PRIVATE -UNDEBUG)
+    endif()
+endforeach()
+target_compile_definitions(pc_settings_hook_test PRIVATE TETRISPHERE_PC_SETTINGS_TEST)
+add_test(NAME pc_settings_menu COMMAND pc_settings_menu_test)
+add_test(NAME pc_settings_hook COMMAND pc_settings_hook_test)
 
 add_executable(run_options_test tests/run_options_test.cpp src/platform/run_options.cpp)
 target_include_directories(run_options_test PRIVATE "${CMAKE_SOURCE_DIR}/include")
@@ -619,6 +682,16 @@ if(MICROCODE_LIVE_ENABLED)
     set(TETRISPHERE_SAVED_BUILD_TESTING "${BUILD_TESTING}")
     set(BUILD_TESTING OFF)
     add_subdirectory("${RT64_ROOT}" "${CMAKE_BINARY_DIR}/rt64" EXCLUDE_FROM_ALL)
+    add_executable(controls_sprite_compile tools/build/controls_sprite_compile.cpp)
+    target_include_directories(controls_sprite_compile PRIVATE "${RT64_ROOT}/src/contrib/stb")
+    set(CONTROLS_SPRITE_HEADER "${CMAKE_BINARY_DIR}/controls_sprite_data.h")
+    add_custom_command(OUTPUT "${CONTROLS_SPRITE_HEADER}"
+        COMMAND controls_sprite_compile
+            "${CMAKE_SOURCE_DIR}/assets/ui/controllers/generic-pixel-v2.png" "${CONTROLS_SPRITE_HEADER}"
+        DEPENDS controls_sprite_compile "${CMAKE_SOURCE_DIR}/assets/ui/controllers/generic-pixel-v2.png"
+        VERBATIM)
+    add_custom_target(controls_sprite_data DEPENDS "${CONTROLS_SPRITE_HEADER}")
+
     set(RT64_COPY_OUTPUT "${CMAKE_BINARY_DIR}/rt64-copy-src")
     set(RT64_COPY_ARGS --rt64-root "${RT64_ROOT}" --output "${RT64_COPY_OUTPUT}")
     set(RT64_COPY_NAMES rt64_application.cpp rt64_state.cpp
@@ -736,8 +809,15 @@ if(MICROCODE_LIVE_ENABLED)
         src/graphics/training_prompt_hooks.cpp
         src/graphics/training_prompts.cpp
         src/platform/controller_mappings.cpp
+        src/platform/controls_sdl.cpp
         src/platform/linux_main.cpp
         src/platform/close_game_menu.cpp
+    src/platform/pc_settings_menu.cpp
+    src/platform/pc_settings_hook.cpp
+    src/platform/controls_editor.cpp
+    src/platform/controls_bridge.cpp
+    src/graphics/controls_view.cpp
+    src/graphics/controls_view_guest.cpp
         src/platform/linux_ai.cpp
         src/platform/wav_capture.cpp
         src/platform/eeprom_store.cpp
@@ -764,6 +844,8 @@ if(MICROCODE_LIVE_ENABLED)
         "${N64MODERN_RUNTIME}/librecomp/src/ultra_translation.cpp"
         "${N64MODERN_RUNTIME}/librecomp/src/vi.cpp"
         ${GENERATED_RECOMP_SOURCES})
+    add_dependencies(tetrisphere-m1 controls_sprite_data)
+    target_include_directories(tetrisphere-m1 PRIVATE "${CMAKE_BINARY_DIR}")
     target_compile_definitions(tetrisphere-m1 PRIVATE
         TETRISPHERE_LINUX_DEMO HLSL_CPU IMGUI_IMPL_VULKAN_NO_PROTOTYPES
         TETRISPHERE_BUILD_ID="${TETRISPHERE_BUILD_ID}"
@@ -853,6 +935,15 @@ if(MICROCODE_LIVE_ENABLED)
     add_test(NAME portable_data
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/portable_data_test.py"
                 $<TARGET_FILE:tetrisphere-config> "${CMAKE_CURRENT_BINARY_DIR}")
+    add_executable(controls_sdl_test tests/controls_sdl_test.cpp
+        src/platform/controls_sdl.cpp src/platform/controls_editor.cpp src/platform/controls_bridge.cpp src/platform/pc_settings_hook.cpp src/platform/pc_settings_menu.cpp src/platform/input_mapping.cpp)
+    target_include_directories(controls_sdl_test PRIVATE "${CMAKE_SOURCE_DIR}/include" "${N64RECOMP_INCLUDE}" ${TETRISPHERE_SDL_INCLUDE_DIRS} ${TETRISPHERE_CONFIG_SDL_INCLUDE})
+    if(MSVC)
+        target_compile_options(controls_sdl_test PRIVATE /UNDEBUG)
+    else()
+        target_compile_options(controls_sdl_test PRIVATE -UNDEBUG)
+    endif()
+    add_test(NAME controls_sdl COMMAND controls_sdl_test)
     add_executable(controller_slot_test tests/controller_slot_test.cpp
         src/platform/controller_slot.cpp)
     add_custom_command(TARGET tetrisphere-m1 POST_BUILD

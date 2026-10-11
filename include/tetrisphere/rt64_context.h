@@ -9,6 +9,9 @@
 namespace tetrisphere {
 
 struct RunOptions;
+enum class PresentationFilter;
+void set_rt64_live_filters(std::optional<PresentationFilter> filter,
+                           std::optional<bool> three_point);
 
 // Apply only options represented by RT64's current user configuration. This
 // deliberately leaves window mode, HUD layout, VSync and backend unchanged.

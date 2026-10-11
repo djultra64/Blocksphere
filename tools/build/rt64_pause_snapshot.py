@@ -1,4 +1,4 @@
-"""Scoped RT64 wide-frame capture for Rescue's 5x8 pause image."""
+"""Scoped RT64 wide-frame capture for verified 5x8 transition images."""
 
 PAUSE_SNAPSHOT_INCLUDE = '''#include <array>
 #include <cstdio>
@@ -38,9 +38,8 @@ PAUSE_SNAPSHOT_HELPER = r'''    extern "C" bool tetrisphere_rt64_pause_snapshot_
         snapshot.valid = false;
     }
 
-    // A pause capture is eligible only after this source framebuffer drew
-    // Rescue's tagged, static title. Projection numbers change during score
-    // and level effects, so inspect the call itself.
+    // Retain Rescue tagging for diagnostics. Eligibility follows the recorded
+    // source writer and framebuffer provenance, including menu captures.
     static bool tetrisphere_rescue_tagged_title(const FramebufferPair &pair) {
         for (uint32_t p = 0; p < pair.projectionCount; p++) {
             const auto &projection = pair.projections[p];
@@ -55,52 +54,48 @@ PAUSE_SNAPSHOT_HELPER = r'''    extern "C" bool tetrisphere_rt64_pause_snapshot_
         return false;
     }
 
-    // The guest draws its frozen 320x240 RGBA16 image as five columns and
-    // eight rows. Validate every load and rect before touching any tile.
-    static bool tetrisphere_rescue_pause_grid(const Workload &workload,
+    // A verified 320x240 framebuffer capture is consumed as 64x30 RGBA16
+    // regions. Transitions slide, zoom, rotate, reorder and hide those regions;
+    // identify the source loads, never their changing screen geometry or mode.
+    static bool tetrisphere_transition_tiles(const Workload &workload,
                                               uint32_t destination,
-                                              std::array<uint32_t, 40> &indices) {
-        if (workload.fbPairCount < 2) return false;
-        const auto &pair = workload.fbPairs[1];
-        if (pair.projectionCount == 0 ||
-            pair.scissorRect.ulx != 0 || pair.scissorRect.uly != 0 ||
-            pair.scissorRect.lrx != 1280 || pair.scissorRect.lry != 960) return false;
-        const auto &proj = pair.projections[0];
-        if (proj.type != Projection::Type::Rectangle || proj.gameCallCount < 40) return false;
-        for (uint32_t i = 0; i < 40; i++) {
-            const auto &call = proj.gameCalls[i].callDesc;
-            const uint32_t column = i % 5, row = i / 5;
-            if (call.rect.ulx != int32_t(column * 256) ||
-                call.rect.uly != int32_t(row * 120) ||
-                call.rect.lrx != int32_t(column == 4 ? 1280 : column * 256 + 255) ||
-                call.rect.lry != int32_t(row == 7 ? 960 : row * 120 + 119) ||
-                call.tileCount != 1 || call.loadCount != 1 ||
-                call.tileIndex >= workload.drawData.callTiles.size() ||
-                call.loadIndex >= workload.drawData.loadOperations.size()) return false;
-            const auto &load = workload.drawData.loadOperations[call.loadIndex];
-            if (load.texture.address != destination ||
-                load.texture.width != 320 ||
-                load.texture.fmt != G_IM_FMT_RGBA ||
-                load.texture.siz != G_IM_SIZ_16b) return false;
-            // These 10.2 fixed point source coordinates were observed for
-            // all 40 loads. Each call must sample its own 64x30 region.
-            const uint16_t uls = column * 256, ult = row * 120;
-            if (load.type != LoadOperation::Type::Tile ||
-                load.operationTile.uls != uls || load.operationTile.ult != ult ||
-                load.operationTile.lrs != uls + 252 ||
-                load.operationTile.lrt != ult + 116 ||
-                load.tile.uls != uls || load.tile.ult != ult ||
-                load.tile.lrs != uls + 252 || load.tile.lrt != ult + 116) return false;
-            const auto &tile = workload.drawData.callTiles[call.tileIndex];
-            if (tile.minTexcoord.x != 0 || tile.minTexcoord.y != 0 ||
-                tile.maxTexcoord.x != 64 || tile.maxTexcoord.y != 30 ||
-                tile.sampleWidth != 505 || tile.sampleHeight != 233) return false;
-            for (uint32_t previous = 0; previous < i; previous++) {
-                if (indices[previous] == call.tileIndex) return false;
+                                              std::vector<std::pair<uint32_t, uint32_t>> &indices) {
+        indices.clear();
+        bool matched = false;
+        for (uint32_t f = 0; f < workload.fbPairCount; f++) {
+            const auto &pair = workload.fbPairs[f];
+            for (uint32_t p = 0; p < pair.projectionCount; p++) {
+                const auto &proj = pair.projections[p];
+                for (uint32_t c = 0; c < proj.gameCallCount; c++) {
+                    const auto &call = proj.gameCalls[c].callDesc;
+                    if (call.tileCount != 1 || call.loadCount != 1 ||
+                        call.tileIndex >= workload.drawData.callTiles.size() ||
+                        call.loadIndex >= workload.drawData.loadOperations.size()) continue;
+                    const auto &load = workload.drawData.loadOperations[call.loadIndex];
+                    if (load.texture.address != destination || load.texture.width != 320 ||
+                        load.texture.fmt != G_IM_FMT_RGBA || load.texture.siz != G_IM_SIZ_16b ||
+                        load.type != LoadOperation::Type::Tile) continue;
+                    const uint16_t uls = load.operationTile.uls, ult = load.operationTile.ult;
+                    if (uls % 256 != 0 || ult % 120 != 0 || uls >= 1280 || ult >= 960 ||
+                        load.operationTile.lrs != uls + 252 || load.operationTile.lrt != ult + 116 ||
+                        load.tile.uls != uls || load.tile.ult != ult ||
+                        load.tile.lrs != uls + 252 || load.tile.lrt != ult + 116) continue;
+                    const unsigned region = (ult / 120) * 5 + uls / 256;
+                    const auto &tile = workload.drawData.callTiles[call.tileIndex];
+                    if (tile.minTexcoord.x < 0 || tile.minTexcoord.y < 0 ||
+                        tile.maxTexcoord.x > 64 || tile.maxTexcoord.y > 30) continue;
+                    bool duplicate = false;
+                    for (const auto &previous : indices) {
+                        if (previous.first != call.tileIndex) continue;
+                        if (previous.second != region) return false;
+                        duplicate = true;
+                    }
+                    if (!duplicate) indices.emplace_back(call.tileIndex, region);
+                    matched = true;
+                }
             }
-            indices[i] = call.tileIndex;
         }
-        return true;
+        return matched;
     }
 
     // This runs on the wide render thread under workloadMutex, before any
@@ -206,15 +201,16 @@ PAUSE_SNAPSHOT_HELPER = r'''    extern "C" bool tetrisphere_rt64_pause_snapshot_
             tetrisphere_invalidate_pause_snapshot();
             return false;
         }
-        std::array<uint32_t, 40> indices{};
-        if (!tetrisphere_rescue_pause_grid(workload, snapshot.destination, indices)) return false;
+        std::vector<std::pair<uint32_t, uint32_t>> indices;
+        if (!tetrisphere_transition_tiles(workload, snapshot.destination, indices)) return false;
         auto &original = snapshot.originalTiles[workload.workloadId];
         if (original.empty()) {
-            for (uint32_t i = 0; i < 40; i++)
-                original.emplace_back(indices[i], workload.drawData.callTiles[indices[i]]);
+            for (const auto &entry : indices)
+                original.emplace_back(entry.first, workload.drawData.callTiles[entry.first]);
         }
-        for (uint32_t i = 0; i < 40; i++) {
-            auto &callTile = workload.drawData.callTiles[indices[i]];
+        for (const auto &entry : indices) {
+            const uint32_t i = entry.second;
+            auto &callTile = workload.drawData.callTiles[entry.first];
             callTile.tileCopyUsed = true;
             callTile.tmemHashOrID = snapshot.tileIds[i];
             callTile.tileCopyWidth = 64;
@@ -227,9 +223,9 @@ PAUSE_SNAPSHOT_HELPER = r'''    extern "C" bool tetrisphere_rt64_pause_snapshot_
             probe != nullptr && probe[0] == '1' && probe[1] == '\0') {
             std::fprintf(stderr,
                 "{\"event\":\"rt64_probe_rescue_snapshot_apply\","
-                "\"workload\":%llu,\"generation\":%llu,\"tiles\":40}\n",
+                "\"workload\":%llu,\"generation\":%llu,\"tiles\":%zu}\n",
                 static_cast<unsigned long long>(workload.workloadId),
-                static_cast<unsigned long long>(snapshot.generation));
+                static_cast<unsigned long long>(snapshot.generation),indices.size());
         }
         // Workload IDs are monotonic; recycled ring slots retain their original
         // tile data and old override records can be dropped once retired.

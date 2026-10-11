@@ -1,14 +1,16 @@
 #include "tetrisphere/linux_platform.h"
 
 #include <algorithm>
+#include <atomic>
 #include <cctype>
 #include <string>
 
 namespace tetrisphere {
 namespace {
 
-ControllerBindings active_bindings{};
-MagicControl active_magic = MagicControl::West;
+// One atomic snapshot prevents guest input and prompts from observing a partial remap.
+std::atomic<unsigned> active_bindings{0xE4};
+std::atomic<MagicControl> active_magic{MagicControl::West};
 
 std::string normalized(const char* value) {
     std::string result = value == nullptr ? "" : value;
@@ -80,14 +82,23 @@ PhysicalButton physical_button_for(const ControllerBindings& bindings,
 }
 
 void set_controller_bindings(const ControllerBindings& bindings) {
-    active_bindings = bindings;
+    active_bindings.store(static_cast<unsigned>(bindings.confirm) |
+                          (static_cast<unsigned>(bindings.cancel) << 2) |
+                          (static_cast<unsigned>(bindings.face_left) << 4) |
+                          (static_cast<unsigned>(bindings.face_up) << 6));
 }
 
-ControllerBindings controller_bindings() { return active_bindings; }
+ControllerBindings controller_bindings() {
+    const auto bits = active_bindings.load();
+    return {static_cast<PhysicalButton>(bits & 3),
+            static_cast<PhysicalButton>((bits >> 2) & 3),
+            static_cast<PhysicalButton>((bits >> 4) & 3),
+            static_cast<PhysicalButton>((bits >> 6) & 3)};
+}
 
-void set_magic_control(MagicControl control) { active_magic = control; }
+void set_magic_control(MagicControl control) { active_magic.store(control); }
 
-MagicControl magic_control() { return active_magic; }
+MagicControl magic_control() { return active_magic.load(); }
 
 const char* magic_control_label(ControllerFamily family, MagicControl control) {
     constexpr const char* keyboard[] = {"K", "L", "J", "S", "Z", "X", "A", "I"};

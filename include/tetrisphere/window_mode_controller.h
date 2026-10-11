@@ -14,6 +14,7 @@ public:
     // Returns true when a shortcut event belongs to the window manager.
     bool handle_key(FullscreenKey key, bool down, bool repeat, bool alt);
     void focus_lost();
+    bool set_fullscreen(bool fullscreen);
     bool fullscreen() const { return fullscreen_; }
 
 private:

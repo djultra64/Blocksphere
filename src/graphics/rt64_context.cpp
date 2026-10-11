@@ -30,6 +30,7 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <utility>
 
 namespace {
 // The guest copy finishes after its source display list has been submitted.
@@ -121,7 +122,7 @@ extern "C" void tetrisphere_rescue_pause_snapshot_hook(std::uint8_t* rdram,
     const std::int64_t context = MEM_W(0, S32(0x801028CCu));
     const std::uint32_t source = MEM_W(0x1910, context) & 0x00FFFFFFu;
     const std::uint32_t destination = MEM_W(0, S32(0x800DFF00u)) & 0x00FFFFFFu;
-    if (source == 0 || destination == 0 || source == destination) return;
+    if (!tetrisphere::transition_capture_buffers_eligible(source,destination)) return;
     const auto source_workload = rescue_snapshot_source_workload.load(std::memory_order_acquire);
     {
         const std::lock_guard<std::mutex> lock(rescue_snapshot_mutex);
@@ -136,8 +137,8 @@ extern "C" void tetrisphere_rescue_pause_snapshot_hook(std::uint8_t* rdram,
         probe != nullptr && probe[0] == '1' && probe[1] == '\0') {
         std::fprintf(stderr,
                      "{\"event\":\"rt64_probe_rescue_snapshot_hook\","
-                     "\"source\":%u,\"destination\":%u,\"source_workload\":%llu}\n",
-                     source, destination,
+                     "\"source\":%u,\"destination\":%u,\"scene\":%d,\"caller\":%u,\"source_workload\":%llu}\n",
+                     source, destination, int(scene_gate),std::uint32_t(ctx->r31),
                      static_cast<unsigned long long>(source_workload));
     }
 }
@@ -166,6 +167,11 @@ extern "C" void tetrisphere_rt64_pause_snapshot_ack(std::uint64_t generation) {
 
 namespace tetrisphere {
 namespace {
+
+std::mutex live_filters_mutex;
+std::optional<tetrisphere::PresentationFilter> pending_presentation;
+std::optional<bool> pending_texture;
+
 
 std::array<std::uint8_t, 0x40> rom_header{};
 std::array<std::uint8_t, 0x1000> dmem{};
@@ -248,7 +254,7 @@ public:
         app_->userConfig.resolution = RT64::UserConfiguration::Resolution::WindowIntegerScale;
         app_->userConfig.aspectRatio = RT64::UserConfiguration::AspectRatio::Original;
         app_->userConfig.displayBuffering = RT64::UserConfiguration::DisplayBuffering::Triple;
-        app_->userConfig.developerMode = true;
+        app_->userConfig.developerMode = false;
         if (run_options.msaa_samples) {
             switch (*run_options.msaa_samples) {
                 case 0: app_->userConfig.antialiasing = RT64::UserConfiguration::Antialiasing::None; break;
@@ -349,6 +355,26 @@ public:
         app_->updateEnhancementConfig();
     }
     void send_dl(const OSTask* task) override {
+        // Only this render thread mutates RT64's configuration.
+        std::optional<PresentationFilter> filter;
+        std::optional<bool> texture;
+        {
+            std::lock_guard lock(live_filters_mutex);
+            filter=std::exchange(pending_presentation,std::nullopt);
+            texture=std::exchange(pending_texture,std::nullopt);
+        }
+        if (filter || texture) {
+            if (filter) switch (*filter) {
+            case PresentationFilter::Nearest: app_->userConfig.filtering=RT64::UserConfiguration::Filtering::Nearest; break;
+            case PresentationFilter::Linear: app_->userConfig.filtering=RT64::UserConfiguration::Filtering::Linear; break;
+            case PresentationFilter::Pixel: app_->userConfig.filtering=RT64::UserConfiguration::Filtering::AntiAliasedPixelScaling; break;
+            }
+            if (texture) app_->userConfig.threePointFiltering=*texture;
+            app_->updateUserConfig(false);
+            std::fprintf(stdout,"{\"event\":\"pc_filters_applied\",\"filter\":%d,\"three_point\":%s}\n",
+                         static_cast<int>(app_->userConfig.filtering),app_->userConfig.threePointFiltering ? "true":"false");
+            std::fflush(stdout);
+        }
         std::int16_t scene_gate = 0;
         std::memcpy(&scene_gate, app_->core.RDRAM + (0x000E121Cu ^ 2u),
                     sizeof(scene_gate));
@@ -495,6 +521,12 @@ private:
 
 void set_rt64_internal_resolution_scale(std::optional<double> multiplier) {
     internal_resolution_scale = multiplier;
+}
+
+void set_rt64_live_filters(std::optional<PresentationFilter> filter,std::optional<bool> three_point) {
+    std::lock_guard lock(live_filters_mutex);
+    if (filter) pending_presentation=filter;
+    if (three_point) pending_texture=three_point;
 }
 
 void set_rt64_run_options(const RunOptions& options) {

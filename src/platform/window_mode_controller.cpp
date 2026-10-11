@@ -7,10 +7,14 @@ namespace tetrisphere {
 WindowModeController::WindowModeController(bool initial_fullscreen, ApplyMode apply_mode)
     : fullscreen_(initial_fullscreen), apply_mode_(std::move(apply_mode)) {}
 
-void WindowModeController::toggle() {
-    const bool next = !fullscreen_;
-    if (apply_mode_(next)) fullscreen_ = next;
+bool WindowModeController::set_fullscreen(bool fullscreen) {
+    if (fullscreen == fullscreen_) return true;
+    if (!apply_mode_(fullscreen)) return false;
+    fullscreen_ = fullscreen;
+    return true;
 }
+
+void WindowModeController::toggle() { set_fullscreen(!fullscreen_); }
 
 bool WindowModeController::handle_key(FullscreenKey key, bool down,
                                       bool repeat, bool alt) {

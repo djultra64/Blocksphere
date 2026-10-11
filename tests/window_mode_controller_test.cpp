@@ -31,5 +31,16 @@ int main() {
     assert(controller.fullscreen() && transitions.size() == 4);
     assert(controller.handle_key(FullscreenKey::Enter, false, false, false));
     assert(!controller.handle_key(FullscreenKey::Enter, true, false, false));
+    fail_next = true;
+    assert(!controller.set_fullscreen(false));
+    assert(controller.fullscreen());
+    assert(controller.set_fullscreen(false));
+    assert(!controller.fullscreen());
+    const auto count = transitions.size();
+    assert(controller.set_fullscreen(false) && transitions.size() == count);
+    assert(controller.set_fullscreen(true) && controller.fullscreen());
+    controller.focus_lost();
+    assert(controller.handle_key(FullscreenKey::F11, true, false, false));
+    assert(!controller.fullscreen());
     return 0;
 }
