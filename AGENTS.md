@@ -1,9 +1,11 @@
-# Options beta working instructions
+# Blocksphere public source instructions
 
-This is the active checkout for the user's in-game Options beta work. Preserve
-existing changes and do not switch, merge or reset worktrees automatically.
-The repository root and `.worktrees/m1/AGENTS.md` provide the project, privacy,
-controller, publication-identity and English-documentation requirements.
+Preserve existing changes. Keep ROMs, generated game code, extracted original
+assets, captures, audio, saves and credentials out of Git and shared packages.
+Attribute the owner's project work exclusively to djultra64. Before commits or
+publication, verify Git author, committer and GitHub authentication are djultra64.
+Preserve authentic third-party copyright and license notices. New documentation
+must be in English and retain AI disclosure, challenges and full attribution.
 
 ## Mandatory UI design supervision
 
