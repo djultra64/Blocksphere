@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "tetrisphere/keyboard_state.h"
 #include "tetrisphere/linux_platform.h"
 
@@ -11,6 +15,9 @@ int fail(const char* message) { std::cerr << message << '\n'; return 1; }
 }
 
 int main() {
+#ifdef _WIN32
+    SDL_SetMainReady();
+#endif
     tetrisphere::KeyboardState state;
     SDL_Event down{};
     down.type = SDL_KEYDOWN;

@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "tetrisphere/controller_ports.h"
 #include "tetrisphere/qa_virtual_controllers.h"
 
@@ -42,6 +46,9 @@ void append(const std::filesystem::path& path, const std::string& text) {
 }
 
 int main() {
+#ifdef _WIN32
+    SDL_SetMainReady();
+#endif
     if (SDL_Init(SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK) != 0)
         return fail("SDL initialization failed");
     TempDirectory temp;

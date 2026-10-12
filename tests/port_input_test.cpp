@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "tetrisphere/port_input.h"
 
 #include <iostream>
@@ -7,6 +11,9 @@ int fail(const char* why) { std::cerr << why << '\n'; return 1; }
 } // namespace
 
 int main() {
+#ifdef _WIN32
+    SDL_SetMainReady();
+#endif
     tetrisphere::ControllerBindings bindings{};
     tetrisphere::ControllerPortSnapshot p1{};
     tetrisphere::ControllerPortSnapshot p2{};

@@ -1,9 +1,16 @@
+#ifdef _WIN32
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "tetrisphere/controls_sdl.h"
 #include "tetrisphere/pc_settings_hook.h"
 #include <cassert>
 #include <vector>
 using namespace tetrisphere;
 int main() {
+#ifdef _WIN32
+    SDL_SetMainReady();
+#endif
  open_controls_editor(Settings{},ControllerFamily::Xbox);
  SDL_Event event{};event.type=SDL_KEYDOWN;event.key.keysym.scancode=SDL_SCANCODE_Z;
  assert(handle_controls_event(event,false,ControllerFamily::Keyboard));
