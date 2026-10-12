@@ -24,7 +24,7 @@ I set the project's direction, define its requirements, choose priorities, and m
 
 AI is one of the tools I use throughout this process. The goal is to learn through investigation, experimentation, and iteration, and to build something I can understand and keep improving.
 
-**Blocksphere 1.1.0 is available for Linux.** [Download Blocksphere](https://github.com/djultra64/Blocksphere/releases/latest). Windows downloads are also available on [GitHub Releases](https://github.com/djultra64/Blocksphere/releases). Share bug reports and suggestions through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
+**Blocksphere 1.1.0 is available for Linux and Windows.** [Download Blocksphere](https://github.com/djultra64/Blocksphere/releases/latest). Share bug reports and suggestions through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
 
 ## What's new in 1.1.0
 
@@ -44,6 +44,7 @@ The main menu now follows this order: Single, VS, Practice, Training, Options, C
 ## Requirements
 
 - Linux or Windows on an x86-64 PC.
+- On Windows, install the [Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vc14/vc_redist.x64.exe).
 - Your own **Tetrisphere US NTPE revision 0** ROM. Other regions, revisions, and modified ROMs are not supported.
 
 No ROM, extracted original game assets, save files, or captured audio are distributed with this project. Do not submit those files in issues or pull requests.
@@ -55,7 +56,7 @@ No ROM, extracted original game assets, save files, or captured audio are distri
 3. Select your supported ROM when prompted. The game can also discover a matching ROM beside the executable or accept its path as the last command-line argument. Supported input formats are `.z64`, `.v64`, `.n64`, and `.zip`.
 4. Keep the `data/` folder beside the game executable when updating; it contains the imported ROM, settings, progress, and diagnostics. Move or copy the whole game folder to carry your data with you. Older versions stored data in your user profile; to keep that progress, copy the old data directory's contents into the new game's `data/` folder before launching.
 
-On Linux 1.1.0, open **Options → Graphics** for graphics settings and **Options → Controls** for controller remapping. Use Apply to save control changes. Restart the game when a setting requests it. Windows packages provide `tetrisphere-config.exe` beside the game executable. Run the game's `--help` for options that apply to one launch.
+Open **Options → Graphics** for graphics settings and **Options → Controls** for controller remapping. Use Apply to save control changes. Restart the game when a setting requests it. Run the game's `--help` for options that apply to one launch.
 
 | Shortcut | Action |
 | --- | --- |

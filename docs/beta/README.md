@@ -10,7 +10,7 @@ The package folders have specific roles: `lib/` holds the bundled Linux SDL2 lib
 
 New installations start in widescreen (16:9); previously saved aspect settings are preserved. The game and configuration utility are beside each other in the package root.
 
-On Linux 1.1.0, configure graphics and controls through Options. Windows packages provide `tetrisphere-config.exe` for saved settings. Restart the game when a setting requests it.
+Configure graphics and controls through Options. Restart the game when a setting requests it.
 
 ## Default controller mappings
 
