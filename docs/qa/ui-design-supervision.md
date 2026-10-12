@@ -231,3 +231,32 @@ No material visual finding or further UI modification was required. This is
 visual acceptance of the reviewed merged executable, not a claim of exhaustive
 late-game transition coverage or physical-controller testing. Manual family
 selection and keyboard navigation were used for these native menu captures.
+
+## Windows 1.1.0 visual release acceptance
+
+On 2026-10-12 the graphic design supervisor granted visual acceptance to the
+actual extracted Windows release package at both 4:3 and 16:9. The reviewed
+source was `fe99cdb3473f1697a4d7b9b24a667a707811bb54`, build
+`927325c80fd96b70139a21dc93f78219f16faffa4762c4a2c08e57b773ece6c6`,
+with executable SHA-256
+`29afe28bcc279e15c1a15862f6fbc8aa59ccd5981aff8c02f3b5a7b809a70e97`.
+Private evidence remains in the native-169 and native-43 directories of the
+release-1.1.0-windows-20261012 QA run.
+
+Reviewed native images show complete original ROM lettering, aligned Controls
+action/value rows, readable PlayStation TRIANGLE and OPTIONS labels, clear
+capture/unsaved/SAVED feedback and focus brackets following the active item.
+Graphics keeps all seven fields visible, adjustment arrows separated from
+brackets, readable edited resolution/filter values, saved feedback and clear
+BACK focus. Main-menu order, selected Options preview and Close focus match
+the accepted design. Options entry frames include the original main menu,
+incoming crossfade with GRAPHICS alongside the other submenu labels, and
+stable five-row settling at both aspect ratios. No material visual finding or
+implementation change was required.
+
+The 4:3 result metadata independently matches the source, build and executable
+hash above and records application exit code zero. The 16:9 shutdown exit code
+is a separate implementation-agent verification; visual acceptance does not
+infer it from the Close screenshot. These menu captures use keyboard input
+and manual controller-family selection and do not claim physical-controller
+testing or exhaustive late-game transition coverage.
