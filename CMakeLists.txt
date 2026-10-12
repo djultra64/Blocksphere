@@ -753,6 +753,13 @@ if(MICROCODE_LIVE_ENABLED)
     endif()
     set_source_files_properties("${TETRISPHERE_RSP_RECOMP_SOURCE}"
         PROPERTIES LANGUAGE CXX)
+    if(MSVC)
+        get_filename_component(TETRISPHERE_RSP_SOURCE_DIRECTORY
+            "${TETRISPHERE_RSP_RECOMP_SOURCE}" DIRECTORY)
+        set_property(SOURCE "${TETRISPHERE_RSP_RECOMP_SOURCE}" APPEND
+            PROPERTY COMPILE_OPTIONS
+            "/pathmap:${TETRISPHERE_RSP_SOURCE_DIRECTORY}=generated/rsp")
+    endif()
     add_executable(microcode_live_test
         tests/microcode_contract_test.cpp
         tests/rt64_host_stubs.cpp

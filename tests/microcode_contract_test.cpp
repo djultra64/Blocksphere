@@ -11,6 +11,10 @@
 #include <vector>
 
 #ifdef TETRISPHERE_MICROCODE_LIVE
+#ifdef _WIN32
+#include <windows.h>
+#include <oleauto.h>
+#endif
 #include "gbi/rt64_gbi.h"
 #include "hle/rt64_interpreter.h"
 #include "hle/rt64_workload_queue.h"
