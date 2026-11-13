@@ -8,6 +8,7 @@ import hashlib
 from pathlib import Path
 
 if __package__:
+    from .rt64_frame_rate import patch_frame_rate_source
     from .rt64_rescue_hud_probe import instrument_renderer
     from .rt64_rescue_hud_layout import RESCUE_HUD_HELPER
     from .rt64_pause_snapshot import PAUSE_SNAPSHOT_INCLUDE, PAUSE_SNAPSHOT_HELPER
@@ -16,6 +17,7 @@ if __package__:
     from .rt64_m6_inspector import (APPLICATION_SHA256, STATE_SHA256,
                                    patch_application, patch_state)
 else:
+    from rt64_frame_rate import patch_frame_rate_source
     from rt64_rescue_hud_probe import instrument_renderer
     from rt64_rescue_hud_layout import RESCUE_HUD_HELPER
     from rt64_pause_snapshot import PAUSE_SNAPSHOT_INCLUDE, PAUSE_SNAPSHOT_HELPER
@@ -506,7 +508,7 @@ def patch_source(name: str, raw: bytes, expected_sha256: str, probe: bool = True
             'LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_DEFAULT_DIRS)')
         return source.encode("utf-8")
     if name == "rt64_application.cpp":
-        return patch_application(raw)
+        return patch_frame_rate_source(name, patch_application(raw).decode("utf-8")).encode("utf-8")
     if name == "rt64_state.cpp":
         return patch_state(raw)
     if name in ("rt64_interpreter.cpp", "rt64_rdp.cpp", "rt64_rsp.cpp"):
@@ -741,10 +743,10 @@ def patch_source(name: str, raw: bytes, expected_sha256: str, probe: bool = True
             tetrisphere_retire_pause_tiles(fbManager, workload.workloadId);
 
             // Update the GPU profiler''')
-    elif not probe:
+    elif not probe and name != "rt64_present_queue.cpp":
         raise ValueError(f"normal RT64 copy does not need {name}")
     if not probe:
-        return source.encode("utf-8")
+        return patch_frame_rate_source(name, source).encode("utf-8")
     if name in ("rt64_projection_processor.cpp", "rt64_framebuffer_renderer.cpp"):
         namespace_anchor = ("namespace RT64 {\n    // Helper functions.\n"
                             if name == "rt64_framebuffer_renderer.cpp" else "namespace RT64 {\n")
@@ -835,7 +837,7 @@ def patch_source(name: str, raw: bytes, expected_sha256: str, probe: bool = True
         pass
     else:
         raise ValueError(f"unsupported RT64 probe source: {name}")
-    return source.encode("utf-8")
+    return patch_frame_rate_source(name, source).encode("utf-8")
 
 
 def main() -> int:
@@ -849,6 +851,7 @@ def main() -> int:
                                       ("rt64_application.cpp", "rt64_state.cpp",
                                        "rt64_projection_processor.cpp", "rt64_framebuffer_renderer.cpp",
                                        "rt64_framebuffer_manager.cpp", "rt64_workload_queue.cpp",
+                                       "rt64_present_queue.cpp",
                                        "rt64_interpreter.cpp", "rt64_rdp.cpp", "rt64_rsp.cpp", "rt64_dynamic_libraries.cpp")}
     for name, expected in names.items():
         directory = "common" if name == "rt64_dynamic_libraries.cpp" else ("render" if name in ("rt64_projection_processor.cpp", "rt64_framebuffer_renderer.cpp") else "hle")

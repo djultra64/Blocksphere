@@ -30,6 +30,14 @@ void command(std::uint8_t* rdram,std::uint32_t w0,std::uint32_t w1) {
  MEM_W(4,static_cast<std::int32_t>(address))=w1;
  MEM_W(0,pointer)=address+8;
 }
+int font_width(std::uint8_t* rdram,int font,std::string_view label) {
+ // Original guest font metrics, in pixels at unity scale.
+ const auto font_base=0xFFFFFFFF80102D48ull+font*136;
+ int width=0;
+ for(unsigned char c:label)width+=MEM_H(2*c-0x3C,font_base);
+ if(width<=0)invalid("font metrics");
+ return width;
+}
 void draw_text(std::uint8_t* rdram,const recomp_context& parent,const tetrisphere::ControlsText& text) {
  // Private call frame below the original 0x70-byte frame. Never change parent's registers.
  recomp_context call=parent;call.r29=ADD32(parent.r29,-0x200);
@@ -42,11 +50,7 @@ void draw_text(std::uint8_t* rdram,const recomp_context& parent,const tetrispher
  MEM_W(0x18,call.r29)=(text.color>>8)&255;
  MEM_W(0x1C,call.r29)=text.color&255;MEM_W(0x20,call.r29)=255;
  // The original scaled text renderer reads a reciprocal scale (1024 is unity; positions use quarter pixels).
- // Measure using the same private ROM font metrics at the fixed pixel scale.
- const auto font_base=0xFFFFFFFF80102D48ull+text.font*136;
- int width=0;
- for(unsigned char c:text.text)width+=MEM_H(2*c-0x3C,font_base);
- if(width<=0)invalid("font metrics");
+ const int width=font_width(rdram,text.font,text.text);
  double scale=text.scale_milli/1000.0;
  // Use the same scale for every string; fitting is a layout concern.
  if(text.max_width>0 && width*scale>text.max_width+1)invalid("text exceeds layout width");
@@ -119,7 +123,8 @@ extern "C" bool tetrisphere_controls_view_hook(std::uint8_t* rdram,recomp_contex
  func_8003396C(rdram,&bitmap);
  }
  const auto scene=editor ? tetrisphere::compose_controls_view(*editor,editor->navigation_family())
-  : tetrisphere::compose_graphics_view(*graphics,tetrisphere::pc_settings_navigation_family());
+  : tetrisphere::compose_graphics_view(*graphics,tetrisphere::pc_settings_navigation_family(),
+     [rdram](std::string_view label) { return (font_width(rdram,0,label)+1)/2; });
  command(rdram,0xE7000000,0);command(rdram,0xBA001402,0x00300000);
  command(rdram,0xB900031D,0);command(rdram,0xED000000,(320u<<14)|(240u<<2));
  unsigned previous=0xFFFFFFFF;

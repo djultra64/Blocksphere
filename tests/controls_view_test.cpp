@@ -1,4 +1,5 @@
 #include "tetrisphere/controls_view.h"
+#include "tetrisphere/menu_language.h"
 #include <cassert>
 #include <set>
 using namespace tetrisphere;
@@ -49,8 +50,28 @@ int main() {
   assert(t.font==0 && t.scale_milli==500);
   graphics_labels.insert(t.text);
  }
- for(auto label:{"RESOLUTION","ASPECT","REFRESH","WINDOW","MSAA","PRESENT FILTER","TEXTURE FILTER"})assert(graphics_labels.contains(label));
+ for(auto label:{"RESOLUTION","ASPECT","FRAME RATE","WINDOW","MSAA","PRESENT FILTER","TEXTURE FILTER"})assert(graphics_labels.contains(label));
  assert(!graphics_labels.contains("MORE"));
+ // Localization changes the action words, preserving Nintendo's physical labels.
+ set_menu_language(MenuLanguage::French);
+ ControlsEditor localized(Settings{},ControllerFamily::NintendoSwitch);
+ auto french=compose_controls_view(localized,ControllerFamily::NintendoSwitch);
+ std::set<std::string> french_labels;
+ for(const auto& label:french.texts) {
+  assert(label.font==0 && label.scale_milli==500);
+  french_labels.insert(label.text);
+ }
+ for(auto label:{"COMMANDES","B CHOISIR","A RETOUR","APPLIQUER"})
+  assert(french_labels.contains(label));
+ set_menu_language(MenuLanguage::Spanish);
+ PCSettingsMenu dirty(Settings{},true);
+ dirty.adjust(1);dirty.back();
+ const auto spanish=compose_graphics_view(dirty,ControllerFamily::NintendoSwitch);
+ std::set<std::string> spanish_labels;
+ for(const auto& label:spanish.texts)spanish_labels.insert(label.text);
+ for(auto label:{"GRAFICOS","APLICAR","DESCARTAR","SEGUIR EDITANDO","B ELEGIR","A ATRAS"})
+  assert(spanish_labels.contains(label));
+ set_menu_language(MenuLanguage::English);
  Settings automatic;ControlsEditor p2(automatic,ControllerFamily::Keyboard);
  p2.set_device(ControllerFamily::NintendoSwitch);
  assert(p2.navigation_family()==ControllerFamily::NintendoSwitch);

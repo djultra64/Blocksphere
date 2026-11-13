@@ -24,13 +24,17 @@ I set the project's direction, define its requirements, choose priorities, and m
 
 AI is one of the tools I use throughout this process. The goal is to learn through investigation, experimentation, and iteration, and to build something I can understand and keep improving.
 
-**Blocksphere 1.1.0 is available for Linux and Windows.** [Download Blocksphere](https://github.com/djultra64/Blocksphere/releases/latest). Share bug reports and suggestions through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
+**Blocksphere 1.2.1 is available for Linux and Windows.** [Download Blocksphere](https://github.com/djultra64/Blocksphere/releases/latest). Share bug reports and suggestions through [GitHub Issues](https://github.com/djultra64/Blocksphere/issues).
 
-## What's new in 1.1.0
+## What's new in 1.2.1
 
-Configure Controls and Graphics directly from Options. All seven graphics settings appear together, and the control editor uses the original game's pixel typography with aligned action rows and device-aware button names.
+The launcher validates your ROM, installs Blocksphere in a folder you choose,
+and can add it to Steam with artwork suggestions from SteamGridDB. The picker
+credits each artist and also accepts local images.
 
-The main menu now follows this order: Single, VS, Practice, Training, Options, Close Game. Options opens with all five entries together, and transitions preserve the background proportions.
+The game fixes Linear-filter seams, widescreen medal clipping, and Rescue
+magic placement. Graphics settings now use Apply and offer an Unlimited
+frame-rate mode.
 
 ## Features
 
@@ -43,7 +47,8 @@ The main menu now follows this order: Single, VS, Practice, Training, Options, C
 
 ## Requirements
 
-- Linux or Windows on an x86-64 PC.
+- An x86-64 PC with a Vulkan-capable graphics driver.
+- On Linux, glibc 2.43 or newer, SDL3, and D-Bus.
 - On Windows, install the [Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vc14/vc_redist.x64.exe).
 - Your own **Tetrisphere US NTPE revision 0** ROM. Other regions, revisions, and modified ROMs are not supported.
 
@@ -52,9 +57,10 @@ No ROM, extracted original game assets, save files, or captured audio are distri
 ## Getting started
 
 1. Extract the entire package and keep its folders and runtime libraries together.
-2. Run `./tetrisphere` on Linux or `tetrisphere.exe` on Windows.
-3. Select your supported ROM when prompted. The game can also discover a matching ROM beside the executable or accept its path as the last command-line argument. Supported input formats are `.z64`, `.v64`, `.n64`, and `.zip`.
-4. Keep the `data/` folder beside the game executable when updating; it contains the imported ROM, settings, progress, and diagnostics. Move or copy the whole game folder to carry your data with you. Older versions stored data in your user profile; to keep that progress, copy the old data directory's contents into the new game's `data/` folder before launching.
+2. Run `./blocksphere-launcher` on Linux or `blocksphere-launcher.exe` on Windows.
+3. Select your supported ROM or ZIP, choose an empty writable installation folder, and select **Install**.
+4. To update, install into a new folder and copy your previous installation's `data/` into it before selecting **Play**.
+5. To add the game to Steam, select **Add to Steam**, choose an account, review the artwork, and select **Add**.
 
 Open **Options → Graphics** for graphics settings and **Options → Controls** for controller remapping. Use Apply to save control changes. Restart the game when a setting requests it. Run the game's `--help` for options that apply to one launch.
 
@@ -145,6 +151,9 @@ Credit extends to all authors and contributors of the following components recor
 - **Mupen64Plus**, its API authors, and contributors; **GNU awk**, the Free Software Foundation, and contributors; **NASM** authors; and the authors of the additional build scripts and sample code retained in upstream notices.
 
 The [full-text notice inventory](THIRD_PARTY_NOTICES.md) preserves the collected license texts and copyright notices, including additional named contributors. This source inventory includes research-only dependencies. Binary-specific notices must be matched to exact artifacts before a binary release.
+
+- **Inter** by The Inter Project Authors, licensed under the SIL Open Font License 1.1.
+- **SteamGridDB** hosts the optional artwork suggestions. The launcher credits the individual artists in the picker.
 
 ### Research and reference tools
 

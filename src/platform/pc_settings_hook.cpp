@@ -1,5 +1,6 @@
 #include "tetrisphere/pc_settings_hook.h"
 #include "tetrisphere/controls_bridge.h"
+#include "tetrisphere/menu_language.h"
 #include <deque>
 #include <memory>
 #include <mutex>
@@ -21,12 +22,15 @@ tetrisphere::ControllerFamily family() {
 bool options(std::uint8_t* rdram) {
  return MEM_H(0,0xFFFFFFFF800E121Cull)==3 && MEM_H(0,0xFFFFFFFF800E1220ull)>=0;
 }
-bool options_label_site(std::uint32_t site) {
+gpr* menu_label_argument(recomp_context& ctx, std::uint32_t site) {
  switch(site) {
- case 0x8004E7D0u:case 0x8004E8E4u:case 0x8004EAFCu:case 0x8004EC18u:
- case 0x8004E8BCu:case 0x8004E9CCu:case 0x8004EABCu:case 0x8004EBF0u:case 0x8004ED08u:case 0x8004EE00u:
-  return true;
- default:return false;
+ case 0x8004E7D0u: case 0x8004E8E4u: case 0x8004EAFCu: case 0x8004EC18u:
+  return &ctx.r4;
+ case 0x8004E8BCu: case 0x8004E9CCu: case 0x8004EABCu: case 0x8004EBF0u:
+ case 0x8004ED08u: case 0x8004EE00u:
+  return &ctx.r7;
+ default:
+  return nullptr;
  }
 }
 void after_navigation(std::uint8_t* rdram) {
@@ -40,7 +44,7 @@ void after_navigation(std::uint8_t* rdram) {
  }
  MEM_W(0,0xFFFFFFFF800E12FCull)=5;
 }
-gpr text(std::uint8_t* rdram,recomp_context* ctx,const std::string& label) {
+gpr text(std::uint8_t* rdram,recomp_context* ctx,std::string_view label) {
  // Proven unused 0x48..0x52 of this frame. Leave 0x53 and 0x54 untouched.
  if(label.size()>10) std::abort();
  const auto address=ADD32(ctx->r29,0x48);
@@ -86,15 +90,22 @@ extern "C" void tetrisphere_pc_settings_hook(std::uint8_t* rdram,recomp_context*
  std::lock_guard lock(pending_mutex);
  if(menu && menu->closed())after_navigation(rdram);
  if(site==0)return;
- if(MEM_H(0,0xFFFFFFFF800E121Cull)!=3) {menu.reset();active.store(false);return;}
+ const bool options_root = MEM_H(0,0xFFFFFFFF800E121Cull) == 3;
+ if (auto* argument = menu_label_argument(*ctx, site)) {
+  const bool options_visible = options_root &&
+      (options(rdram) || MEM_W(0,0xFFFFFFFF800E1218ull) >= 0);
+  const auto label = options_visible && MEM_W(0x6C, ctx->r29) == 4
+      ? tetrisphere::menu_translation("GRAPHICS")
+      : tetrisphere::native_menu_translation(static_cast<std::uint32_t>(*argument));
+  if (!label.empty() && label.size() <= 10) *argument = text(rdram, ctx, label);
+  return;
+ }
+ if(!options_root) {menu.reset();active.store(false);return;}
  const auto count=5;
  if(site==0x8004CC0Cu) {ctx->r14=count;return;}
  if(site==0x8004F38Cu) {ctx->r10=count;return;}
  if(site==0x8004F224u) {ctx->r24=count;return;}
- // During entry the guest selection is still -1. Its animated Options rows
- // must already use the final labels/count; input remains gated as before.
- const bool animated_label=options_label_site(site) && MEM_W(0,0xFFFFFFFF800E1218ull)>=0;
- if(!options(rdram) && !animated_label) {menu.reset();active.store(false);return;}
+ if(!options(rdram)) {menu.reset();active.store(false);return;}
  switch(site) {
  case 0x8004F408u:
   if(menu && MEM_W(0,0xFFFFFFFF800E1218ull)<0 && (MEM_W(0,0xFFFFFFFF800DFD98ull)&0x4000)) {
@@ -109,19 +120,5 @@ extern "C" void tetrisphere_pc_settings_hook(std::uint8_t* rdram,recomp_context*
    else menu->select(MEM_H(0,0xFFFFFFFF800E1220ull));
    after_navigation(rdram);ctx->r16=6; // Skip all original submenu dispatches.
   }return;
- }
- const auto row=MEM_W(0x6C,ctx->r29);
- std::string label;
- if(menu) {
-  auto rows=menu->rows(family());
-  if(row<0 || static_cast<std::size_t>(row)>=rows.size()) return;
-  label=rows[row];
- } else if(row==4) label="GRAPHICS";
- else return;
- switch(site) {
- case 0x8004E7D0u:case 0x8004E8E4u:case 0x8004EAFCu:case 0x8004EC18u:
-  ctx->r4=text(rdram,ctx,label);return;
- case 0x8004E8BCu:case 0x8004E9CCu:case 0x8004EABCu:case 0x8004EBF0u:case 0x8004ED08u:case 0x8004EE00u:
-  ctx->r7=text(rdram,ctx,label);return;
  }
 }

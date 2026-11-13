@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
     std::string error;
     if (!store.save(original, error)) return fail("could not seed settings");
 
-    const std::vector<int> selections{0, 5, 1, 1, 2, 2, 3, 1, 4, 3, 5, 0, 6, 0, 7};
+    const std::vector<int> selections{0, 5, 1, 1, 2, 4, 3, 1, 4, 3, 5, 0, 6, 0, 7};
     std::size_t next = 0;
     bool saw_updated_summary = false;
     const auto dialog = [&](const std::string&, const std::string& message,
@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     if (!store.load(saved, error) ||
         saved.graphics.resolution != tetrisphere::GraphicsResolution::P2160 ||
         saved.graphics.aspect != tetrisphere::GraphicsAspect::Expand16x9 ||
-        saved.graphics.refresh != tetrisphere::GraphicsRefresh::Fps60 ||
+        saved.graphics.refresh != tetrisphere::GraphicsRefresh::Unlimited ||
         saved.graphics.window_mode != tetrisphere::GraphicsWindowMode::Fullscreen ||
         saved.graphics.msaa_samples != 8 ||
         saved.graphics.presentation_filter != tetrisphere::PresentationFilter::Nearest ||

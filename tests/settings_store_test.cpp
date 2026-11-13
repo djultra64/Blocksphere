@@ -87,6 +87,19 @@ int main(int argc, char** argv) {
         return fail("settings changes were not durable");
     }
     tetrisphere::Settings newer = changed;
+    tetrisphere::GraphicsRefresh unlimited;
+    if (!tetrisphere::parse_graphics_refresh("unlimited", unlimited) ||
+        std::string(tetrisphere::graphics_refresh_name(unlimited)) != "unlimited") {
+        return fail("unlimited frame rate cannot be parsed");
+    }
+    changed.graphics.refresh = unlimited;
+    if (!store.save(changed, error) || !store.load(loaded, error) ||
+        loaded.graphics.refresh != unlimited) {
+        return fail("unlimited frame rate was not durable");
+    }
+    // Restore the previous settings so the interrupted-write fixture below
+    // continues checking its original family and 120 FPS configuration.
+    if (!store.save(newer, error)) return fail("could not restore prior settings");
     newer.family_override = "playstation";
     if (!store.save(newer, error)) return fail("second settings commit failed");
     {

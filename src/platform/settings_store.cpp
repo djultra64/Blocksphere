@@ -68,7 +68,7 @@ bool parse_graphics_aspect(std::string_view name, GraphicsAspect& value) {
 }
 
 bool parse_graphics_refresh(std::string_view name, GraphicsRefresh& value) {
-    for (int raw = 0; raw <= static_cast<int>(GraphicsRefresh::Fps120); ++raw) {
+    for (int raw = 0; raw <= static_cast<int>(GraphicsRefresh::Unlimited); ++raw) {
         const auto candidate = static_cast<GraphicsRefresh>(raw);
         if (name == graphics_refresh_name(candidate)) { value = candidate; return true; }
     }

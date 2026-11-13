@@ -3,6 +3,7 @@
 #include "tetrisphere/dl_ui_tags.h"
 #include "tetrisphere/f3d_flat_shade.h"
 #include "tetrisphere/menu_medal_trace.h"
+#include "tetrisphere/menu_medal_wrap.h"
 #include "tetrisphere/pause_capture_scene.h"
 #include "tetrisphere/run_identity.h"
 #include "tetrisphere/run_options.h"
@@ -30,6 +31,14 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+
+namespace {
+std::atomic<bool> unlimited_frame_rate{false};
+}
+
+extern "C" bool tetrisphere_rt64_unlimited_frame_rate() {
+    return unlimited_frame_rate.load(std::memory_order_relaxed);
+}
 #include <utility>
 
 namespace {
@@ -281,8 +290,12 @@ public:
                                         app_->userConfig, internal_resolution_scale)) {
             diagnostic_log().error("rt64_graphics_config_invalid");
         }
-        app_->enhancementConfig.presentation.mode =
-            RT64::EnhancementConfiguration::Presentation::Mode::Console;
+        using PresentationMode = RT64::EnhancementConfiguration::Presentation::Mode;
+        // RT64 must match the back buffer against VI history to interpolate a
+        // double-buffered game. Keep console buffering at the native rates.
+        app_->enhancementConfig.presentation.mode = unlimited_frame_rate.load(std::memory_order_relaxed) ||
+            (host_graphics_.rr_option == ultramodern::renderer::RefreshRate::Manual &&
+             host_graphics_.rr_manual_value > 60) ? PresentationMode::SkipBuffering : PresentationMode::Console;
         setup_result = ::tetrisphere::setup_result(app_->setup(0));
         if (setup_result == ultramodern::renderer::SetupResult::Success) {
             const unsigned requested_samples = run_options.msaa_samples
@@ -431,6 +444,13 @@ public:
             F3DFlatShadePatch flat_shade(app_->core.RDRAM, 9437184,
                                          task->t.data_ptr,
                                          task->t.data_size);
+            // The tail above the controls sprite and training-font reservations
+            // is host-owned until processDisplayLists has consumed this task.
+            MenuMedalWrapPatch medal_wrap(menu_path_ ? app_->core.RDRAM : nullptr,
+                9437184, task->t.data_ptr, task->t.data_size,
+                host_graphics_.ar_option == ultramodern::renderer::AspectRatio::Manual
+                    ? 16.0f / 9.0f : 4.0f / 3.0f,
+                0x808C0000u, 0x40000u);
             if (!ui_active_batch.spans.empty()) {
                 static std::atomic<unsigned> logged{0};
                 if (logged.fetch_add(1, std::memory_order_relaxed) < 8) {
@@ -531,6 +551,10 @@ void set_rt64_live_filters(std::optional<PresentationFilter> filter,std::optiona
 
 void set_rt64_run_options(const RunOptions& options) {
     run_options = options;
+}
+
+void set_rt64_unlimited_frame_rate(bool enabled) {
+    unlimited_frame_rate.store(enabled, std::memory_order_relaxed);
 }
 
 std::unique_ptr<ultramodern::renderer::RendererContext> create_rt64_context(

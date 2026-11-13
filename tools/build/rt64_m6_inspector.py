@@ -86,6 +86,15 @@ def patch_application(raw: bytes) -> bytes:
 
 def patch_state(raw: bytes) -> bytes:
     source = _checked(raw, STATE_SHA256, "rt64_state.cpp")
+    # Linear changes the interpolation method of filtered materials. Point
+    # sprites and framebuffer copies keep their original discrete sampling.
+    source = _replace_once(
+        source,
+        "flags.linearFiltering = linearFiltering || forceLinearFiltering;",
+        "flags.linearFiltering = (linearFiltering || forceLinearFiltering) && "
+        "(callDesc.otherMode.textFilt() != G_TF_POINT) && "
+        "(callDesc.otherMode.cycleType() != G_CYC_COPY);",
+    )
     source = _replace_once(source, "#include <cinttypes>\n",
                            "#include <cinttypes>\n#include <cstdio>\n")
     source = _replace_once(source, '        if (ImGui::Begin("Game editor")) {',

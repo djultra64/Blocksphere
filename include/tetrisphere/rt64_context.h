@@ -85,6 +85,7 @@ bool apply_rt64_graphics_config(const ultramodern::renderer::GraphicsConfig& hos
 // integer scaling; a finite multiplier selects an exact internal resolution.
 void set_rt64_internal_resolution_scale(std::optional<double> multiplier);
 void set_rt64_run_options(const RunOptions& options);
+void set_rt64_unlimited_frame_rate(bool enabled);
 
 std::unique_ptr<ultramodern::renderer::RendererContext> create_rt64_context(
     std::uint8_t* rdram, ultramodern::renderer::WindowHandle window,

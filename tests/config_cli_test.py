@@ -50,7 +50,10 @@ def main():
         invalid = run("family", "unknown-pad")
         assert invalid.returncode != 0
         assert run("graphics", "resolution", "500p").returncode != 0
-        assert run("graphics", "refresh", "unlimited").returncode != 0
+        assert run("graphics", "refresh", "unlimited").returncode == 0
+        settings["graphics"]["refresh"] = "unlimited"
+        assert json.loads(run("show").stdout) == settings
+        assert run("graphics", "refresh", "invalid").returncode != 0
         assert run("graphics", "window-mode", "exclusive").returncode != 0
         assert json.loads(run("show").stdout) == settings
     print("config_cli persistence_and_rejection=pass")

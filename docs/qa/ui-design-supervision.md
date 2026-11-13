@@ -260,3 +260,159 @@ is a separate implementation-agent verification; visual acceptance does not
 infer it from the Close screenshot. These menu captures use keyboard input
 and manual controller-family selection and do not claim physical-controller
 testing or exhaustive late-game transition coverage.
+
+## Linux 1.2.0 visual acceptance
+
+The Graphics page keeps seven rows, the original half-scale ROM lettering,
+and the shared chamfered frame. FRAME RATE includes 60 FPS and UNLIMITED.
+Graphics edits use an explicit APPLY action. Leaving with pending edits
+offers APPLY, DISCARD, and KEEP EDITING in the footer. The restart notice
+stays above the footer. The first widescreen preview left 153 output pixels
+between the APPLY label and its right focus bracket. The revised composer
+uses the original font advances to fit the bracket to the localized label,
+with four native pixels of padding.
+
+The supervisor reviewed native game build
+`8e1d294475faf191a3d48451f6dea2044f17b6c4302c256ea7e102fbf19053ff`
+at 960 × 720 and 1280 × 720. Both runs show focused 60 FPS and UNLIMITED,
+pending LINEAR, the exit choices, the saved restart notice, and distinct
+APPLY, DISCARD, and BACK focus. Keyboard SELECT and BACK match the active
+bindings. At 960 × 720 the left and right clearances around the three footer
+labels measured 12 to 18 output pixels. The original glyph edges, column
+alignment, and row spacing remain visible at both ratios.
+
+The Linear menu background is continuous at the outer edges in the reviewed
+4:3 and 16:9 root and Options states. The earlier widescreen preview using
+the same renderer shows a clean Options crossfade against the 1.1.0 baseline
+with visible seams. In its dense sequence, the visible right edge of a
+magenta medal moving off the left side progresses from x=86 to x=31, x=6,
+and x=2 before the medal leaves the frame. The final Rescue captures show a
+selected magic model sitting in the lower open capsule at 4:3 and the
+dynamite centered over its blue opening at 16:9. The QA session selected
+magic with a debugger fixture during native gameplay. These visual checks
+cover the recorded menu states and HUD placement.
+
+The launcher uses the approved single-game layout with a near-black
+`#16161C` background and lavender `#DBB8FF` accent. BLOCKSPHERE and its
+subtitle sit on the left, with the current task on the right. The project
+icon comes from the existing gold-and-blue artwork. The language selector
+is in the upper right, and the footer shows the creator link and version.
+Setup validates one NTPE rev0 ROM or ZIP before offering a destination and
+installation. Ready presents PLAY, ADD TO STEAM, and EXIT LAUNCHER in
+that order. The Steam flow presents the account, artwork categories,
+existing artwork fallback, and the result.
+
+The supervisor accepted native captures of the packaged Linux launcher,
+SHA-256 `8acc23bbc1783033f3db02cc4a3b4b46ac796193bf00703dd12cad228d80ecbe`.
+The final Ready screen uses a single lavender focus outline that follows
+the active action. A virtual Nintendo pad moved focus from ADD TO STEAM
+to EXIT LAUNCHER and showed B SELECT and A BACK. The same run entered
+the account screen with B, returned from artwork to the account with A,
+and completed Add to Steam against an isolated account. The launcher
+exited with status zero.
+
+The earlier native installation run shows ROM validation, the operating
+system file and folder dialogs, destination selection, and the installed
+screen. The preparation stage completed before the capture named
+`installing.png`, which already shows Ready. The captures review the
+English launcher, keyboard and virtual Nintendo navigation, and the local
+artwork workflow. Physical controllers, Windows, the other launcher
+languages, and live artwork retrieval are outside this visual evidence.
+Game and launcher captures remain in the private HTPC update QA directory.
+
+The installed game completed an isolated Gamescope run on the HTPC at
+3840 × 2160 with the compositor configured for 120 Hz. Rescue averaged
+300.4 successful Vulkan presents per second with Unlimited and 8× MSAA
+over 11 one-second samples. This measures game presentation throughput
+in headless Gamescope. Physical TV scanout was outside the run.
+
+## Windows 1.2.0 visual acceptance
+
+The supervisor reviewed the extracted Windows game at 960 × 720 and
+1280 × 720. Both native runs recorded build
+`aecef1bce3329ea6d945fd0f822d2a15eba5b1b78495d6854f6c074f9ec9db83`
+and executable SHA-256
+`5c5c963e00b6d162ab9d3aec9101cb3d4d84223f89cf9780d8e3701666e72125`.
+Both game sessions exited with status zero after a window close request.
+
+The reviewed Graphics captures show focused 60 FPS and UNLIMITED, pending
+LINEAR, separate APPLY, DISCARD, and KEEP EDITING focus, and the saved
+restart notice with BACK focused. The original ROM lettering, consistent
+baselines, compact footer brackets, and Z SELECT / X BACK cues agree with
+the Linux layout. The Windows Options entry frames show all five incoming
+labels during the crossfade. The Linear background stays continuous at the
+edges in the reviewed menu frames. Rescue reached level 1:1 in both aspect
+ratios. The open capsule was empty in the Windows captures. The charged
+magic placement and progressive medal exit are documented in the Linux
+evidence above.
+
+The packaged Windows launcher has SHA-256
+`60f088e988abf0f276cee522a78c0ac6a2a46e838492eb4ea1fb2a8c5923a3a3`.
+The native setup capture shows the project icon in the title bar, English
+selected in the upper-right language control, and a disabled Continue
+action before ROM validation. The standard Windows Open dialog accepted
+the selected ROM, and the launcher showed Compatible ROM and enabled
+Continue. The destination screen kept the complete test installation path
+visible across wrapped lines. The installation capture shows Preparing
+this PC and its progress bar. The Ready screen places Play, Add to Steam,
+and Exit launcher in the approved order. The native Play check reopened
+the prepared installation, reached the original Nintendo intro, and
+matched the installed game's runtime build identifier to the package
+manifest. The game and launcher each exited with status zero.
+An additional clean installation verified the SHA-256 of every installed
+package file, opened the game with Play immediately after setup, and
+recorded both exit codes as zero again.
+
+The Windows review used keyboard and mouse input in an isolated installation.
+The Steam account and artwork flow and virtual Nintendo input are documented
+in the Linux review above. The Windows captures and logs remain in the
+private test-package evidence directory.
+
+## SteamGridDB launcher gallery review
+
+The supervisor selected a full-width gallery within the existing Add to Steam
+flow. Opening Artwork loads a curated Tetrisphere selection. Cover, Wide cover,
+Hero, Logo, and Icon each retain their selected image when the user changes
+category or returns from the account screen. The gallery keeps image aspect
+ratios, artist attribution, the local image picker, and Keep current. The
+lavender check identifies the selected image. The focus outline follows the
+keyboard or controller. The explicit Add action retains the Steam shutdown
+notice and controls when the launcher writes the shortcut and artwork.
+
+The first native Linux and Windows 1.2.1 captures showed 13 curated
+SteamGridDB candidates for Tetrisphere, game 29858, across the five
+categories. They load from public CDN URLs without an API credential. Both
+platforms display seven portrait candidates together at the default window
+size. The wide, hero, logo, and icon previews preserve their proportions.
+The Linux capture after returning to Cover retained the alternate selection
+and its artist attribution. The Windows setup capture showed Preparing this
+PC, and Play reached the original Nintendo intro after installation. Its
+result recorded zero exit codes for both processes.
+
+The first Icon capture placed the selection check beyond the image with
+empty space between them. The supervisor requested that it follow the
+rendered image bounds. The images labeled loading and Nintendo focus were
+identical to ordinary populated keyboard captures and were excluded from
+the review of those states.
+
+The supervisor accepted the corrected native 1.2.1 launcher captures.
+The Linux launcher SHA-256 is
+`060d0149e520f4ace4a2cb92153e299c1799f30a0e710fcf21840708fc90760c`.
+The Windows launcher SHA-256 is
+`538e0c99a8f1e27aeead860d0908b2eda8eab7edb0d667f71cecdad5e6560617`.
+Both Icon captures show the check inside the thumbnail bounds. The
+Windows gallery also shows all seven Cover candidates and the reviewed
+Wide cover, Hero, and Logo proportions. The final Windows Play capture
+reaches the original Nintendo intro, and both process exit codes are zero.
+
+The corrected Linux loading capture shows the status message and disabled
+Add. With a virtual Nintendo controller, the first cover remains checked
+while the second has the focus outline. B selects the second cover and
+moves the check to it. A returns to the account screen, and reopening
+Artwork retains the choice. The isolated Add run shows the success screen
+and writes the shortcut and five artwork files. The offline capture shows
+the unavailable message with Choose image, Keep current, and Add available.
+The launcher visual review used English on both platforms, with the
+virtual Nintendo and offline scenarios exercised on Linux. Physical
+controllers and a Windows Steam write remain outside this evidence.
+Screenshots and test account data remain in private QA storage.

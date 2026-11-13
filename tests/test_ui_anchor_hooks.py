@@ -201,6 +201,32 @@ class UiAnchorHookTests(unittest.TestCase):
         with self.assertRaises(UiAnchorManifestError):
             validate_ui_anchor_manifest(changed, bytes(self.image))
 
+    def test_selected_magic_model_uses_the_right_capsule_anchor(self):
+        manifest = self.manifest()
+        magic = {"function": "func_800CD3B8", "pc": "0x800CFF64",
+                 "target": "0x800C78A0", "anchor": "right",
+                 "when": "single_player_not_mode_three"}
+        manifest["helper_calls"] = [magic]
+        pc, target = 0x800CFF64, 0x800C78A0
+        struct.pack_into(">I", self.image, pc - 0x80025C50,
+                         0x0C000000 | ((target >> 2) & 0x03FFFFFF))
+        validate_ui_anchor_manifest(manifest, bytes(self.image))
+        hooks = render_ui_anchor_hooks(manifest)
+        self.assertIn('func = "func_800CD3B8"\nbefore_vram = 0x800CFF64', hooks)
+        self.assertIn('tetrisphere_ui_span_begin(rdram, ctx, 0x800CFF64u, 2u);', hooks)
+        self.assertIn('tetrisphere_ui_span_end(rdram, ctx, 0x800CFF64u);', hooks)
+        self.assertIn('MEM_H(0, S32(0x8015D980u)) == 1', hooks)
+        self.assertIn('MEM_H(0, S32(0x800E44A8u)) != 3', hooks)
+        for key, value in (("target", "0x800C78A4"),
+                           ("anchor", "left"), ("when", "player_count_one")):
+            changed = self.manifest()
+            changed["helper_calls"] = [{**magic, key: value}]
+            with self.subTest(key=key), self.assertRaises(UiAnchorManifestError):
+                validate_ui_anchor_manifest(changed, bytes(self.image))
+        struct.pack_into(">I", self.image, pc - 0x80025C50, 0)
+        with self.assertRaises(UiAnchorManifestError):
+            validate_ui_anchor_manifest(manifest, bytes(self.image))
+
     def test_left_preview_helper_is_scoped_in_its_containing_function(self):
         manifest = self.manifest()
         preview = {"function": "func_800CD3B8", "pc": "0x800CF8A8",

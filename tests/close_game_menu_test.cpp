@@ -1,4 +1,5 @@
 #include "tetrisphere/close_game_menu.h"
+#include "tetrisphere/menu_language.h"
 
 #include <array>
 #include <cassert>
@@ -105,6 +106,28 @@ int main() {
         tetrisphere_close_game_menu_hook(rdram, &ctx, site);
         assert(static_cast<std::uint32_t>(ctx.r7) == 0x800EC974u);
     }
+
+    tetrisphere::set_menu_language(tetrisphere::MenuLanguage::German);
+    constexpr std::array<std::string_view, 6> german{
+        "EINZEL", "VS", "UEBUNG", "OPTIONEN", "TRAINING", "BEENDEN",
+    };
+    for (std::size_t row = 0; row < german.size(); ++row) {
+        MEM_W(0x6C, ctx.r29) = row;
+        for (const auto site : measure_sites) {
+            tetrisphere_close_game_menu_hook(rdram, &ctx, site);
+            for (std::size_t i = 0; i < german[row].size(); ++i)
+                assert(MEM_BU(i, ctx.r4) == german[row][i]);
+            assert(MEM_BU(german[row].size(), ctx.r4) == 0);
+        }
+        for (const auto site : draw_sites) {
+            ctx.r5 = ctx.r6 = 100;
+            tetrisphere_close_game_menu_hook(rdram, &ctx, site);
+            for (std::size_t i = 0; i < german[row].size(); ++i)
+                assert(MEM_BU(i, ctx.r7) == german[row][i]);
+            assert(MEM_BU(german[row].size(), ctx.r7) == 0);
+        }
+    }
+    tetrisphere::set_menu_language(tetrisphere::MenuLanguage::English);
 
     // Separators follow the same shift while retaining their row spacing.
     ctx.r7 = 74 + 19 * 4;

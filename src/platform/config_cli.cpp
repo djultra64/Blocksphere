@@ -72,7 +72,7 @@ int usage() {
                  "magic trigger-left|trigger-right|left-shoulder|right-shoulder|"
                  "south|east|west|north | graphics resolution "
                  "auto|240p|720p|1080p|1440p|2160p | graphics aspect 4:3|16:9 | "
-                 "graphics refresh original|30|60|120 | "
+                 "graphics refresh original|30|60|120|unlimited | "
                  "graphics window-mode windowed|fullscreen | graphics msaa off|2x|4x|8x |\n"
                  "graphics presentation-filter nearest|linear|pixel | graphics texture-filter linear|three-point\n"
                  "Graphics values are requests; RT64 may cap FPS, and VS 16:9 "

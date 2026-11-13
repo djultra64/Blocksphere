@@ -36,6 +36,8 @@ HELPER_CALLS = {
     0x80077470: ("func_80075CD8", 0x8007570C, "right", "player_count_one"),
     0x800774E0: ("func_80075CD8", 0x8007570C, "right", "player_count_one"),
     0x800CF8A8: ("func_800CD3B8", 0x800A5BB4, "left", "single_player_not_mode_three"),
+    # The selected magic model belongs above the lower half of the right capsule.
+    0x800CFF64: ("func_800CD3B8", 0x800C78A0, "right", "single_player_not_mode_three"),
     # Enclose the combo number and its surrounding animated graphics together.
     0x800D003C: ("func_800CD3B8", 0x800699B4, "right", "single_player_not_mode_three"),
 }

@@ -1,5 +1,20 @@
 # Release source and build prerequisites
 
+## Blocksphere 1.2.1
+
+The Windows launcher and game retain the native-tested binaries. The Linux
+launcher retains the tested 1.2.1 executable. The Linux game was relinked from
+the 1.2.0 game objects using the x86-64 glibc compatibility option
+`-DTETRISPHERE_GLIBC_243_RELEASE=ON`. This binds the ImPlot reference to the
+existing `sinh@GLIBC_2.2.5` ABI. The original game build identifiers identify
+the reused recompiled inputs. Package manifests record exact binary hashes
+and the corresponding public source revision. The game and launcher input
+hashes are listed in `docs/qa/release-1.2.1-source-inputs.json`.
+
+Linux requires glibc 2.43 or newer, SDL3, D-Bus, and Vulkan. The SDL2
+compatibility library is included. ROMs, generated game code, captured
+media, and save data remain private.
+
 ## 1.0.1 controller correction
 
 The newly built Linux executable uses public source commit

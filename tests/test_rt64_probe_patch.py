@@ -240,11 +240,9 @@ int main(){return RT64::run();}
         self.assertEqual(result.stderr.count("rt64_probe_aspect_viewport_decision_truncated"), 1)
 
     def test_present_patch_requires_exact_source_and_single_anchor(self):
-        raw = (b'namespace RT64 {\n'
-               b'    void PresentQueue::threadPresent(const Present &present, bool &swapChainValid) {\n'
-               b'            uint32_t frameCountersNextPresented = 0;\n'
-               b'                commandList->setFramebuffer(swapChainFramebuffer);\n'
-               b'                swapChainValid = ext.swapChain->present(swapChainIndex, &waitSemaphore, 1);\n')
+        path = (Path(__file__).resolve().parents[1] /
+                ".local/deps/rt64/src/hle/rt64_present_queue.cpp")
+        raw = path.read_bytes()
         digest = hashlib.sha256(raw).hexdigest()
         patched = patch_source("rt64_present_queue.cpp", raw, digest)
         self.assertIn(b'rt64_probe_present', patched)

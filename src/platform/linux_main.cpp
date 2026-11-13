@@ -11,6 +11,7 @@
 #include "tetrisphere/close_game_menu.h"
 
 #include "tetrisphere/rt64_context.h"
+#include "tetrisphere/menu_language.h"
 #include "tetrisphere/run_options.h"
 #include "tetrisphere/run_identity.h"
 #include "tetrisphere/runtime.h"
@@ -403,6 +404,7 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
         show_error("Cannot determine the game data directory.");
         std::exit(74);
     }
+    initialize_menu_language(user_path);
     std::string eeprom_error;
     const auto eeprom_path = user_path / "tetrisphere-us-rev0.eep";
     if (!initialize_eeprom(eeprom_path, eeprom_error)) {
@@ -528,6 +530,7 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
         : ultramodern::renderer::AspectRatio::Original;
     graphics.msaa_option = ultramodern::renderer::Antialiasing::None;
     set_rt64_run_options(resolve_graphics_run_options(active_settings.graphics, run_options));
+    set_rt64_unlimited_frame_rate(active_settings.graphics.refresh == GraphicsRefresh::Unlimited);
     graphics.rr_option = active_settings.graphics.refresh == GraphicsRefresh::Original
         ? ultramodern::renderer::RefreshRate::Original
         : ultramodern::renderer::RefreshRate::Manual;
@@ -536,6 +539,7 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
         case GraphicsRefresh::Fps30: graphics.rr_manual_value = 30; break;
         case GraphicsRefresh::Fps60: graphics.rr_manual_value = 60; break;
         case GraphicsRefresh::Fps120: graphics.rr_manual_value = 120; break;
+        case GraphicsRefresh::Unlimited: graphics.rr_manual_value = 60; break;
         case GraphicsRefresh::Original: graphics.rr_manual_value = 60; break;
     }
     graphics.ds_option = 1;
@@ -594,24 +598,37 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
             if(!request)break;
             const auto merged=merge_pc_settings_change(persisted_settings,request->settings,request->field);
             const auto* requested=&merged;
+            const auto previous_graphics = persisted_settings.graphics;
+            const bool graphics_apply = request->field == pc_graphics_apply_field;
+            const bool window_changed = (request->field == 3 || graphics_apply) &&
+                previous_graphics.window_mode != requested->graphics.window_mode;
+            if (window_changed && !window_mode_controller->set_fullscreen(
+                    requested->graphics.window_mode == GraphicsWindowMode::Fullscreen)) {
+                std::fprintf(stderr, "Could not apply the requested window mode\n");
+                acknowledge_controls_settings(persisted_settings);
+                continue;
+            }
             std::string error;
             SettingsStore store(application_data_directory() / "settings.dat");
             if (!store.save(*requested, error)) {
+                if (window_changed && !window_mode_controller->set_fullscreen(
+                        previous_graphics.window_mode == GraphicsWindowMode::Fullscreen))
+                    std::fprintf(stderr, "Could not restore the previous window mode\n");
                 std::fprintf(stderr, "Could not save PC options: %s\n", error.c_str());
                 acknowledge_controls_settings(persisted_settings);
                 if(request->field==13)complete_controls_apply(false);
                 continue;
             }
             persisted_settings=merged;
-            acknowledge_controls_settings(persisted_settings);
-            bool window_applied = true;
-            if (request->field==3) window_applied=window_mode_controller->set_fullscreen(
-                requested->graphics.window_mode == GraphicsWindowMode::Fullscreen);
             active_settings.family_override=requested->family_override;
             active_settings.bindings=requested->bindings;
             active_settings.magic=requested->magic;
-            if(request->field==5)active_settings.graphics.presentation_filter=requested->graphics.presentation_filter;
-            if(request->field==6)active_settings.graphics.three_point_filter=requested->graphics.three_point_filter;
+            const bool presentation_changed = (request->field == 5 || graphics_apply) &&
+                previous_graphics.presentation_filter != requested->graphics.presentation_filter;
+            const bool texture_changed = (request->field == 6 || graphics_apply) &&
+                previous_graphics.three_point_filter != requested->graphics.three_point_filter;
+            if (presentation_changed) active_settings.graphics.presentation_filter = requested->graphics.presentation_filter;
+            if (texture_changed) active_settings.graphics.three_point_filter = requested->graphics.three_point_filter;
             set_controller_bindings(requested->bindings);
             set_magic_control(requested->magic);
             const auto ports = controller_ports.snapshot();
@@ -619,14 +636,14 @@ void initialize_linux_platform(std::uint8_t* rdram, const char* rom_sha256,
                 active_family.store(select_controller_family(ports[0].name.c_str(), family_override()));
             if (active_p2_family.load() != ControllerFamily::Keyboard && ports[1].connected)
                 active_p2_family.store(select_controller_family(ports[1].name.c_str(), family_override()));
-            set_rt64_live_filters(request->field==5
+            set_rt64_live_filters(presentation_changed
                 ? std::optional{requested->graphics.presentation_filter} : std::nullopt,
-                request->field==6 ? std::optional{requested->graphics.three_point_filter} : std::nullopt);
+                texture_changed ? std::optional{requested->graphics.three_point_filter} : std::nullopt);
+            acknowledge_controls_settings(persisted_settings);
             if(request->field==13) {
                 complete_controls_apply(true);
             }
-            std::fprintf(stdout, "{\"event\":\"pc_options_saved\",\"window_applied\":%s}\n",
-                         window_applied ? "true" : "false");
+            std::fprintf(stdout, "{\"event\":\"pc_options_saved\",\"window_applied\":true}\n");
             std::fflush(stdout);
         }
         if (take_close_game_request()) {

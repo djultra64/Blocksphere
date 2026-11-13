@@ -1,4 +1,5 @@
 #include "tetrisphere/pc_settings_hook.h"
+#include "tetrisphere/menu_language.h"
 #include <cassert>
 #include "tetrisphere/controls_bridge.h"
 #include <vector>
@@ -28,6 +29,18 @@ int main() {
  // Other main selections keep their original incoming row count.
  MEM_H(0,0xFFFFFFFF800E121Cull)=4;ctx.r24=3;
  tetrisphere_pc_settings_hook(rdram,&ctx,0x8004F224u);assert(ctx.r24==3);
+ set_menu_language(MenuLanguage::French);
+ // Training labels use the same exact measure and draw hooks as Options.
+ ctx.r4=0x800ECB90u;
+ tetrisphere_pc_settings_hook(rdram,&ctx,0x8004E7D0u);
+ for(unsigned i=0;i<sizeof("BASES");++i)assert(MEM_BU(i,ctx.r4)=="BASES"[i]);
+ ctx.r7=0x800ECB90u;
+ tetrisphere_pc_settings_hook(rdram,&ctx,0x8004E8BCu);
+ for(unsigned i=0;i<sizeof("BASES");++i)assert(MEM_BU(i,ctx.r7)=="BASES"[i]);
+ ctx.r7=0x80123456u;
+ tetrisphere_pc_settings_hook(rdram,&ctx,0x8004E8BCu);
+ assert(ctx.r7==0x80123456u);
+ set_menu_language(MenuLanguage::English);
  MEM_H(0,0xFFFFFFFF800E121Cull)=3;MEM_H(0,0xFFFFFFFF800E1220ull)=0;
  MEM_W(0,0xFFFFFFFF800E1218ull)=-1;
  ctx.r14=4;tetrisphere_pc_settings_hook(rdram,&ctx,0x8004CC0Cu);assert(ctx.r14==5);
@@ -44,7 +57,7 @@ int main() {
  ctx.r16=3;tetrisphere_pc_settings_hook(rdram,&ctx,0x8004F680u);assert(ctx.r16==6);
  assert(MEM_H(0,0xFFFFFFFF800E1220ull)==4);
  ctx.r14=4;tetrisphere_pc_settings_hook(rdram,&ctx,0x8004CC0Cu);assert(ctx.r14==5);
- assert(pc_settings_active() && pc_settings_snapshot()->rows(ControllerFamily::NintendoSwitch).size()==8);
+ assert(pc_settings_active() && pc_settings_snapshot()->rows(ControllerFamily::NintendoSwitch).size()==9);
  assert(pc_settings_navigation_family()==ControllerFamily::NintendoSwitch);
  pc_settings_device(ControllerFamily::PlayStation);
  assert(pc_settings_navigation_family()==ControllerFamily::PlayStation);
@@ -64,6 +77,21 @@ int main() {
  assert(MEM_H(0,0xFFFFFFFF800E1220ull)==4);
  assert(MEM_H(0,0xFFFFFFFF800E075Cull)==4);
  ctx.r14=4;tetrisphere_pc_settings_hook(rdram,&ctx,0x8004CC0Cu);assert(ctx.r14==5);
+ // Staged Graphics edits cross the runtime bridge only on explicit Apply.
+ ctx.r16=3;tetrisphere_pc_settings_hook(rdram,&ctx,0x8004F680u);
+ pc_settings_command(ControlsCommand::Right);
+ assert(pc_settings_snapshot()->dirty() && !take_pc_settings_change());
+ pc_settings_command(ControlsCommand::Back);
+ assert(pc_settings_snapshot()->exit_pending());
+ pc_settings_command(ControlsCommand::Activate);
+ auto request=take_pc_settings_change();
+ assert(request && request->field==pc_graphics_apply_field);
+ acknowledge_controls_settings(saved);
+ assert(pc_settings_snapshot()->dirty() && pc_settings_snapshot()->exit_pending());
+ pc_settings_command(ControlsCommand::Right);
+ pc_settings_command(ControlsCommand::Activate);
+ tetrisphere_pc_settings_hook(rdram,&ctx,0);
+ assert(!pc_settings_active() && !take_pc_settings_change());
  // Existing Options/Controls enters the dedicated view directly.
  MEM_H(0,0xFFFFFFFF800E1220ull)=3;ctx.r16=3;
  tetrisphere_pc_settings_hook(rdram,&ctx,0x8004F680u);

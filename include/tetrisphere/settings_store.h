@@ -13,7 +13,7 @@ namespace tetrisphere {
 
 enum class GraphicsResolution { Auto, P240, P720, P1080, P1440, P2160 };
 enum class GraphicsAspect { Original4x3, Expand16x9 };
-enum class GraphicsRefresh { Original, Fps30, Fps60, Fps120 };
+enum class GraphicsRefresh { Original, Fps30, Fps60, Fps120, Unlimited };
 enum class GraphicsWindowMode { Windowed, Fullscreen };
 
 struct GraphicsSettings {
@@ -50,6 +50,7 @@ constexpr const char* graphics_refresh_name(GraphicsRefresh value) {
         case GraphicsRefresh::Fps30: return "30";
         case GraphicsRefresh::Fps60: return "60";
         case GraphicsRefresh::Fps120: return "120";
+        case GraphicsRefresh::Unlimited: return "unlimited";
     }
     return nullptr;
 }

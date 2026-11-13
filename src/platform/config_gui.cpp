@@ -18,7 +18,7 @@ int run_graphics_config_gui(const SettingsStore& store, const ConfigGuiDialog& d
         const std::string summary =
             std::string("Resolution: ") + graphics_resolution_name(settings.graphics.resolution) +
             "\nAspect ratio: " + graphics_aspect_name(settings.graphics.aspect) +
-            "\nRefresh request: " + graphics_refresh_name(settings.graphics.refresh) +
+            "\nFrame rate: " + graphics_refresh_name(settings.graphics.refresh) +
             "\nWindow mode: " + graphics_window_mode_name(settings.graphics.window_mode) +
             "\nMSAA: " + graphics_msaa_name(settings.graphics.msaa_samples) +
             "\nPresentation filter: " + graphics_presentation_filter_name(settings.graphics.presentation_filter) +
@@ -26,7 +26,7 @@ int run_graphics_config_gui(const SettingsStore& store, const ConfigGuiDialog& d
             "\n\nChoose a setting to change. Changes save immediately and may require "
             "restarting the game.";
         const int field = dialog("Tetrisphere graphics settings", summary,
-                                 {"Resolution", "Aspect ratio", "Refresh",
+                                 {"Resolution", "Aspect ratio", "Frame rate",
                                   "Window mode", "MSAA", "Presentation", "Textures", "Close"});
         if (field == -2) return 74;
         if (field < 0 || field >= 7) return 0;
@@ -54,11 +54,10 @@ int run_graphics_config_gui(const SettingsStore& store, const ConfigGuiDialog& d
             }
             case 2: {
                 static const std::vector<std::string> options{
-                    "Original", "30 FPS", "60 FPS", "120 FPS", "Back"};
-                choice = dialog("Refresh request",
-                    "The game may cap this request. Current: " +
+                    "Original", "30 FPS", "60 FPS", "120 FPS", "Unlimited", "Back"};
+                choice = dialog("Frame rate", "Current: " +
                     std::string(graphics_refresh_name(settings.graphics.refresh)), options);
-                if (choice >= 0 && choice < 4)
+                if (choice >= 0 && choice < 5)
                     next.graphics.refresh = static_cast<GraphicsRefresh>(choice);
                 break;
             }
@@ -95,7 +94,7 @@ int run_graphics_config_gui(const SettingsStore& store, const ConfigGuiDialog& d
                 break;
             }
         }
-        constexpr int back_indices[] = {6, 2, 4, 2, 4, 3, 2};
+        constexpr int back_indices[] = {6, 2, 5, 2, 4, 3, 2};
         const int back = back_indices[field];
         if (choice == -2) return 74;
         if (choice < 0 || choice >= back) continue;

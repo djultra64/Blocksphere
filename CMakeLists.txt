@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(tetrisphere_m1 LANGUAGES C CXX)
+project(tetrisphere_m1 VERSION 1.2.1 LANGUAGES C CXX)
 
 # Packaged Linux executables use only an origin-relative runtime path.
 # Suppress CMake's automatic build-tree paths for every other target.
@@ -259,6 +259,7 @@ set(TETRISPHERE_BUILD_INPUTS
     include/tetrisphere/controls_sdl.h
     include/tetrisphere/eeprom_store.h
     include/tetrisphere/rom_input.h
+    include/tetrisphere/rom_identity.h
     include/tetrisphere/rom_cache.h
     include/tetrisphere/data_directory.h
     include/tetrisphere/settings_store.h
@@ -277,9 +278,12 @@ set(TETRISPHERE_BUILD_INPUTS
     include/tetrisphere/audio_length_pacer.h
     include/tetrisphere/diagnostic_log.h
     include/tetrisphere/rt64_context.h
+    include/tetrisphere/unlimited_frame_stream.h
     include/tetrisphere/dl_ui_tags.h
     include/tetrisphere/f3d_flat_shade.h
     include/tetrisphere/menu_medal_trace.h
+    include/tetrisphere/menu_medal_wrap.h
+    include/tetrisphere/menu_language.h
     include/tetrisphere/full_frame_target_height.h
     include/tetrisphere/pause_capture_scene.h
     include/tetrisphere/prompt_atlas.h
@@ -325,6 +329,7 @@ set(TETRISPHERE_BUILD_INPUTS
     src/platform/wav_capture.cpp
     src/graphics/rt64_context.cpp
     src/graphics/f3d_flat_shade.cpp
+    src/graphics/menu_medal_wrap.cpp
     src/graphics/prompt_atlas.cpp
     src/graphics/prompt_atlas_probe.cpp
     src/graphics/training_prompt_hooks.cpp
@@ -341,6 +346,7 @@ set(TETRISPHERE_BUILD_INPUTS
     tools/build/verify_runtime.py
     tools/build/verify_microcode_inputs.py
     tools/build/patch_rt64_probe.py
+    tools/build/rt64_frame_rate.py
     tools/build/rt64_rescue_hud_probe.py
     tools/build/rt64_rescue_hud_layout.py
     tools/build/rt64_pause_snapshot.py
@@ -590,6 +596,24 @@ add_executable(f3d_flat_shade_test tests/f3d_flat_shade_test.cpp
     src/graphics/f3d_flat_shade.cpp)
 target_include_directories(f3d_flat_shade_test PRIVATE "${CMAKE_SOURCE_DIR}/include")
 add_test(NAME f3d_flat_shade_vertex_flag COMMAND f3d_flat_shade_test)
+
+add_executable(menu_medal_wrap_test tests/menu_medal_wrap_test.cpp
+    src/graphics/menu_medal_wrap.cpp)
+target_include_directories(menu_medal_wrap_test PRIVATE "${CMAKE_SOURCE_DIR}/include")
+if(MSVC)
+    target_compile_options(menu_medal_wrap_test PRIVATE /UNDEBUG)
+else()
+    target_compile_options(menu_medal_wrap_test PRIVATE -UNDEBUG)
+endif()
+add_test(NAME menu_medal_wrap COMMAND menu_medal_wrap_test)
+add_executable(menu_language_test tests/menu_language_test.cpp)
+target_include_directories(menu_language_test PRIVATE "${CMAKE_SOURCE_DIR}/include")
+if(MSVC)
+    target_compile_options(menu_language_test PRIVATE /UNDEBUG)
+else()
+    target_compile_options(menu_language_test PRIVATE -UNDEBUG)
+endif()
+add_test(NAME menu_language COMMAND menu_language_test)
 add_executable(menu_medal_trace_test tests/menu_medal_trace_test.cpp)
 target_include_directories(menu_medal_trace_test PRIVATE "${CMAKE_SOURCE_DIR}/include")
 add_test(NAME menu_medal_trace_return COMMAND menu_medal_trace_test)
@@ -696,11 +720,10 @@ if(MICROCODE_LIVE_ENABLED)
     set(RT64_COPY_ARGS --rt64-root "${RT64_ROOT}" --output "${RT64_COPY_OUTPUT}")
     set(RT64_COPY_NAMES rt64_application.cpp rt64_state.cpp
         rt64_projection_processor.cpp rt64_framebuffer_renderer.cpp
-        rt64_framebuffer_manager.cpp rt64_workload_queue.cpp
+        rt64_framebuffer_manager.cpp rt64_workload_queue.cpp rt64_present_queue.cpp
         rt64_interpreter.cpp rt64_rdp.cpp rt64_rsp.cpp rt64_dynamic_libraries.cpp)
     if(TETRISPHERE_RT64_PROBE)
         list(APPEND RT64_COPY_ARGS --probe)
-        list(APPEND RT64_COPY_NAMES rt64_present_queue.cpp)
     endif()
     execute_process(
         COMMAND "${Python3_EXECUTABLE}"
@@ -843,6 +866,7 @@ if(MICROCODE_LIVE_ENABLED)
         src/platform/input_mapping.cpp
         src/graphics/rt64_context.cpp
         src/graphics/f3d_flat_shade.cpp
+        src/graphics/menu_medal_wrap.cpp
         src/runtime/runtime.cpp
         src/runtime/unsupported.cpp
         "${TETRISPHERE_RSP_RECOMP_SOURCE}"
@@ -851,6 +875,15 @@ if(MICROCODE_LIVE_ENABLED)
         "${N64MODERN_RUNTIME}/librecomp/src/ultra_translation.cpp"
         "${N64MODERN_RUNTIME}/librecomp/src/vi.cpp"
         ${GENERATED_RECOMP_SOURCES})
+    option(TETRISPHERE_GLIBC_243_RELEASE "Use the pre-2.44 glibc ABI for sinh on Linux x86-64" OFF)
+    if(TETRISPHERE_GLIBC_243_RELEASE)
+        if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux" OR
+           NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|amd64|AMD64)$")
+            message(FATAL_ERROR "TETRISPHERE_GLIBC_243_RELEASE requires Linux x86-64 with glibc")
+        endif()
+        target_sources(tetrisphere-m1 PRIVATE src/platform/glibc_sinh.c)
+        target_link_options(tetrisphere-m1 PRIVATE "LINKER:--wrap=sinh")
+    endif()
     add_dependencies(tetrisphere-m1 controls_sprite_data)
     target_include_directories(tetrisphere-m1 PRIVATE "${CMAKE_BINARY_DIR}")
     target_compile_definitions(tetrisphere-m1 PRIVATE
@@ -939,6 +972,46 @@ if(MICROCODE_LIVE_ENABLED)
     add_test(NAME config_cli
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/config_cli_test.py"
                 $<TARGET_FILE:tetrisphere-config> "${CMAKE_CURRENT_BINARY_DIR}")
+    add_executable(blocksphere-launcher WIN32
+        src/launcher/main.cpp src/launcher/launcher_backend.cpp src/launcher/steam_artwork.cpp
+        src/platform/rom_input.cpp src/platform/rom_cache.cpp
+        src/platform/controller_mappings.cpp src/platform/input_mapping.cpp
+        "${RT64_ROOT}/src/contrib/imgui/backends/imgui_impl_sdl2.cpp"
+        "${RT64_ROOT}/src/contrib/imgui/backends/imgui_impl_sdlrenderer2.cpp")
+    target_include_directories(blocksphere-launcher PRIVATE
+        "${CMAKE_SOURCE_DIR}/include" "${RT64_ROOT}/src" "${RT64_ROOT}/src/imgui"
+        "${RT64_ROOT}/src/contrib/imgui" "${RT64_ROOT}/src/contrib/imgui/backends"
+        "${RT64_ROOT}/src/contrib/stb" "${RT64_ROOT}/src/contrib/miniz"
+        ${TETRISPHERE_SDL_INCLUDE_DIRS} ${TETRISPHERE_CONFIG_SDL_INCLUDE})
+    target_compile_definitions(blocksphere-launcher PRIVATE BLOCKSPHERE_VERSION="${PROJECT_VERSION}")
+    target_link_libraries(blocksphere-launcher PRIVATE rt64 tetrisphere_miniz
+        ${TETRISPHERE_SDL_LIBRARIES} ${TETRISPHERE_CONFIG_SDL_LIBRARY})
+    add_dependencies(blocksphere-launcher verify_rt64)
+    if(WIN32)
+        target_include_directories(blocksphere-launcher PRIVATE "${RT64_ROOT}/src/contrib")
+        target_compile_definitions(blocksphere-launcher PRIVATE NOMINMAX)
+        target_link_directories(blocksphere-launcher PRIVATE
+            "${RT64_ROOT}/src/contrib/mupen64plus-win32-deps/SDL2-2.26.3/lib/x64")
+        configure_file(assets/launcher/icon.rc.in launcher-icon.rc @ONLY)
+        target_sources(blocksphere-launcher PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/launcher-icon.rc")
+        target_link_libraries(blocksphere-launcher PRIVATE Advapi32 winhttp)
+        if(MSVC)
+            target_compile_options(blocksphere-launcher PRIVATE /utf-8)
+        endif()
+    else()
+        set_target_properties(blocksphere-launcher PROPERTIES
+            BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "$ORIGIN/lib")
+    endif()
+    add_custom_command(TARGET blocksphere-launcher POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:blocksphere-launcher>/launcher-assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/assets/launcher/Inter.ttf"
+            "${CMAKE_SOURCE_DIR}/assets/launcher/OFL-Inter.txt"
+            "$<TARGET_FILE_DIR:blocksphere-launcher>/launcher-assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/assets/branding/tetrisphere-official-icon.png"
+            "$<TARGET_FILE_DIR:blocksphere-launcher>/launcher-assets/icon.png"
+        VERBATIM)
     add_test(NAME portable_data
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/portable_data_test.py"
                 $<TARGET_FILE:tetrisphere-config> "${CMAKE_CURRENT_BINARY_DIR}")
@@ -1033,7 +1106,7 @@ if(MICROCODE_LIVE_ENABLED)
         if(NOT MSVC)
             message(FATAL_ERROR "Windows portable library loading requires MSVC delay imports")
         endif()
-        foreach(TETRISPHERE_PORTABLE_TARGET tetrisphere-m1 tetrisphere-config)
+        foreach(TETRISPHERE_PORTABLE_TARGET tetrisphere-m1 tetrisphere-config blocksphere-launcher)
             target_sources(${TETRISPHERE_PORTABLE_TARGET} PRIVATE
                 src/platform/windows_delay_libraries.cpp)
             target_link_libraries(${TETRISPHERE_PORTABLE_TARGET} PRIVATE delayimp)
@@ -1047,6 +1120,7 @@ if(MICROCODE_LIVE_ENABLED)
                 VERBATIM)
         endforeach()
         target_link_options(tetrisphere-m1 PRIVATE "/DELAYLOAD:dxcompiler.dll")
+        target_link_options(tetrisphere-m1 PRIVATE "/SUBSYSTEM:WINDOWS" "/ENTRY:mainCRTStartup")
         add_custom_command(TARGET tetrisphere-m1 POST_BUILD
             COMMAND "${CMAKE_COMMAND}" -E copy_if_different
                 "${RT64_ROOT}/src/contrib/dxc/bin/x64/dxcompiler.dll"

@@ -1,4 +1,5 @@
 #include "tetrisphere/close_game_menu.h"
+#include "tetrisphere/menu_language.h"
 
 #include <atomic>
 
@@ -10,12 +11,18 @@ constexpr int display_row(int row) { return row == 3 ? 4 : row == 4 ? 3 : row; }
 // NTPE rev0 func_8004C7E8 owns a 0x70-byte frame. 0x48..0x52 is
 // unused; saved registers end at 0x47, a submenu buffer starts at 0x54.
 // A frame-local string avoids modifying the shared submenu pointer table.
-gpr label_address(std::uint8_t* rdram, recomp_context* ctx) {
-    constexpr char label[] = "CLOSE GAME";
+void localize_main_row(std::uint8_t* rdram, recomp_context* ctx, gpr& argument) {
+    constexpr std::string_view names[]{"SINGLE", "VS", "PRACTICE", "OPTIONS", "TRAINING", "CLOSE GAME"};
+    const int row = MEM_W(0x6C, ctx->r29);
+    if (row < 0 || row >= static_cast<int>(std::size(names))) return;
+    const auto language = tetrisphere::menu_language();
+    if (row != 5 && language == tetrisphere::MenuLanguage::English) return;
+    const auto label = tetrisphere::menu_translation(names[row], language);
+    if (label.size() > 10) return;
     const auto address = ADD32(ctx->r29, 0x48);
-    for (unsigned i = 0; i < sizeof(label); ++i)
-        MEM_B(i, address) = label[i];
-    return address;
+    for (std::size_t i = 0; i < label.size(); ++i) MEM_B(i, address) = label[i];
+    MEM_B(label.size(), address) = 0;
+    argument = address;
 }
 }
 
@@ -68,8 +75,7 @@ extern "C" void tetrisphere_close_game_menu_hook(std::uint8_t* rdram,
         case 0x8004DE28u:
         case 0x8004DEF0u:
         case 0x8004DF80u:
-            if (MEM_W(0x6C, ctx->r29) == 5)
-                ctx->r4 = label_address(rdram, ctx);
+            localize_main_row(rdram, ctx, ctx->r4);
             return;
         case 0x8004DC74u:
         case 0x8004DD44u:
@@ -84,8 +90,7 @@ extern "C" void tetrisphere_close_game_menu_hook(std::uint8_t* rdram,
                 ctx->r5 = ADD32(ctx->r5, -7 * delta);
                 ctx->r6 = ADD32(ctx->r6, -10 + 19 * delta);
             }
-            if (MEM_W(0x6C, ctx->r29) == 5)
-                ctx->r7 = label_address(rdram, ctx);
+            localize_main_row(rdram, ctx, ctx->r7);
             return;
     }
 }

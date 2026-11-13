@@ -1,3 +1,5 @@
 # Project branding
 
-`blocksphere-banner.png` is the owner-supplied Blocksphere banner. Original game icons and captured screenshots are excluded from the current source tree.
+The Blocksphere banner and launcher icon are owner-supplied project artwork.
+Captured game media and extracted original game assets are kept out of the
+release source and installers.

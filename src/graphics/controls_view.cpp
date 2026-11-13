@@ -1,4 +1,5 @@
 #include "tetrisphere/controls_view.h"
+#include "tetrisphere/menu_language.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -40,6 +41,9 @@ void circle(ControlsScene& s,int x,int y,int radius,unsigned color) {
 std::string upper(std::string value) {
  for(auto& c:value)c=std::toupper(static_cast<unsigned char>(c));return value;
 }
+std::string local(std::string_view label) {
+ return std::string(menu_translation(label));
+}
 void text(ControlsScene& s,int x,int y,std::string value,unsigned color=ivory,int font=0,int width=0,int scale=650) {
  // All PC menu text uses the original main-menu font at a fixed half size.
  // Layout owns available space; never squeeze a long label to fit.
@@ -58,11 +62,16 @@ void page_frame(ControlsScene& s,const char* title) {
   line(s,{a.x+1,a.y+1},{b.x+1,b.y+1},teal);line(s,a,b,ivory);
  }
  line(s,{28,44},{292,44},teal);line(s,{28,195},{292,195},teal);
- text(s,31,30,title,cyan,0,100);
+ text(s,31,30,local(title),cyan,0,100);
 }
-void footer_action(ControlsScene& s,int x,int width,const char* label,bool selected) {
- text(s,x,200,label,selected ? white:ivory,0,width);
- if(selected)brackets(s,x-4,197,x+width+4,211);
+void footer_action(ControlsScene& s,int x,int width,std::string_view label,bool selected,
+                   const ControlsTextMeasure& measure={}) {
+ auto localized=local(label);
+ if(selected) {
+  const int focus_width=measure ? measure(localized):width;
+  brackets(s,x-4,197,x+focus_width+4,211);
+ }
+ text(s,x,200,std::move(localized),selected ? white:ivory,0,width);
 }
 }
 ControlsScene compose_controls_view(const ControlsEditor& e,ControllerFamily navigation_family) {
@@ -70,9 +79,9 @@ ControlsScene compose_controls_view(const ControlsEditor& e,ControllerFamily nav
  page_frame(s,"CONTROLS");
  // Every device uses the same authored pixel bitmap; labels remain family-aware.
  const auto family=e.display_family();
- text(s,155,30,"LAYOUT",e.focused()==0 ? white:ivory,2,42);
- std::string layout=e.pending().family_override=="auto" ? "AUTO ":"";
- layout+=family==ControllerFamily::Keyboard ? "KEYS":family==ControllerFamily::Xbox ? "XBOX":
+ text(s,155,30,local("LAYOUT"),e.focused()==0 ? white:ivory,2,42);
+ std::string layout=e.pending().family_override=="auto" ? local("AUTO")+" ":"";
+ layout+=family==ControllerFamily::Keyboard ? local("KEYS"):family==ControllerFamily::Xbox ? "XBOX":
    family==ControllerFamily::PlayStation ? "PS":"SWITCH";
  text(s,209,30,layout,e.focused()==0 ? white:yellow,2,72);
  if(e.focused()==0) {
@@ -85,7 +94,7 @@ ControlsScene compose_controls_view(const ControlsEditor& e,ControllerFamily nav
  constexpr const char* actions[]{"DROP SELECT","SLIDE BACK","RESTART PUZZLE","MAGIC"};
  for(int n=0;n<4;++n) {
   const int y=57+n*25;const bool selected=e.focused()==n+1;
-  text(s,149,y,actions[n],selected ? white:ivory,0,87);
+  text(s,149,y,local(actions[n]),selected ? white:ivory,0,87);
   text(s,240,y,upper(values[n]),selected ? white:yellow,0,54);
   if(selected) {
    brackets(s,236,y-3,296,y+11);
@@ -101,17 +110,18 @@ ControlsScene compose_controls_view(const ControlsEditor& e,ControllerFamily nav
   line(s,start,{start.x,47},teal);
   circle(s,start.x,start.y,3,yellow);
  }
- text(s,32,148,"ZOOM IN",ivory,2,43,580);
+ text(s,32,148,local("ZOOM IN"),ivory,2,43,580);
  text(s,78,148,upper(magic_control_label(family,MagicControl::LeftShoulder)),yellow,2,65,580);
- text(s,32,160,"ZOOM OUT",ivory,2,43,580);
+ text(s,32,160,local("ZOOM OUT"),ivory,2,43,580);
  text(s,78,160,upper(magic_control_label(family,MagicControl::RightShoulder)),yellow,2,65,580);
- text(s,32,172,"MOVE",ivory,2,43,580);text(s,78,172,family==ControllerFamily::Keyboard ? "ARROWS":"D-PAD",yellow,2,65,580);
- text(s,32,184,"PAUSE",ivory,2,43,580);
+ text(s,32,172,local("MOVE"),ivory,2,43,580);text(s,78,172,family==ControllerFamily::Keyboard ? local("ARROWS"):"D-PAD",yellow,2,65,580);
+ text(s,32,184,local("PAUSE"),ivory,2,43,580);
  if(family==ControllerFamily::NintendoSwitch) {rect(s,78,187,7,1,yellow);rect(s,81,184,1,7,yellow);text(s,89,184,"PLUS",yellow,0,64,500);}
  else text(s,78,184,family==ControllerFamily::Keyboard ? "ENTER":family==ControllerFamily::PlayStation ? "OPTIONS":"MENU",yellow,2,65,580);
- footer_action(s,35,64,"DEFAULTS",e.focused()==ControlsEditor::Defaults);
- footer_action(s,139,52,"DISCARD",e.focused()==ControlsEditor::Discard);
- footer_action(s,249,36,"APPLY",e.focused()==ControlsEditor::Apply);
+ const bool english=menu_language()==MenuLanguage::English;
+ footer_action(s,35,english ? 64:73,"DEFAULTS",e.focused()==ControlsEditor::Defaults);
+ footer_action(s,139,english ? 52:72,"DISCARD",e.focused()==ControlsEditor::Discard);
+ footer_action(s,english ? 249:222,english ? 36:72,"APPLY",e.focused()==ControlsEditor::Apply);
  std::string status=e.saving() ? "SAVING":e.capturing() ? "PRESS BUTTON":e.status();
  if(status.empty()) {
   if(e.focused()>=1 && e.focused()<=ControlsEditor::Magic && std::count(controls.begin(),controls.end(),controls[e.focused()-1])>1)
@@ -121,6 +131,7 @@ ControlsScene compose_controls_view(const ControlsEditor& e,ControllerFamily nav
  }
  const auto status_color=status.find("FAILED")!=std::string::npos || status.find("MUST DIFFER")!=std::string::npos
   ? orange:e.dirty() ? yellow:cyan;
+ status=local(status);
  // Status wraps at word boundaries instead of scaling individual strings.
  if(status.size()>19) {
   auto split=status.rfind(' ',19);
@@ -128,34 +139,53 @@ ControlsScene compose_controls_view(const ControlsEditor& e,ControllerFamily nav
  }
  text(s,149,184,status,status_color,0,150);
  const auto& applied=e.applied().bindings;
- text(s,31,223,upper(logical_action_label(navigation_family,applied,LogicalAction::Confirm))+" SELECT",yellow,0,160,500);
- text(s,206,223,upper(logical_action_label(navigation_family,applied,LogicalAction::Cancel))+" BACK",yellow,0,92,500);
+ text(s,31,223,upper(logical_action_label(navigation_family,applied,LogicalAction::Confirm))+" "+local("SELECT"),yellow,0,160,500);
+ text(s,206,223,upper(logical_action_label(navigation_family,applied,LogicalAction::Cancel))+" "+local("BACK"),yellow,0,92,500);
  return s;
 }
-ControlsScene compose_graphics_view(const PCSettingsMenu& menu,ControllerFamily family) {
+ControlsScene compose_graphics_view(const PCSettingsMenu& menu,ControllerFamily family,
+                                   const ControlsTextMeasure& measure) {
  ControlsScene s;
  page_frame(s,"GRAPHICS");
  const auto rows=menu.rows(family);
- for(int row=0;row<7;++row) {
+ if (rows.size()<9) return s;
+ for (int row=0;row<PCSettingsMenu::Apply;++row) {
   const int y=51+row*19;
   const bool selected=menu.focused()==row;
-  text(s,35,y,rows[row],selected ? white:ivory,0,136);
-  text(s,188,y,menu.value(row),selected ? white:yellow,0,102);
-  if(selected) {
+  text(s,35,y,local(rows[row]),selected ? white:ivory,0,136);
+  text(s,188,y,local(menu.value(row)),selected ? white:yellow,0,102);
+  if (selected) {
    brackets(s,183,y-3,297,y+11);
    polygon(s,{{27,y},{32,y+4},{27,y+8}},yellow);
    polygon(s,{{179,y},{174,y+4},{179,y+8}},yellow);
    polygon(s,{{290,y},{295,y+4},{290,y+8}},yellow);
   }
  }
- footer_action(s,249,36,"BACK",menu.focused()==7);
+ const bool english=menu_language()==MenuLanguage::English;
+ if (menu.exit_pending()) {
+  footer_action(s,35,72,rows[PCSettingsMenu::Apply],menu.focused()==PCSettingsMenu::Apply,measure);
+  footer_action(s,119,73,rows[PCSettingsMenu::BackOrDiscard],menu.focused()==PCSettingsMenu::BackOrDiscard,measure);
+  footer_action(s,205,89,rows[PCSettingsMenu::KeepEditing],menu.focused()==PCSettingsMenu::KeepEditing,measure);
+ } else {
+  footer_action(s,139,73,rows[PCSettingsMenu::Apply],menu.focused()==PCSettingsMenu::Apply,measure);
+  footer_action(s,english ? 249:222,english ? 36:72,rows[PCSettingsMenu::BackOrDiscard],
+                menu.focused()==PCSettingsMenu::BackOrDiscard,measure);
+ }
  std::string status=menu.status();
- if(status.empty())status=menu.restart_required(menu.focused()) ? "APPLIES AFTER RESTART":"APPLIES NOW";
+ if (status.empty()) {
+  if (menu.dirty()) status=menu.restart_changes() ? "APPLY THEN RESTART":"CHANGES NOT APPLIED";
+  else status=menu.restart_required(menu.focused()) ? "APPLIES AFTER RESTART":"APPLIES NOW";
+ }
  const auto status_color=status.find("FAILED")!=std::string::npos ? orange
-  :status=="APPLIES AFTER RESTART" ? yellow:cyan;
- text(s,31,183,status,status_color,0,250);
- text(s,31,222,"LEFT RIGHT CHANGE",yellow,0,138);
- text(s,206,222,upper(logical_action_label(family,menu.settings().bindings,LogicalAction::Cancel))+" BACK",yellow,0,92);
+  : menu.dirty() || status=="APPLIES AFTER RESTART" || status=="SAVED RESTART REQUIRED" ? yellow:cyan;
+ text(s,31,183,local(status),status_color,0,250);
+ if (menu.focused()<PCSettingsMenu::Apply)
+  text(s,31,222,local("LEFT RIGHT CHANGE"),yellow,0,168);
+ else
+  text(s,31,222,upper(logical_action_label(family,menu.settings().bindings,LogicalAction::Confirm))+
+       " "+local("SELECT"),yellow,0,168);
+ text(s,206,222,upper(logical_action_label(family,menu.settings().bindings,LogicalAction::Cancel))+
+      " "+local("BACK"),yellow,0,92);
  return s;
 }
 
