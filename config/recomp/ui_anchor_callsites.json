@@ -492,6 +492,13 @@
       "when": "single_player_not_mode_three"
     },
     {
+      "function": "func_800CD3B8",
+      "pc": "0x800CFF64",
+      "target": "0x800C78A0",
+      "anchor": "right",
+      "when": "single_player_not_mode_three"
+    },
+    {
       "function": "func_8003FE3C",
       "pc": "0x800408BC",
       "target": "0x80038478",
